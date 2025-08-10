@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS06: Arrays & Objects - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-number {
+            color: #f6ad55;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-button.purple {
+            background: var(--purple);
+            color: white;
+        }
+
+        .demo-button.teal {
+            background: var(--teal);
+            color: white;
+        }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .data-structure {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .structure-visual {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .array-item,
+        .object-property {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+        }
+
+        .object-property {
+            background: var(--info);
+            color: white;
+        }
+
+        .methods-showcase {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .method-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .method-card h5 {
+            color: var(--info);
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .demo-grid,
+            .method-grid,
+            .structure-visual {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS06</div>
+            <h1>📚 Arrays & Objects</h1>
+            <p>Master data structures for organizing and manipulating information</p>
+        </div>
+
+        <!-- Arrays -->
+        <section class="section">
+            <h2>📊 Arrays - Ordered Collections</h2>
+            
+            <p><strong>Arrays</strong> are ordered lists of items. They can store multiple values in a single variable và provide methods for manipulation.</p>
+
+            <div class="data-structure">
+                <h3>🗂️ Array Structure</h3>
+                <p>Arrays use zero-based indexing:</p>
+                <div class="structure-visual">
+                    <div class="array-item">Index: 0<br>Value: "apple"</div>
+                    <div class="array-item">Index: 1<br>Value: "banana"</div>
+                    <div class="array-item">Index: 2<br>Value: "orange"</div>
+                    <div class="array-item">Index: 3<br>Value: "grape"</div>
+                </div>
+            </div>
+
+            <h3>Creating Arrays</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Array literal (most common)</span>
+<span class="code-keyword">let</span> fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"orange"</span>];
+
+<span class="code-comment">// Array constructor</span>
+<span class="code-keyword">let</span> numbers = <span class="code-keyword">new Array</span>(<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>);
+
+<span class="code-comment">// Empty array</span>
+<span class="code-keyword">let</span> empty = [];
+
+<span class="code-comment">// Mixed data types</span>
+<span class="code-keyword">let</span> mixed = [<span class="code-string">"text"</span>, <span class="code-number">42</span>, <span class="code-keyword">true</span>, <span class="code-keyword">null</span>, {name: <span class="code-string">"object"</span>}];
+
+<span class="code-comment">// Accessing elements</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(fruits[<span class="code-number">0</span>]); <span class="code-comment">// "apple"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(fruits[<span class="code-number">1</span>]); <span class="code-comment">// "banana"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(fruits.<span class="code-keyword">length</span>); <span class="code-comment">// 3</span></code></pre>
+            </div>
+
+            <h3>Array Methods - Adding/Removing</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">let</span> animals = [<span class="code-string">"cat"</span>, <span class="code-string">"dog"</span>];
+
+<span class="code-comment">// Add to end</span>
+animals.<span class="code-keyword">push</span>(<span class="code-string">"bird"</span>); <span class="code-comment">// ["cat", "dog", "bird"]</span>
+
+<span class="code-comment">// Add to beginning</span>
+animals.<span class="code-keyword">unshift</span>(<span class="code-string">"fish"</span>); <span class="code-comment">// ["fish", "cat", "dog", "bird"]</span>
+
+<span class="code-comment">// Remove from end</span>
+<span class="code-keyword">let</span> lastAnimal = animals.<span class="code-keyword">pop</span>(); <span class="code-comment">// "bird", array: ["fish", "cat", "dog"]</span>
+
+<span class="code-comment">// Remove from beginning</span>
+<span class="code-keyword">let</span> firstAnimal = animals.<span class="code-keyword">shift</span>(); <span class="code-comment">// "fish", array: ["cat", "dog"]</span>
+
+<span class="code-comment">// Remove/add at specific position</span>
+animals.<span class="code-keyword">splice</span>(<span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-string">"rabbit"</span>); <span class="code-comment">// ["cat", "rabbit", "dog"]</span>
+animals.<span class="code-keyword">splice</span>(<span class="code-number">1</span>, <span class="code-number">1</span>); <span class="code-comment">// Remove "rabbit": ["cat", "dog"]</span></code></pre>
+            </div>
+
+            <h3>Array Methods - Searching/Checking</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">let</span> colors = [<span class="code-string">"red"</span>, <span class="code-string">"green"</span>, <span class="code-string">"blue"</span>, <span class="code-string">"yellow"</span>];
+
+<span class="code-comment">// Find index</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(colors.<span class="code-keyword">indexOf</span>(<span class="code-string">"blue"</span>)); <span class="code-comment">// 2</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(colors.<span class="code-keyword">indexOf</span>(<span class="code-string">"purple"</span>)); <span class="code-comment">// -1 (not found)</span>
+
+<span class="code-comment">// Check if includes</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(colors.<span class="code-keyword">includes</span>(<span class="code-string">"green"</span>)); <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(colors.<span class="code-keyword">includes</span>(<span class="code-string">"orange"</span>)); <span class="code-comment">// false</span>
+
+<span class="code-comment">// Find with condition</span>
+<span class="code-keyword">let</span> numbers = [<span class="code-number">1</span>, <span class="code-number">5</span>, <span class="code-number">10</span>, <span class="code-number">15</span>, <span class="code-number">20</span>];
+<span class="code-keyword">let</span> firstLarge = numbers.<span class="code-keyword">find</span>(num => num > <span class="code-number">10</span>); <span class="code-comment">// 15</span>
+<span class="code-keyword">let</span> largeIndex = numbers.<span class="code-keyword">findIndex</span>(num => num > <span class="code-number">10</span>); <span class="code-comment">// 3</span></code></pre>
+            </div>
+
+            <h3>Array Methods - Transformation</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">let</span> numbers = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>];
+
+<span class="code-comment">// Map - transform each element</span>
+<span class="code-keyword">let</span> doubled = numbers.<span class="code-keyword">map</span>(num => num * <span class="code-number">2</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(doubled); <span class="code-comment">// [2, 4, 6, 8, 10]</span>
+
+<span class="code-comment">// Filter - select elements</span>
+<span class="code-keyword">let</span> evenNumbers = numbers.<span class="code-keyword">filter</span>(num => num % <span class="code-number">2</span> === <span class="code-number">0</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(evenNumbers); <span class="code-comment">// [2, 4]</span>
+
+<span class="code-comment">// Reduce - combine into single value</span>
+<span class="code-keyword">let</span> sum = numbers.<span class="code-keyword">reduce</span>((acc, num) => acc + num, <span class="code-number">0</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(sum); <span class="code-comment">// 15</span>
+
+<span class="code-comment">// Sort and reverse</span>
+<span class="code-keyword">let</span> words = [<span class="code-string">"banana"</span>, <span class="code-string">"apple"</span>, <span class="code-string">"cherry"</span>];
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(words.<span class="code-keyword">sort</span>()); <span class="code-comment">// ["apple", "banana", "cherry"]</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(words.<span class="code-keyword">reverse</span>()); <span class="code-comment">// ["cherry", "banana", "apple"]</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Objects -->
+        <section class="section">
+            <h2>🏛️ Objects - Key-Value Collections</h2>
+            
+            <p><strong>Objects</strong> store data as key-value pairs, allowing you to organize related information together.</p>
+
+            <div class="data-structure">
+                <h3>🗃️ Object Structure</h3>
+                <p>Objects use keys to access values:</p>
+                <div class="structure-visual">
+                    <div class="object-property">Key: "name"<br>Value: "John"</div>
+                    <div class="object-property">Key: "age"<br>Value: 25</div>
+                    <div class="object-property">Key: "city"<br>Value: "Hanoi"</div>
+                    <div class="object-property">Key: "isStudent"<br>Value: true</div>
+                </div>
+            </div>
+
+            <h3>Creating Objects</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Object literal (most common)</span>
+<span class="code-keyword">let</span> person = {
+    name: <span class="code-string">"Alice"</span>,
+    age: <span class="code-number">25</span>,
+    city: <span class="code-string">"Hanoi"</span>,
+    isStudent: <span class="code-keyword">true</span>
+};
+
+<span class="code-comment">// Object constructor</span>
+<span class="code-keyword">let</span> car = <span class="code-keyword">new Object</span>();
+car.brand = <span class="code-string">"Toyota"</span>;
+car.model = <span class="code-string">"Camry"</span>;
+car.year = <span class="code-number">2022</span>;
+
+<span class="code-comment">// Accessing properties</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(person.name); <span class="code-comment">// "Alice"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(person[<span class="code-string">"age"</span>]); <span class="code-comment">// 25</span>
+
+<span class="code-comment">// Adding/modifying properties</span>
+person.email = <span class="code-string">"alice@email.com"</span>;
+person.age = <span class="code-number">26</span>;</code></pre>
+            </div>
+
+            <h3>Object Methods</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">let</span> student = {
+    name: <span class="code-string">"Bob"</span>,
+    age: <span class="code-number">20</span>,
+    subjects: [<span class="code-string">"Math"</span>, <span class="code-string">"Physics"</span>, <span class="code-string">"Chemistry"</span>],
+    
+    <span class="code-comment">// Method inside object</span>
+    introduce: <span class="code-keyword">function</span>() {
+        <span class="code-keyword">return</span> <span class="code-string">`Hi, I'm ${this.name} and I'm ${this.age} years old.`</span>;
+    },
+    
+    <span class="code-comment">// Arrow function method (ES6)</span>
+    getSubjects: () => {
+        <span class="code-keyword">return</span> student.subjects.<span class="code-keyword">join</span>(<span class="code-string">", "</span>);
+    }
+};
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(student.<span class="code-keyword">introduce</span>()); <span class="code-comment">// "Hi, I'm Bob and I'm 20 years old."</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(student.<span class="code-keyword">getSubjects</span>()); <span class="code-comment">// "Math, Physics, Chemistry"</span></code></pre>
+            </div>
+
+            <h3>Object Utility Methods</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">let</span> product = {
+    id: <span class="code-number">1</span>,
+    name: <span class="code-string">"Laptop"</span>,
+    price: <span class="code-number">999</span>,
+    category: <span class="code-string">"Electronics"</span>
+};
+
+<span class="code-comment">// Get all keys</span>
+<span class="code-keyword">let</span> keys = <span class="code-keyword">Object</span>.<span class="code-keyword">keys</span>(product);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(keys); <span class="code-comment">// ["id", "name", "price", "category"]</span>
+
+<span class="code-comment">// Get all values</span>
+<span class="code-keyword">let</span> values = <span class="code-keyword">Object</span>.<span class="code-keyword">values</span>(product);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(values); <span class="code-comment">// [1, "Laptop", 999, "Electronics"]</span>
+
+<span class="code-comment">// Get key-value pairs</span>
+<span class="code-keyword">let</span> entries = <span class="code-keyword">Object</span>.<span class="code-keyword">entries</span>(product);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(entries); <span class="code-comment">// [["id", 1], ["name", "Laptop"], ...]</span>
+
+<span class="code-comment">// Check if property exists</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"name"</span> <span class="code-keyword">in</span> product); <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(product.<span class="code-keyword">hasOwnProperty</span>(<span class="code-string">"price"</span>)); <span class="code-comment">// true</span>
+
+<span class="code-comment">// Delete property</span>
+<span class="code-keyword">delete</span> product.category;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(product); <span class="code-comment">// {id: 1, name: "Laptop", price: 999}</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demos -->
+        <section class="section">
+            <h2>🎮 Interactive Data Structure Lab</h2>
+            
+            <div class="demo-grid">
+                <div class="interactive-demo">
+                    <h4>📊 Array Playground</h4>
+                    <p>Experiment with array methods:</p>
+                    
+                    <input type="text" id="arrayInput" class="demo-input" placeholder="Enter items (comma-separated)" value="apple,banana,cherry,date">
+                    
+                    <div>
+                        <button class="demo-button" onclick="arrayOperation('add')">Add Item</button>
+                        <button class="demo-button" onclick="arrayOperation('remove')">Remove Item</button>
+                        <button class="demo-button" onclick="arrayOperation('sort')">Sort</button>
+                        <button class="demo-button" onclick="arrayOperation('reverse')">Reverse</button>
+                    </div>
+                    
+                    <div>
+                        <button class="demo-button purple" onclick="arrayOperation('filter')">Filter (length > 5)</button>
+                        <button class="demo-button teal" onclick="arrayOperation('map')">Map (UPPERCASE)</button>
+                    </div>
+                    
+                    <div id="arrayOutput" class="demo-output">
+                        Original array will appear here...
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>🏛️ Object Builder</h4>
+                    <p>Create and manipulate objects:</p>
+                    
+                    <input type="text" id="objKey" class="demo-input" placeholder="Property key" value="name">
+                    <input type="text" id="objValue" class="demo-input" placeholder="Property value" value="John">
+                    
+                    <div>
+                        <button class="demo-button" onclick="objectOperation('add')">Add Property</button>
+                        <button class="demo-button" onclick="objectOperation('remove')">Remove Property</button>
+                        <button class="demo-button" onclick="objectOperation('keys')">Show Keys</button>
+                        <button class="demo-button" onclick="objectOperation('values')">Show Values</button>
+                    </div>
+                    
+                    <div id="objectOutput" class="demo-output">
+                        Object structure will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h4>🔍 Data Structure Explorer</h4>
+                <p>Compare arrays và objects in real-time:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <h5>Array Data:</h5>
+                        <textarea id="arrayData" class="demo-input" rows="3" placeholder="Enter array items (one per line)">Red
+Green
+Blue
+Yellow</textarea>
+                    </div>
+                    <div>
+                        <h5>Object Data:</h5>
+                        <textarea id="objectData" class="demo-input" rows="3" placeholder="Enter key:value pairs (one per line)">name:Alice
+age:25
+city:Hanoi</textarea>
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="demo-button" onclick="exploreData('compare')">Compare Structures</button>
+                    <button class="demo-button" onclick="exploreData('convert')">Convert Array to Object</button>
+                    <button class="demo-button" onclick="exploreData('methods')">Show Available Methods</button>
+                </div>
+                
+                <div id="explorerOutput" class="demo-output">
+                    Data structure comparison will appear here...
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Concepts -->
+        <section class="section">
+            <h2>🚀 Advanced Array & Object Techniques</h2>
+            
+            <h3>Destructuring Assignment</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Array destructuring</span>
+<span class="code-keyword">let</span> colors = [<span class="code-string">"red"</span>, <span class="code-string">"green"</span>, <span class="code-string">"blue"</span>];
+<span class="code-keyword">let</span> [primary, secondary, tertiary] = colors;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(primary); <span class="code-comment">// "red"</span>
+
+<span class="code-comment">// Object destructuring</span>
+<span class="code-keyword">let</span> person = {name: <span class="code-string">"Alice"</span>, age: <span class="code-number">25</span>, city: <span class="code-string">"Hanoi"</span>};
+<span class="code-keyword">let</span> {name, age} = person;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(name); <span class="code-comment">// "Alice"</span>
+
+<span class="code-comment">// Nested destructuring</span>
+<span class="code-keyword">let</span> data = {
+    user: {
+        profile: {
+            name: <span class="code-string">"Bob"</span>,
+            email: <span class="code-string">"bob@email.com"</span>
+        }
+    }
+};
+<span class="code-keyword">let</span> {user: {profile: {name: userName}}} = data;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(userName); <span class="code-comment">// "Bob"</span></code></pre>
+            </div>
+
+            <h3>Spread Operator</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Array spreading</span>
+<span class="code-keyword">let</span> arr1 = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>];
+<span class="code-keyword">let</span> arr2 = [<span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>];
+<span class="code-keyword">let</span> combined = [...arr1, ...arr2]; <span class="code-comment">// [1, 2, 3, 4, 5, 6]</span>
+
+<span class="code-comment">// Object spreading</span>
+<span class="code-keyword">let</span> obj1 = {a: <span class="code-number">1</span>, b: <span class="code-number">2</span>};
+<span class="code-keyword">let</span> obj2 = {c: <span class="code-number">3</span>, d: <span class="code-number">4</span>};
+<span class="code-keyword">let</span> merged = {...obj1, ...obj2}; <span class="code-comment">// {a: 1, b: 2, c: 3, d: 4}</span>
+
+<span class="code-comment">// Copy arrays/objects</span>
+<span class="code-keyword">let</span> originalArray = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>];
+<span class="code-keyword">let</span> copiedArray = [...originalArray];
+
+<span class="code-keyword">let</span> originalObject = {name: <span class="code-string">"Alice"</span>, age: <span class="code-number">25</span>};
+<span class="code-keyword">let</span> copiedObject = {...originalObject};</code></pre>
+            </div>
+
+            <h3>JSON - Data Exchange</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Object to JSON string</span>
+<span class="code-keyword">let</span> user = {
+    name: <span class="code-string">"Alice"</span>,
+    age: <span class="code-number">25</span>,
+    hobbies: [<span class="code-string">"reading"</span>, <span class="code-string">"coding"</span>],
+    address: {
+        city: <span class="code-string">"Hanoi"</span>,
+        country: <span class="code-string">"Vietnam"</span>
+    }
+};
+
+<span class="code-keyword">let</span> jsonString = <span class="code-keyword">JSON</span>.<span class="code-keyword">stringify</span>(user);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(jsonString);
+
+<span class="code-comment">// JSON string to object</span>
+<span class="code-keyword">let</span> parsedUser = <span class="code-keyword">JSON</span>.<span class="code-keyword">parse</span>(jsonString);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(parsedUser.name); <span class="code-comment">// "Alice"</span>
+
+<span class="code-comment">// Pretty print JSON</span>
+<span class="code-keyword">let</span> prettyJson = <span class="code-keyword">JSON</span>.<span class="code-keyword">stringify</span>(user, <span class="code-keyword">null</span>, <span class="code-number">2</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(prettyJson);</code></pre>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS05-functions-scope.html" class="nav-btn prev">← JS05: Functions & Scope</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS07-dom-basics.html" class="nav-btn next">JS07: DOM Basics →</a>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for demos
+        let demoArray = ['apple', 'banana', 'cherry', 'date'];
+        let demoObject = {
+            name: 'John',
+            age: 25,
+            city: 'Hanoi'
+        };
+
+        // Array operations
+        function arrayOperation(operation) {
+            const input = document.getElementById('arrayInput');
+            const output = document.getElementById('arrayOutput');
+            
+            try {
+                // Parse input
+                demoArray = input.value.split(',').map(item => item.trim()).filter(item => item !== '');
+                
+                let result = '';
+                let newArray = [...demoArray];
+                
+                switch (operation) {
+                    case 'add':
+                        const newItem = prompt('Enter item to add:');
+                        if (newItem) {
+                            newArray.push(newItem);
+                            result = `Added "${newItem}" to array`;
+                        }
+                        break;
+                        
+                    case 'remove':
+                        if (newArray.length > 0) {
+                            const removed = newArray.pop();
+                            result = `Removed "${removed}" from array`;
+                        }
+                        break;
+                        
+                    case 'sort':
+                        newArray.sort();
+                        result = 'Array sorted alphabetically';
+                        break;
+                        
+                    case 'reverse':
+                        newArray.reverse();
+                        result = 'Array order reversed';
+                        break;
+                        
+                    case 'filter':
+                        newArray = demoArray.filter(item => item.length > 5);
+                        result = 'Filtered items with length > 5';
+                        break;
+                        
+                    case 'map':
+                        newArray = demoArray.map(item => item.toUpperCase());
+                        result = 'Converted all items to uppercase';
+                        break;
+                }
+                
+                // Update display
+                demoArray = newArray;
+                input.value = demoArray.join(', ');
+                
+                output.textContent = `Operation: ${result}\n\nOriginal: [${document.getElementById('arrayInput').value}]\nResult: [${demoArray.join(', ')}]\n\nArray Methods Used:\n- ${operation}(): ${getMethodDescription(operation)}`;
+                
+            } catch (error) {
+                output.textContent = `Error: ${error.message}\nPlease check your input format.`;
+            }
+        }
+
+        // Object operations
+        function objectOperation(operation) {
+            const keyInput = document.getElementById('objKey');
+            const valueInput = document.getElementById('objValue');
+            const output = document.getElementById('objectOutput');
+            
+            try {
+                let result = '';
+                
+                switch (operation) {
+                    case 'add':
+                        const key = keyInput.value.trim();
+                        const value = valueInput.value.trim();
+                        if (key && value) {
+                            // Try to parse value as number or boolean
+                            let parsedValue = value;
+                            if (!isNaN(value) && value !== '') {
+                                parsedValue = Number(value);
+                            } else if (value === 'true') {
+                                parsedValue = true;
+                            } else if (value === 'false') {
+                                parsedValue = false;
+                            }
+                            
+                            demoObject[key] = parsedValue;
+                            result = `Added property "${key}": ${JSON.stringify(parsedValue)}`;
+                        }
+                        break;
+                        
+                    case 'remove':
+                        const removeKey = keyInput.value.trim();
+                        if (removeKey && demoObject.hasOwnProperty(removeKey)) {
+                            delete demoObject[removeKey];
+                            result = `Removed property "${removeKey}"`;
+                        } else {
+                            result = `Property "${removeKey}" not found`;
+                        }
+                        break;
+                        
+                    case 'keys':
+                        const keys = Object.keys(demoObject);
+                        result = `Object keys: [${keys.join(', ')}]`;
+                        break;
+                        
+                    case 'values':
+                        const values = Object.values(demoObject);
+                        result = `Object values: [${values.map(v => JSON.stringify(v)).join(', ')}]`;
+                        break;
+                }
+                
+                output.textContent = `Operation: ${result}\n\nCurrent Object:\n${JSON.stringify(demoObject, null, 2)}\n\nObject Methods:\n- Object.keys(): Returns array of property names\n- Object.values(): Returns array of property values\n- Object.entries(): Returns array of [key, value] pairs\n- hasOwnProperty(): Checks if property exists`;
+                
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Data explorer
+        function exploreData(operation) {
+            const arrayData = document.getElementById('arrayData').value;
+            const objectData = document.getElementById('objectData').value;
+            const output = document.getElementById('explorerOutput');
+            
+            try {
+                const array = arrayData.split('\n').map(item => item.trim()).filter(item => item !== '');
+                const object = {};
+                
+                objectData.split('\n').forEach(line => {
+                    const [key, value] = line.split(':').map(item => item.trim());
+                    if (key && value) {
+                        object[key] = value;
+                    }
+                });
+                
+                let result = '';
+                
+                switch (operation) {
+                    case 'compare':
+                        result = `ARRAY vs OBJECT COMPARISON\n\n`;
+                        result += `Array:\n- Structure: Ordered list\n- Access: By index (0, 1, 2...)\n- Length: ${array.length}\n- Items: [${array.join(', ')}]\n\n`;
+                        result += `Object:\n- Structure: Key-value pairs\n- Access: By key name\n- Properties: ${Object.keys(object).length}\n- Data: ${JSON.stringify(object, null, 2)}`;
+                        break;
+                        
+                    case 'convert':
+                        const convertedObject = {};
+                        array.forEach((item, index) => {
+                            convertedObject[`item${index}`] = item;
+                        });
+                        result = `Array to Object Conversion:\n\nOriginal Array: [${array.join(', ')}]\n\nConverted Object:\n${JSON.stringify(convertedObject, null, 2)}`;
+                        break;
+                        
+                    case 'methods':
+                        result = `AVAILABLE METHODS\n\n`;
+                        result += `Array Methods:\n- push(), pop(), shift(), unshift()\n- map(), filter(), reduce(), find()\n- sort(), reverse(), slice(), splice()\n- indexOf(), includes(), join()\n\n`;
+                        result += `Object Methods:\n- Object.keys(), Object.values(), Object.entries()\n- hasOwnProperty(), delete operator\n- JSON.stringify(), JSON.parse()\n- Object.assign(), Object.freeze()`;
+                        break;
+                }
+                
+                output.textContent = result;
+                
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Helper function for method descriptions
+        function getMethodDescription(method) {
+            const descriptions = {
+                'add': 'push() - Adds element to end of array',
+                'remove': 'pop() - Removes last element from array',
+                'sort': 'sort() - Sorts elements alphabetically',
+                'reverse': 'reverse() - Reverses array order',
+                'filter': 'filter() - Creates new array with elements that pass test',
+                'map': 'map() - Creates new array with transformed elements'
+            };
+            return descriptions[method] || 'Array manipulation method';
+        }
+
+        // Welcome message
+        console.log('📚 Welcome to JS06: Arrays & Objects!');
+        console.log('🔧 Experiment with data structures in the interactive demos!');
+
+        // Demonstrate arrays and objects
+        console.log('📊 Array Example:');
+        const fruits = ['apple', 'banana', 'orange'];
+        console.log('Original:', fruits);
+        console.log('With map():', fruits.map(fruit => fruit.toUpperCase()));
+        console.log('With filter():', fruits.filter(fruit => fruit.length > 5));
+
+        console.log('🏛️ Object Example:');
+        const person = {
+            name: 'Alice',
+            age: 25,
+            greet: function() {
+                return `Hello, I'm ${this.name}!`;
+            }
+        };
+        console.log('Object:', person);
+        console.log('Method call:', person.greet());
+        console.log('Keys:', Object.keys(person));
+        console.log('Values:', Object.values(person));
+
+        // Mark lesson as started
+        localStorage.setItem('js06_started', Date.now());
+        localStorage.setItem('js_progress_js06', 'true');
+    </script>
+</body>
+</html>
