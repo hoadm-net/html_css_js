@@ -1,0 +1,24 @@
+/* External CSS for Lab03 - Bài 1 */
+
+.external-styled {
+    background-color: #e8f5e8 !important;
+    padding: 15px;
+    border-left: 4px solid #28a745;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.external-styled h3 {
+    color: #155724;
+    margin-top: 0;
+}
+
+.external-styled ul li {
+    margin: 8px 0;
+    color: #155724;
+}
+
+.external-styled strong {
+    color: #0f4c1c;
+}

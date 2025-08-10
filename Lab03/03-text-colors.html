@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 3: Text & Colors</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .section-title {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            margin: -25px -25px 20px -25px;
+            border-radius: 8px 8px 0 0;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        /* FONT FAMILY EXAMPLES */
+        .font-serif {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+        }
+        
+        .font-sans-serif {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.2em;
+        }
+        
+        .font-monospace {
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            font-size: 1.1em;
+            background: #f1f3f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .font-google {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+        }
+        
+        /* FONT SIZE EXAMPLES */
+        .size-small { font-size: 0.8em; }
+        .size-normal { font-size: 1em; }
+        .size-medium { font-size: 1.2em; }
+        .size-large { font-size: 1.5em; }
+        .size-xlarge { font-size: 2em; }
+        
+        /* FONT WEIGHT EXAMPLES */
+        .weight-light { font-weight: 300; }
+        .weight-normal { font-weight: 400; }
+        .weight-medium { font-weight: 500; }
+        .weight-bold { font-weight: 700; }
+        .weight-black { font-weight: 900; }
+        
+        /* TEXT DECORATION */
+        .text-underline { text-decoration: underline; }
+        .text-overline { text-decoration: overline; }
+        .text-line-through { text-decoration: line-through; }
+        .text-none { text-decoration: none; }
+        
+        /* TEXT TRANSFORM */
+        .text-uppercase { text-transform: uppercase; }
+        .text-lowercase { text-transform: lowercase; }
+        .text-capitalize { text-transform: capitalize; }
+        
+        /* TEXT ALIGN */
+        .text-left { text-align: left; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-justify { 
+            text-align: justify; 
+            line-height: 1.6;
+        }
+        
+        /* LINE HEIGHT */
+        .line-height-small { line-height: 1.2; }
+        .line-height-normal { line-height: 1.5; }
+        .line-height-large { line-height: 2; }
+        
+        /* LETTER SPACING */
+        .letter-spacing-tight { letter-spacing: -0.5px; }
+        .letter-spacing-normal { letter-spacing: normal; }
+        .letter-spacing-wide { letter-spacing: 2px; }
+        .letter-spacing-wider { letter-spacing: 5px; }
+        
+        /* COLORS */
+        .color-red { color: #e74c3c; }
+        .color-blue { color: #3498db; }
+        .color-green { color: #27ae60; }
+        .color-purple { color: #9b59b6; }
+        .color-orange { color: #f39c12; }
+        
+        /* BACKGROUND COLORS */
+        .bg-light { background-color: #ecf0f1; padding: 15px; border-radius: 5px; }
+        .bg-primary { background-color: #3498db; color: white; padding: 15px; border-radius: 5px; }
+        .bg-success { background-color: #27ae60; color: white; padding: 15px; border-radius: 5px; }
+        .bg-warning { background-color: #f39c12; color: white; padding: 15px; border-radius: 5px; }
+        .bg-danger { background-color: #e74c3c; color: white; padding: 15px; border-radius: 5px; }
+        
+        /* GRADIENT BACKGROUNDS */
+        .bg-gradient-1 {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .bg-gradient-2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .bg-gradient-3 {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        /* TEXT SHADOW */
+        .text-shadow-light {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-size: 1.3em;
+        }
+        
+        .text-shadow-medium {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 1.3em;
+            color: #2c3e50;
+        }
+        
+        .text-shadow-strong {
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            font-size: 1.5em;
+            color: #34495e;
+        }
+        
+        .text-shadow-colorful {
+            text-shadow: 
+                2px 2px 0px #ff6b6b,
+                4px 4px 0px #4ecdc4,
+                6px 6px 0px #45b7d1;
+            font-size: 1.8em;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        /* CODE BLOCK */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+            white-space: pre-wrap;
+        }
+        
+        /* DEMO GRID */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .demo-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        /* COLOR PALETTE */
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .color-box {
+            width: 100px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .color-red-box { background: #e74c3c; }
+        .color-blue-box { background: #3498db; }
+        .color-green-box { background: #27ae60; }
+        .color-purple-box { background: #9b59b6; }
+        .color-orange-box { background: #f39c12; }
+        .color-gray-box { background: #95a5a6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text & Colors</h1>
+        <p class="subtitle">Tìm hiểu về Typography và Color trong CSS</p>
+        
+        <!-- Font Family -->
+        <div class="demo-section">
+            <div class="section-title">1. Font Family (Họ Font)</div>
+            
+            <div class="code-block">
+font-family: 'Times New Roman', Times, serif;
+font-family: Arial, Helvetica, sans-serif;
+font-family: 'Courier New', monospace;
+font-family: 'Poppins', sans-serif; /* Google Fonts */
+            </div>
+            
+            <div class="demo-grid">
+                <div class="demo-item">
+                    <p class="font-serif">Serif Font - Có chân chữ</p>
+                    <small>Times New Roman</small>
+                </div>
+                <div class="demo-item">
+                    <p class="font-sans-serif">Sans-serif - Không chân chữ</p>
+                    <small>Arial, Helvetica</small>
+                </div>
+                <div class="demo-item">
+                    <p class="font-monospace">Monospace - Độ rộng đều</p>
+                    <small>Courier New</small>
+                </div>
+                <div class="demo-item">
+                    <p class="font-google">Google Font - Poppins</p>
+                    <small>Web font từ Google</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Font Size -->
+        <div class="demo-section">
+            <div class="section-title">2. Font Size (Kích Thước Font)</div>
+            
+            <div class="code-block">
+font-size: 0.8em;   /* 80% của font-size cha */
+font-size: 1em;     /* 100% - kích thước mặc định */
+font-size: 1.2em;   /* 120% */
+font-size: 16px;    /* Pixel cố định */
+font-size: 1.2rem;  /* Relative to root font-size */
+            </div>
+            
+            <p class="size-small">Font size 0.8em - Nhỏ</p>
+            <p class="size-normal">Font size 1em - Bình thường</p>
+            <p class="size-medium">Font size 1.2em - Trung bình</p>
+            <p class="size-large">Font size 1.5em - Lớn</p>
+            <p class="size-xlarge">Font size 2em - Rất lớn</p>
+        </div>
+        
+        <!-- Font Weight -->
+        <div class="demo-section">
+            <div class="section-title">3. Font Weight (Độ Đậm)</div>
+            
+            <div class="code-block">
+font-weight: 300;  /* Light */
+font-weight: 400;  /* Normal */
+font-weight: 500;  /* Medium */
+font-weight: 700;  /* Bold */
+font-weight: 900;  /* Black */
+            </div>
+            
+            <p class="weight-light">Font weight 300 - Light</p>
+            <p class="weight-normal">Font weight 400 - Normal</p>
+            <p class="weight-medium">Font weight 500 - Medium</p>
+            <p class="weight-bold">Font weight 700 - Bold</p>
+            <p class="weight-black">Font weight 900 - Black</p>
+        </div>
+        
+        <!-- Text Decoration -->
+        <div class="demo-section">
+            <div class="section-title">4. Text Decoration</div>
+            
+            <div class="code-block">
+text-decoration: underline;
+text-decoration: overline;
+text-decoration: line-through;
+text-decoration: none;
+            </div>
+            
+            <p class="text-underline">Text với underline</p>
+            <p class="text-overline">Text với overline</p>
+            <p class="text-line-through">Text với line-through</p>
+            <p class="text-none">Text không decoration</p>
+        </div>
+        
+        <!-- Text Transform -->
+        <div class="demo-section">
+            <div class="section-title">5. Text Transform</div>
+            
+            <div class="code-block">
+text-transform: uppercase;
+text-transform: lowercase;
+text-transform: capitalize;
+            </div>
+            
+            <p class="text-uppercase">text transform uppercase</p>
+            <p class="text-lowercase">TEXT TRANSFORM LOWERCASE</p>
+            <p class="text-capitalize">text transform capitalize</p>
+        </div>
+        
+        <!-- Text Align -->
+        <div class="demo-section">
+            <div class="section-title">6. Text Align</div>
+            
+            <div class="code-block">
+text-align: left;
+text-align: center;
+text-align: right;
+text-align: justify;
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                <p class="text-left">Text align left - Căn trái</p>
+                <p class="text-center">Text align center - Căn giữa</p>
+                <p class="text-right">Text align right - Căn phải</p>
+                <p class="text-justify">Text align justify - Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos tempore voluptatum laboriosam, impedit facilis cumque nam veniam repudiandae eos nulla.</p>
+            </div>
+        </div>
+        
+        <!-- Line Height & Letter Spacing -->
+        <div class="demo-section">
+            <div class="section-title">7. Line Height & Letter Spacing</div>
+            
+            <div class="code-block">
+line-height: 1.2;    /* Spacing giữa các dòng */
+line-height: 1.5;
+line-height: 2;
+
+letter-spacing: -0.5px;  /* Spacing giữa các ký tự */
+letter-spacing: 2px;
+letter-spacing: 5px;
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                <p class="line-height-small">Line height 1.2 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos tempore voluptatum laboriosam impedit facilis.</p>
+                <p class="line-height-normal">Line height 1.5 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos tempore voluptatum laboriosam impedit facilis.</p>
+                <p class="line-height-large">Line height 2 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos tempore voluptatum laboriosam impedit facilis.</p>
+                
+                <hr>
+                
+                <p class="letter-spacing-tight">Letter spacing tight</p>
+                <p class="letter-spacing-normal">Letter spacing normal</p>
+                <p class="letter-spacing-wide">Letter spacing wide</p>
+                <p class="letter-spacing-wider">Letter wider</p>
+            </div>
+        </div>
+        
+        <!-- Colors -->
+        <div class="demo-section">
+            <div class="section-title">8. Colors (Màu Sắc)</div>
+            
+            <div class="code-block">
+color: #e74c3c;           /* Hex color */
+color: rgb(231, 76, 60);  /* RGB */
+color: rgba(231, 76, 60, 0.8); /* RGBA với alpha */
+color: red;               /* Named color */
+color: hsl(9, 82%, 57%);  /* HSL */
+            </div>
+            
+            <div class="color-palette">
+                <div class="color-box color-red-box">#e74c3c</div>
+                <div class="color-box color-blue-box">#3498db</div>
+                <div class="color-box color-green-box">#27ae60</div>
+                <div class="color-box color-purple-box">#9b59b6</div>
+                <div class="color-box color-orange-box">#f39c12</div>
+                <div class="color-box color-gray-box">#95a5a6</div>
+            </div>
+            
+            <p class="color-red">Text màu đỏ</p>
+            <p class="color-blue">Text màu xanh dương</p>
+            <p class="color-green">Text màu xanh lá</p>
+            <p class="color-purple">Text màu tím</p>
+            <p class="color-orange">Text màu cam</p>
+        </div>
+        
+        <!-- Background Colors -->
+        <div class="demo-section">
+            <div class="section-title">9. Background Colors</div>
+            
+            <div class="code-block">
+background-color: #ecf0f1;
+background-color: #3498db;
+background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            </div>
+            
+            <div style="display: grid; gap: 15px;">
+                <div class="bg-light">Background màu light</div>
+                <div class="bg-primary">Background màu primary</div>
+                <div class="bg-success">Background màu success</div>
+                <div class="bg-warning">Background màu warning</div>
+                <div class="bg-danger">Background màu danger</div>
+            </div>
+            
+            <h4>Gradient Backgrounds:</h4>
+            <div class="bg-gradient-1">Linear gradient 45 độ</div>
+            <div class="bg-gradient-2" style="margin: 10px 0;">Linear gradient 135 độ</div>
+            <div class="bg-gradient-3">Linear gradient 90 độ</div>
+        </div>
+        
+        <!-- Text Shadow -->
+        <div class="demo-section">
+            <div class="section-title">10. Text Shadow</div>
+            
+            <div class="code-block">
+text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+text-shadow: 2px 2px 0px #ff6b6b, 4px 4px 0px #4ecdc4;
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 5px;">
+                <p class="text-shadow-light">Text shadow nhẹ</p>
+                <p class="text-shadow-medium">Text shadow trung bình</p>
+                <p class="text-shadow-strong">Text shadow đậm</p>
+                <p class="text-shadow-colorful">Text shadow nhiều màu</p>
+            </div>
+        </div>
+        
+        <!-- Practical Example -->
+        <div class="demo-section">
+            <div class="section-title">11. Ví Dụ Thực Tế</div>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                <h2 style="font-size: 2.5em; font-weight: 700; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    MODERN TYPOGRAPHY
+                </h2>
+                <p style="font-size: 1.2em; font-weight: 300; margin: 10px 0; letter-spacing: 1px;">
+                    Beautiful text styling with CSS
+                </p>
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <p style="font-family: 'Roboto Mono', monospace; font-size: 0.9em; margin: 0;">
+                        font-family: 'Poppins', sans-serif;<br>
+                        font-weight: 700;<br>
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);<br>
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #d1ecf1; border: 1px solid #bee5eb; padding: 20px; border-radius: 8px; margin: 30px 0;">
+            <h3 style="color: #0c5460; margin-top: 0;">🎨 Tips cho Typography:</h3>
+            <ul style="color: #0c5460;">
+                <li>Sử dụng tối đa 2-3 font family trong một website</li>
+                <li>Đảm bảo contrast tốt giữa text và background</li>
+                <li>Line-height khoảng 1.4-1.6 cho text dài</li>
+                <li>Sử dụng em/rem thay vì px để responsive tốt hơn</li>
+                <li>Test typography trên nhiều device khác nhau</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; margin-top: 40px;">
+            <a href="02-selectors.html" style="background: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">← Bài trước</a>
+            <a href="index.html" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px;">Danh sách bài tập</a>
+            <a href="04-box-model.html" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Bài tiếp theo →</a>
+        </p>
+    </div>
+</body>
+</html>

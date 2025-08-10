@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 2: CSS Selectors</title>
+    <style>
+        /* 1. TAG SELECTOR */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        
+        /* 2. CLASS SELECTOR */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .selector-demo {
+            background: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #a3d9a4;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* 3. ID SELECTOR */
+        #header-special {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        #navigation {
+            background: #343a40;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        #navigation ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        #navigation a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        #navigation a:hover {
+            background: #007bff;
+        }
+        
+        #footer-info {
+            background: #6c757d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        /* 4. DESCENDANT SELECTOR */
+        .menu-demo ul {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            list-style: none;
+        }
+        
+        .menu-demo ul li {
+            background: white;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .menu-demo ul li a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .menu-demo ul li a:hover {
+            color: #0056b3;
+        }
+        
+        /* Child selector example */
+        .parent-demo > p {
+            background: #ffeaa7;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #fdcb6e;
+        }
+        
+        /* Multiple class selector */
+        .box.red {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .box.blue {
+            background: #4ecdc4;
+            color: white;
+        }
+        
+        .box.green {
+            background: #95e1a3;
+            color: #2d3436;
+        }
+        
+        .box {
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Pseudo-class examples */
+        .button-demo {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .button-demo:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        .button-demo:active {
+            transform: scale(0.95);
+        }
+        
+        /* Code display */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+        
+        .selector-type {
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bài 2: CSS Selectors (Bộ Chọn CSS)</h1>
+        
+        <p>CSS Selectors giúp chúng ta chọn và styling các element HTML. Hãy cùng tìm hiểu các loại selector cơ bản!</p>
+        
+        <!-- Tag Selector Demo -->
+        <div class="selector-demo">
+            <span class="selector-type">TAG SELECTOR</span>
+            <h2>1. Tag Selector</h2>
+            <p>Chọn tất cả element cùng loại tag. Ví dụ: <code>h1</code>, <code>p</code>, <code>div</code></p>
+            
+            <div class="code-block">
+h1 {
+    color: white;
+    text-align: center;
+}
+
+p {
+    line-height: 1.6;
+    margin: 15px 0;
+}
+            </div>
+            
+            <p>Tất cả thẻ &lt;p&gt; trên trang này đều được style bằng tag selector!</p>
+        </div>
+        
+        <!-- Class Selector Demo -->
+        <div class="selector-demo">
+            <span class="selector-type">CLASS SELECTOR</span>
+            <h2>2. Class Selector</h2>
+            <p>Chọn element có class cụ thể. Sử dụng dấu chấm (.) trước tên class.</p>
+            
+            <div class="code-block">
+.highlight {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+}
+            </div>
+            
+            <div class="highlight">
+                Element này sử dụng class="highlight"
+            </div>
+            
+            <div class="warning">
+                <strong>Lưu ý:</strong> Class có thể sử dụng cho nhiều element!
+            </div>
+            
+            <div class="success">
+                <strong>Ưu điểm:</strong> Tái sử dụng được, dễ bảo trì!
+            </div>
+        </div>
+        
+        <!-- ID Selector Demo -->
+        <div class="selector-demo">
+            <span class="selector-type">ID SELECTOR</span>
+            <h2>3. ID Selector</h2>
+            <p>Chọn element có ID cụ thể. Sử dụng dấu thăng (#) trước tên ID.</p>
+            
+            <div class="code-block">
+#header-special {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    color: white;
+    padding: 20px;
+}
+            </div>
+            
+            <div id="header-special">
+                <h3>Element này có id="header-special"</h3>
+                <p>ID chỉ nên sử dụng cho một element duy nhất!</p>
+            </div>
+            
+            <nav id="navigation">
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Descendant Selector Demo -->
+        <div class="selector-demo">
+            <span class="selector-type">DESCENDANT SELECTOR</span>
+            <h2>4. Descendant Selector</h2>
+            <p>Chọn element con bên trong element cha. Sử dụng dấu cách.</p>
+            
+            <div class="code-block">
+.menu-demo ul li {
+    background: white;
+    padding: 12px;
+    border-left: 4px solid #007bff;
+}
+
+.menu-demo ul li a {
+    color: #007bff;
+    text-decoration: none;
+}
+            </div>
+            
+            <div class="menu-demo">
+                <h4>Menu Demo:</h4>
+                <ul>
+                    <li><a href="#">Link 1 - Styled bằng descendant selector</a></li>
+                    <li><a href="#">Link 2 - Cùng style nhưng chỉ trong .menu-demo</a></li>
+                    <li><a href="#">Link 3 - Rất tiện để style nested elements</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Child Selector Demo -->
+        <div class="selector-demo">
+            <span class="selector-type">CHILD SELECTOR</span>
+            <h2>5. Child Selector (Direct Child)</h2>
+            <p>Chọn element con trực tiếp. Sử dụng dấu &gt;</p>
+            
+            <div class="code-block">
+.parent-demo > p {
+    background: #ffeaa7;
+    padding: 10px;
+    border-left: 4px solid #fdcb6e;
+}
+            </div>
+            
+            <div class="parent-demo">
+                <p>Paragraph này là con trực tiếp của .parent-demo</p>
+                <div>
+                    <p>Paragraph này không được style vì nó là con của div, không phải con trực tiếp của .parent-demo</p>
+                </div>
+                <p>Paragraph này lại được style vì là con trực tiếp</p>
+            </div>
+        </div>
+        
+        <!-- Multiple Classes -->
+        <div class="selector-demo">
+            <span class="selector-type">MULTIPLE CLASSES</span>
+            <h2>6. Multiple Classes</h2>
+            <p>Một element có thể có nhiều class, và ta có thể target chính xác bằng cách kết hợp các class.</p>
+            
+            <div class="code-block">
+.box.red { background: #ff6b6b; }
+.box.blue { background: #4ecdc4; }
+.box.green { background: #95e1a3; }
+            </div>
+            
+            <div class="box red">Box với class="box red"</div>
+            <div class="box blue">Box với class="box blue"</div>
+            <div class="box green">Box với class="box green"</div>
+        </div>
+        
+        <!-- Pseudo-classes -->
+        <div class="selector-demo">
+            <span class="selector-type">PSEUDO-CLASSES</span>
+            <h2>7. Pseudo-classes</h2>
+            <p>Chọn element dựa trên trạng thái đặc biệt như :hover, :active, :focus</p>
+            
+            <div class="code-block">
+.button-demo:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.button-demo:active {
+    transform: scale(0.95);
+}
+            </div>
+            
+            <a href="#" class="button-demo">Hover me!</a>
+            <a href="#" class="button-demo">Click me!</a>
+            <a href="#" class="button-demo">Try me!</a>
+        </div>
+        
+        <!-- CSS Specificity -->
+        <div class="selector-demo">
+            <span class="selector-type">CSS SPECIFICITY</span>
+            <h2>8. CSS Specificity (Độ Ưu Tiên)</h2>
+            <p>Khi có nhiều rule CSS cùng target một element, thứ tự ưu tiên sẽ là:</p>
+            
+            <ol style="font-size: 1.1em; line-height: 1.8;">
+                <li><strong>Inline styles</strong> (style="...") - 1000 điểm</li>
+                <li><strong>IDs</strong> (#myId) - 100 điểm</li>
+                <li><strong>Classes, pseudo-classes, attributes</strong> (.myClass, :hover) - 10 điểm</li>
+                <li><strong>Elements</strong> (div, p, a) - 1 điểm</li>
+            </ol>
+            
+            <div class="warning">
+                <strong>Lưu ý:</strong> Nếu điểm bằng nhau, CSS rule nào viết sau sẽ được áp dụng!
+            </div>
+        </div>
+        
+        <div id="footer-info">
+            <h3>🎯 Thực hành</h3>
+            <p>Hãy mở Developer Tools (F12) và inspect các element để xem CSS selectors hoạt động!</p>
+        </div>
+        
+        <p style="text-align: center; margin-top: 40px;">
+            <a href="01-css-methods.html" style="background: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">← Bài trước</a>
+            <a href="index.html" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px;">Danh sách bài tập</a>
+            <a href="03-text-colors.html" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Bài tiếp theo →</a>
+        </p>
+    </div>
+</body>
+</html>

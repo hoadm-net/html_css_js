@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 5: Display & Position</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+        
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .section-title {
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 12px 20px;
+            margin: -25px -25px 20px -25px;
+            border-radius: 8px 8px 0 0;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        /* DISPLAY EXAMPLES */
+        .display-demo {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .demo-container {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        /* Block Elements */
+        .block-demo {
+            background: #74b9ff;
+            color: white;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Inline Elements */
+        .inline-demo {
+            background: #fd79a8;
+            color: white;
+            padding: 5px 10px;
+            margin: 2px;
+            font-weight: bold;
+        }
+        
+        /* Inline-block Elements */
+        .inline-block-demo {
+            display: inline-block;
+            background: #00b894;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            text-align: center;
+            font-weight: bold;
+            width: 80px;
+        }
+        
+        /* None Display */
+        .none-demo {
+            display: none;
+            background: #e17055;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .hidden-demo {
+            visibility: hidden;
+            background: #e17055;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        /* POSITION EXAMPLES */
+        .position-container {
+            position: relative;
+            background: #ddd;
+            height: 300px;
+            border: 2px solid #999;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .position-demo {
+            width: 100px;
+            height: 60px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
+        
+        .static-demo {
+            background: #74b9ff;
+            position: static;
+            margin: 10px;
+        }
+        
+        .relative-demo {
+            background: #fd79a8;
+            position: relative;
+            top: 20px;
+            left: 30px;
+            margin: 10px;
+        }
+        
+        .absolute-demo {
+            background: #00b894;
+            position: absolute;
+            top: 50px;
+            right: 30px;
+        }
+        
+        .fixed-demo {
+            background: #e17055;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .sticky-demo {
+            background: #a29bfe;
+            position: sticky;
+            top: 10px;
+            margin: 10px;
+        }
+        
+        /* Z-INDEX DEMO */
+        .z-index-container {
+            position: relative;
+            height: 200px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .z-layer {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        
+        .z-layer-1 {
+            background: #74b9ff;
+            top: 20px;
+            left: 20px;
+            z-index: 1;
+        }
+        
+        .z-layer-2 {
+            background: #fd79a8;
+            top: 40px;
+            left: 40px;
+            z-index: 2;
+        }
+        
+        .z-layer-3 {
+            background: #00b894;
+            top: 60px;
+            left: 60px;
+            z-index: 3;
+        }
+        
+        /* FLOAT DEMO */
+        .float-container {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: auto; /* clearfix */
+        }
+        
+        .float-left {
+            float: left;
+            width: 150px;
+            height: 100px;
+            background: #74b9ff;
+            color: white;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        
+        .float-right {
+            float: right;
+            width: 150px;
+            height: 100px;
+            background: #fd79a8;
+            color: white;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        
+        .clear-both {
+            clear: both;
+            background: #e9ecef;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        /* CODE BLOCK */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+            white-space: pre-wrap;
+        }
+        
+        /* PRACTICAL EXAMPLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .tooltip:hover::after {
+            content: "Đây là tooltip!";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            white-space: nowrap;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-layout {
+            display: flex;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            min-height: 200px;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        /* RESPONSIVE UTILITIES */
+        .responsive-demo {
+            background: #74b9ff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .responsive-demo {
+                background: #fd79a8;
+            }
+            .responsive-demo::after {
+                content: " (Mobile View)";
+            }
+        }
+        
+        /* TOGGLE DEMO */
+        .toggle-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        
+        .toggle-button:hover {
+            background: #0056b3;
+        }
+        
+        .toggle-target {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Display & Position</h1>
+        <p class="subtitle">Kiểm soát cách hiển thị và vị trí của elements</p>
+        
+        <!-- Fixed Position Demo -->
+        <div class="fixed-demo">Fixed Position</div>
+        
+        <!-- Display Property -->
+        <div class="demo-section">
+            <div class="section-title">1. Display Property</div>
+            
+            <div class="code-block">
+display: block;        /* Element chiếm toàn bộ chiều rộng */
+display: inline;       /* Element nằm cùng dòng */
+display: inline-block; /* Kết hợp inline và block */
+display: none;         /* Ẩn element hoàn toàn */
+display: flex;         /* Flexbox container */
+display: grid;         /* Grid container */
+            </div>
+            
+            <h4>Block Elements:</h4>
+            <div class="demo-container">
+                <div class="block-demo">Block Element 1</div>
+                <div class="block-demo">Block Element 2</div>
+                <div class="block-demo">Block Element 3</div>
+            </div>
+            
+            <h4>Inline Elements:</h4>
+            <div class="demo-container">
+                <span class="inline-demo">Inline 1</span>
+                <span class="inline-demo">Inline 2</span>
+                <span class="inline-demo">Inline 3</span>
+                <span class="inline-demo">Inline 4</span>
+            </div>
+            
+            <h4>Inline-block Elements:</h4>
+            <div class="demo-container">
+                <div class="inline-block-demo">Box 1</div>
+                <div class="inline-block-demo">Box 2</div>
+                <div class="inline-block-demo">Box 3</div>
+                <div class="inline-block-demo">Box 4</div>
+            </div>
+            
+            <h4>Display None vs Visibility Hidden:</h4>
+            <div class="demo-container">
+                <div style="background: #00b894; color: white; padding: 10px; text-align: center; margin: 5px 0;">Visible Element</div>
+                <div class="none-demo">Display None (không chiếm chỗ)</div>
+                <div class="hidden-demo">Visibility Hidden (vẫn chiếm chỗ)</div>
+                <div style="background: #00b894; color: white; padding: 10px; text-align: center; margin: 5px 0;">Another Visible Element</div>
+            </div>
+        </div>
+        
+        <!-- Position Property -->
+        <div class="demo-section">
+            <div class="section-title">2. Position Property</div>
+            
+            <div class="code-block">
+position: static;      /* Mặc định - theo document flow */
+position: relative;    /* Relative to vị trí ban đầu */
+position: absolute;    /* Relative to positioned parent */
+position: fixed;       /* Relative to viewport */
+position: sticky;      /* Sticky khi scroll */
+
+/* Kết hợp với top, right, bottom, left */
+top: 20px;
+right: 30px;
+bottom: 10px;
+left: 40px;
+            </div>
+            
+            <div class="position-container">
+                <div class="position-demo static-demo">Static</div>
+                <div class="position-demo relative-demo">Relative<br>top: 20px<br>left: 30px</div>
+                <div class="position-demo absolute-demo">Absolute<br>top: 50px<br>right: 30px</div>
+                <div class="position-demo sticky-demo">Sticky<br>top: 10px</div>
+            </div>
+            
+            <p><strong>Fixed position:</strong> Xem góc phải trên màn hình - element màu đỏ!</p>
+        </div>
+        
+        <!-- Z-Index -->
+        <div class="demo-section">
+            <div class="section-title">3. Z-Index (Thứ Tự Chồng Lấp)</div>
+            
+            <div class="code-block">
+z-index: 1;    /* Thấp nhất */
+z-index: 2;    /* Cao hơn */
+z-index: 3;    /* Cao nhất */
+z-index: 999;  /* Rất cao */
+z-index: -1;   /* Âm - dưới elements khác */
+
+/* Chỉ hoạt động với positioned elements (not static) */
+            </div>
+            
+            <div class="z-index-container">
+                <div class="z-layer z-layer-1">Z: 1</div>
+                <div class="z-layer z-layer-2">Z: 2</div>
+                <div class="z-layer z-layer-3">Z: 3</div>
+            </div>
+            
+            <p>Element có z-index cao hơn sẽ hiển thị trên các element có z-index thấp hơn.</p>
+        </div>
+        
+        <!-- Float Property -->
+        <div class="demo-section">
+            <div class="section-title">4. Float Property (Legacy)</div>
+            
+            <div class="code-block">
+float: left;    /* Element float sang trái */
+float: right;   /* Element float sang phải */
+float: none;    /* Không float */
+clear: both;    /* Clear float */
+            </div>
+            
+            <div class="float-container">
+                <div class="float-left">Float Left</div>
+                <div class="float-right">Float Right</div>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui excepturi exercitationem voluptatum accusamus consequatur, tempora eos consectetur recusandae quae expedita.</p>
+                <div class="clear-both">Clear Both</div>
+                <p>Text này sẽ xuống dòng sau clear:both</p>
+            </div>
+            
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <strong>📝 Lưu ý:</strong> Float ít được dùng hiện nay, thay thế bằng Flexbox hoặc Grid.
+            </div>
+        </div>
+        
+        <!-- Practical Examples -->
+        <div class="demo-section">
+            <div class="section-title">5. Ví Dụ Thực Tế</div>
+            
+            <h4>Tooltip với Position:</h4>
+            <div class="tooltip">Hover để xem tooltip</div>
+            
+            <h4>Sidebar Layout:</h4>
+            <div class="sidebar-layout">
+                <div class="sidebar">
+                    <h4>Sidebar</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 10px 0;"><a href="#" style="color: #ccc;">Menu 1</a></li>
+                        <li style="margin: 10px 0;"><a href="#" style="color: #ccc;">Menu 2</a></li>
+                        <li style="margin: 10px 0;"><a href="#" style="color: #ccc;">Menu 3</a></li>
+                    </ul>
+                </div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>Đây là nội dung chính. Sidebar có width cố định, main content chiếm phần còn lại.</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+.sidebar-layout {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;  /* Width cố định */
+}
+
+.main-content {
+    flex: 1;       /* Chiếm space còn lại */
+}
+            </div>
+        </div>
+        
+        <!-- Interactive Demo -->
+        <div class="demo-section">
+            <div class="section-title">6. Demo Tương Tác</div>
+            
+            <button class="toggle-button" onclick="toggleDisplay()">Toggle Display</button>
+            <button class="toggle-button" onclick="toggleVisibility()">Toggle Visibility</button>
+            <button class="toggle-button" onclick="togglePosition()">Toggle Position</button>
+            
+            <div id="toggle-target" class="toggle-target">
+                <h4>Target Element</h4>
+                <p>Hãy click các button trên để xem thay đổi!</p>
+            </div>
+            
+            <div class="code-block">
+/* JavaScript Examples */
+// Toggle display
+element.style.display = element.style.display === 'none' ? 'block' : 'none';
+
+// Toggle visibility  
+element.style.visibility = element.style.visibility === 'hidden' ? 'visible' : 'hidden';
+
+// Toggle position
+element.style.position = element.style.position === 'relative' ? 'static' : 'relative';
+            </div>
+        </div>
+        
+        <!-- Common Patterns -->
+        <div class="demo-section">
+            <div class="section-title">7. Patterns Thường Dùng</div>
+            
+            <div class="code-block">
+/* Căn giữa với position absolute */
+.center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Overlay toàn màn hình */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+/* Sticky header */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+}
+
+/* Float clearfix */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+            </div>
+        </div>
+        
+        <!-- Responsive Example -->
+        <div class="demo-section">
+            <div class="section-title">8. Responsive với Display</div>
+            
+            <div class="responsive-demo">
+                Resize browser để xem thay đổi!
+            </div>
+            
+            <div class="code-block">
+/* Mobile First Approach */
+.element {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .element {
+        display: inline-block;
+    }
+}
+
+/* Hide on mobile */
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none;
+    }
+}
+            </div>
+        </div>
+        
+        <div style="background: #d1ecf1; border: 1px solid #bee5eb; padding: 20px; border-radius: 8px; margin: 30px 0;">
+            <h3 style="color: #0c5460; margin-top: 0;">🎯 Tips cho Display & Position:</h3>
+            <ul style="color: #0c5460;">
+                <li>Sử dụng Flexbox/Grid thay vì float cho layout hiện đại</li>
+                <li>Position absolute cần parent có position relative</li>
+                <li>Fixed position luôn relative to viewport</li>
+                <li>Z-index chỉ hoạt động với positioned elements</li>
+                <li>Sticky position cần thiết lập top/bottom/left/right</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; margin-top: 40px;">
+            <a href="04-box-model.html" style="background: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">← Bài trước</a>
+            <a href="index.html" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px;">Danh sách bài tập</a>
+            <a href="06-flexbox.html" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Bài tiếp theo →</a>
+        </p>
+    </div>
+    
+    <script>
+        function toggleDisplay() {
+            const target = document.getElementById('toggle-target');
+            target.style.display = target.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function toggleVisibility() {
+            const target = document.getElementById('toggle-target');
+            target.style.visibility = target.style.visibility === 'hidden' ? 'visible' : 'hidden';
+        }
+        
+        function togglePosition() {
+            const target = document.getElementById('toggle-target');
+            if (target.style.position === 'relative') {
+                target.style.position = 'static';
+                target.style.top = '0';
+                target.style.left = '0';
+            } else {
+                target.style.position = 'relative';
+                target.style.top = '20px';
+                target.style.left = '30px';
+            }
+        }
+    </script>
+</body>
+</html>

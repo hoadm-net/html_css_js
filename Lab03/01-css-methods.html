@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 1: CSS Declaration Methods</title>
+    
+    <!-- Internal CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .method-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .method-title {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 6px 6px 0 0;
+            font-size: 1.2em;
+        }
+        
+        .external-styled {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        /* Styles cho ví dụ internal CSS */
+        .internal-example {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .highlight {
+            background-color: yellow;
+            padding: 2px 4px;
+        }
+    </style>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles/01-external.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Bài 1: 3 Cách Khai Báo CSS</h1>
+        <p>Trong bài này, chúng ta sẽ học 3 cách khác nhau để áp dụng CSS vào HTML:</p>
+        
+        <!-- Method 1: External CSS -->
+        <div class="method-section">
+            <div class="method-title">1. External CSS (CSS Ngoài)</div>
+            <p>CSS được viết trong file riêng biệt (.css) và liên kết với HTML thông qua thẻ &lt;link&gt;</p>
+            
+            <div class="code-example">&lt;head&gt;
+    &lt;link rel="stylesheet" href="styles/01-external.css"&gt;
+&lt;/head&gt;</div>
+            
+            <div class="external-styled">
+                <h3>Ưu điểm của External CSS:</h3>
+                <ul>
+                    <li>Tái sử dụng cho nhiều trang HTML</li>
+                    <li>Dễ bảo trì và cập nhật</li>
+                    <li>Tách biệt content và presentation</li>
+                    <li>Có thể cache bởi browser</li>
+                </ul>
+                <p><strong>Element này được style bằng External CSS!</strong></p>
+            </div>
+        </div>
+        
+        <!-- Method 2: Internal CSS -->
+        <div class="method-section">
+            <div class="method-title">2. Internal CSS (CSS Trong)</div>
+            <p>CSS được viết trong thẻ &lt;style&gt; bên trong &lt;head&gt; của HTML</p>
+            
+            <div class="code-example">&lt;head&gt;
+    &lt;style&gt;
+        .internal-example {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;</div>
+            
+            <div class="internal-example">
+                <h3>Ưu điểm của Internal CSS:</h3>
+                <p>✓ Tất cả CSS trong một file HTML<br>
+                ✓ Không cần file CSS riêng<br>
+                ✓ Phù hợp cho trang đơn lẻ</p>
+                <p><strong>Element này được style bằng Internal CSS!</strong></p>
+            </div>
+        </div>
+        
+        <!-- Method 3: Inline CSS -->
+        <div class="method-section">
+            <div class="method-title">3. Inline CSS (CSS Trực Tiếp)</div>
+            <p>CSS được viết trực tiếp trong thuộc tính style của HTML element</p>
+            
+            <div class="code-example">&lt;p style="color: red; font-size: 20px; font-weight: bold;"&gt;
+    Đây là inline CSS
+&lt;/p&gt;</div>
+            
+            <p style="color: #e74c3c; font-size: 18px; font-weight: bold; background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107;">
+                <strong>Element này được style bằng Inline CSS!</strong>
+            </p>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                <h4 style="margin-top: 0;">Ưu điểm và nhược điểm của Inline CSS:</h4>
+                <p style="margin: 0;"><strong>Ưu điểm:</strong> Ưu tiên cao nhất, ghi đè các style khác</p>
+                <p style="margin: 5px 0 0 0;"><strong>Nhược điểm:</strong> Khó bảo trì, không tái sử dụng được</p>
+            </div>
+        </div>
+        
+        <!-- CSS Priority -->
+        <div class="method-section">
+            <div class="method-title">Thứ Tự Ưu Tiên CSS</div>
+            <p>Khi có nhiều CSS rule cùng tác động lên một element:</p>
+            
+            <ol style="font-size: 1.1em; line-height: 1.8;">
+                <li><span class="highlight">Inline CSS</span> - Ưu tiên cao nhất</li>
+                <li><span class="highlight">Internal CSS</span> - Ưu tiên trung bình</li>
+                <li><span class="highlight">External CSS</span> - Ưu tiên thấp nhất</li>
+            </ol>
+            
+            <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <strong>💡 Lưu ý:</strong> Nếu cùng loại CSS, rule nào viết sau sẽ ghi đè rule viết trước!
+            </div>
+        </div>
+        
+        <!-- Best Practices -->
+        <div class="method-section">
+            <div class="method-title">Best Practices (Thực Hành Tốt)</div>
+            <ul style="font-size: 1.1em; line-height: 1.8;">
+                <li>🎯 <strong>External CSS:</strong> Sử dụng cho website nhiều trang</li>
+                <li>🎯 <strong>Internal CSS:</strong> Sử dụng cho trang đơn lẻ hoặc style riêng biệt</li>
+                <li>🎯 <strong>Inline CSS:</strong> Chỉ dùng khi cần override nhanh hoặc style động bằng JavaScript</li>
+                <li>🎯 Ưu tiên External CSS để dễ bảo trì</li>
+                <li>🎯 Tránh lạm dụng Inline CSS</li>
+            </ul>
+        </div>
+        
+        <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin: 30px 0;">
+            <h3 style="color: #721c24; margin-top: 0;">🏃‍♂️ Thực hành:</h3>
+            <p style="color: #721c24; margin-bottom: 0;">
+                Hãy mở Developer Tools (F12) và inspect các element trên trang này để xem CSS được áp dụng như thế nào!
+            </p>
+        </div>
+        
+        <p style="text-align: center; margin-top: 40px;">
+            <a href="index.html" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">← Quay lại danh sách bài tập</a>
+            <a href="02-selectors.html" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-left: 10px;">Bài tiếp theo →</a>
+        </p>
+    </div>
+</body>
+</html>
