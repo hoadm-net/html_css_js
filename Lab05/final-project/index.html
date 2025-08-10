@@ -3,431 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Project - Multi-Device Responsive App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Final Project: Build Your Responsive App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f8f9fa;
+            --border: #e9ecef;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-dark);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 40px;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 2px solid #74b9ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .hero-section h2 {
+            color: #0984e3;
+            margin-bottom: 15px;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+        }
+
+        .hero-section p {
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 160px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .project-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .overview-card {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .overview-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .overview-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .overview-card li {
+            padding: 8px 0;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .overview-card li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .approach-section {
+            background: linear-gradient(135deg, #fff3e0, #fff8e1);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .approach-section h2 {
+            color: #f57c00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .approach-step {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ffe0b2;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .approach-step h4 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .approach-step p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .resources-section {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .resources-section h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .resource-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color 0.3s ease;
+        }
+
+        .resource-card a:hover {
+            color: var(--secondary);
+        }
+
+        .resource-card a:last-child {
+            border-bottom: none;
+        }
+
+        .evaluation-section {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            border: 2px solid #e91e63;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .evaluation-section h2 {
+            color: #c2185b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .criteria-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #f8bbd9;
+        }
+
+        .criteria-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .percentage {
+            color: #c2185b;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .criteria-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-nav {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .footer-nav a {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-nav .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .footer-nav .btn-home {
+            background: #28a745;
+            color: white;
+        }
+
+        .footer-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Final Project: Multi-Device Responsive App</h1>
-        <p class="subtitle">Tạo responsive web application hoàn chỉnh thích ứng hoàn hảo trên mọi thiết bị</p>
-        
-        <!-- Project Overview -->
-        <section class="overview">
-            <h2>🎯 Project Overview</h2>
-            <p>Xây dựng một web application responsive hoàn chỉnh từ mobile đến desktop, áp dụng tất cả kỹ thuật Responsive Web Design đã học.</p>
+        <h1>🚀 Final Project Challenge</h1>
+        <p class="subtitle">Build Your Own Responsive Web Application</p>
+
+        <div class="hero-section">
+            <h2>🎯 Your Mission</h2>
+            <p>Tạo một responsive web application hoàn chỉnh từ mobile đến desktop, sử dụng tất cả kỹ thuật đã học trong Lab05. Đây không phải là bài tập có sẵn template - bạn sẽ tự xây dựng từ con số 0!</p>
             
-            <div class="demo-preview">
-                <div class="app-mockup">
-                    <div class="device-showcase">
-                        <div class="device mobile">
-                            <div class="device-header">📱 Mobile</div>
-                            <div class="device-content">
-                                <div class="mobile-nav">☰ Menu</div>
-                                <div class="mobile-hero">
-                                    <h3>Responsive App</h3>
-                                    <p>Mobile-optimized experience</p>
-                                </div>
-                                <div class="mobile-grid">
-                                    <div class="mobile-card">Feature 1</div>
-                                    <div class="mobile-card">Feature 2</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="device tablet">
-                            <div class="device-header">📱 Tablet</div>
-                            <div class="device-content">
-                                <div class="tablet-header">
-                                    <div class="tablet-nav">Home | About | Services | Contact</div>
-                                </div>
-                                <div class="tablet-body">
-                                    <div class="tablet-sidebar">Sidebar</div>
-                                    <div class="tablet-main">
-                                        <h3>Responsive App</h3>
-                                        <div class="tablet-grid">
-                                            <div class="tablet-card">Feature 1</div>
-                                            <div class="tablet-card">Feature 2</div>
-                                            <div class="tablet-card">Feature 3</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="device desktop">
-                            <div class="device-header">🖥️ Desktop</div>
-                            <div class="device-content">
-                                <div class="desktop-nav">
-                                    <div class="nav-logo">App Logo</div>
-                                    <div class="nav-menu">Home | About | Services | Portfolio | Contact</div>
-                                    <div class="nav-cta">Get Started</div>
-                                </div>
-                                <div class="desktop-hero">
-                                    <h2>Full-Featured Responsive App</h2>
-                                    <p>Complete desktop experience with advanced features</p>
-                                </div>
-                                <div class="desktop-grid">
-                                    <div class="desktop-card">Feature 1</div>
-                                    <div class="desktop-card">Feature 2</div>
-                                    <div class="desktop-card">Feature 3</div>
-                                    <div class="desktop-card">Feature 4</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="cta-buttons">
+                <a href="template.html" class="btn btn-primary">📋 Xem Wireframe Template</a>
+                <a href="PROJECT_GUIDE.md" class="btn btn-secondary">📖 Đọc Complete Guide</a>
             </div>
-        </section>
-        
-        <!-- Requirements -->
-        <section class="requirements">
-            <h2>📋 Project Requirements</h2>
-            <div class="requirements-grid">
-                <div class="requirement-card">
-                    <h3>📱 Mobile Experience</h3>
-                    <ul>
-                        <li>Touch-friendly interface</li>
-                        <li>Mobile navigation pattern</li>
-                        <li>Optimized performance</li>
-                        <li>Thumb-friendly interactions</li>
-                        <li>Fast loading on 3G</li>
-                    </ul>
-                </div>
-                
-                <div class="requirement-card">
-                    <h3>📐 Responsive Layout</h3>
-                    <ul>
-                        <li>Mobile-first CSS</li>
-                        <li>5 responsive breakpoints</li>
-                        <li>Flexible grid systems</li>
-                        <li>Fluid typography</li>
-                        <li>Adaptive images</li>
-                    </ul>
-                </div>
-                
-                <div class="requirement-card">
-                    <h3>🎨 Advanced Design</h3>
-                    <ul>
-                        <li>Progressive enhancement</li>
-                        <li>Touch vs hover states</li>
-                        <li>Orientation handling</li>
-                        <li>Dark mode support</li>
-                        <li>Accessibility features</li>
-                    </ul>
-                </div>
-                
-                <div class="requirement-card">
-                    <h3>⚡ Performance</h3>
-                    <ul>
-                        <li>Optimized images</li>
-                        <li>Critical CSS</li>
-                        <li>Resource prioritization</li>
-                        <li>Core Web Vitals</li>
-                        <li>Progressive loading</li>
-                    </ul>
-                </div>
+        </div>
+
+        <div class="project-overview">
+            <div class="overview-card">
+                <h3>🎨 Creative Freedom</h3>
+                <ul>
+                    <li>Choose your own design theme</li>
+                    <li>Pick your color palette</li>
+                    <li>Create unique layouts</li>
+                    <li>Add personal branding</li>
+                    <li>Implement your vision</li>
+                </ul>
             </div>
-        </section>
-        
-        <!-- Application Features -->
-        <section class="features">
-            <h2>🎪 Application Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Dashboard</h3>
-                    <p>Responsive dashboard với charts và metrics thích ứng mọi screen size</p>
-                    <div class="feature-tech">CSS Grid • Charts.js • Responsive Images</div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🛍️</div>
-                    <h3>Product Catalog</h3>
-                    <p>Grid layout thích ứng từ 1 cột (mobile) đến 4+ cột (desktop)</p>
-                    <div class="feature-tech">CSS Grid • Lazy Loading • Touch Gestures</div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Data Tables</h3>
-                    <p>Tables responsive với horizontal scroll và column hiding</p>
-                    <div class="feature-tech">Responsive Tables • Touch Scroll • Data Attr</div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <h3>Forms</h3>
-                    <p>Form layouts thích ứng với touch-friendly inputs</p>
-                    <div class="feature-tech">Progressive Forms • Validation • Touch UX</div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎥</div>
-                    <h3>Media Gallery</h3>
-                    <p>Responsive image/video gallery với lightbox</p>
-                    <div class="feature-tech">Responsive Images • Video • Touch Gestures</div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🗺️</div>
-                    <h3>Interactive Map</h3>
-                    <p>Embedded map thích ứng với touch navigation</p>
-                    <div class="feature-tech">Map APIs • Touch Controls • Responsive Embed</div>
-                </div>
+            
+            <div class="overview-card">
+                <h3>🛠️ Technical Requirements</h3>
+                <ul>
+                    <li>Mobile-first methodology</li>
+                    <li>CSS Grid & Flexbox layouts</li>
+                    <li>Responsive images với srcset</li>
+                    <li>Fluid typography với clamp()</li>
+                    <li>Touch-friendly interface</li>
+                </ul>
             </div>
-        </section>
-        
-        <!-- Technology Stack -->
-        <section class="tech-stack">
-            <h2>🛠️ Technology Stack</h2>
-            <div class="tech-grid">
-                <div class="tech-category">
-                    <h3>🏗️ Core Responsive</h3>
-                    <div class="tech-list">
-                        <span class="tech-tag">CSS Grid</span>
-                        <span class="tech-tag">Flexbox</span>
-                        <span class="tech-tag">Media Queries</span>
-                        <span class="tech-tag">Mobile-First</span>
-                        <span class="tech-tag">Fluid Typography</span>
-                    </div>
-                </div>
-                
-                <div class="tech-category">
-                    <h3>🎨 Advanced CSS</h3>
-                    <div class="tech-list">
-                        <span class="tech-tag">CSS Custom Properties</span>
-                        <span class="tech-tag">Container Queries</span>
-                        <span class="tech-tag">CSS Functions</span>
-                        <span class="tech-tag">Logical Properties</span>
-                        <span class="tech-tag">CSS Animations</span>
-                    </div>
-                </div>
-                
-                <div class="tech-category">
-                    <h3>📱 Mobile Features</h3>
-                    <div class="tech-list">
-                        <span class="tech-tag">Touch Events</span>
-                        <span class="tech-tag">Gestures</span>
-                        <span class="tech-tag">Viewport Units</span>
-                        <span class="tech-tag">Device Orientation</span>
-                        <span class="tech-tag">PWA Features</span>
-                    </div>
-                </div>
-                
-                <div class="tech-category">
-                    <h3>⚡ Performance</h3>
-                    <div class="tech-list">
-                        <span class="tech-tag">Responsive Images</span>
-                        <span class="tech-tag">Lazy Loading</span>
-                        <span class="tech-tag">Critical CSS</span>
-                        <span class="tech-tag">Resource Hints</span>
-                        <span class="tech-tag">Web Vitals</span>
-                    </div>
-                </div>
+            
+            <div class="overview-card">
+                <h3>⚡ Performance Goals</h3>
+                <ul>
+                    <li>Page load < 3 seconds</li>
+                    <li>Lighthouse score > 90</li>
+                    <li>Optimized images</li>
+                    <li>Critical CSS strategy</li>
+                    <li>Core Web Vitals compliance</li>
+                </ul>
             </div>
-        </section>
-        
-        <!-- Implementation Steps -->
-        <section class="steps">
-            <h2>🛠️ Implementation Plan</h2>
-            <div class="steps-timeline">
-                <div class="step-card">
+        </div>
+
+        <div class="approach-section">
+            <h2>🚀 Development Approach</h2>
+            <div class="approach-grid">
+                <div class="approach-step">
                     <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Project Setup & Architecture</h3>
-                        <p>Setup file structure, CSS architecture, và responsive foundation</p>
-                        <ul>
-                            <li>Mobile-first CSS architecture</li>
-                            <li>CSS custom properties setup</li>
-                            <li>Responsive breakpoint system</li>
-                            <li>Performance optimization foundation</li>
-                        </ul>
-                        <span class="time">⏱️ 60 phút</span>
-                    </div>
+                    <h4>Plan & Wireframe</h4>
+                    <p>Sketch your app layout, define content structure và user flow</p>
                 </div>
                 
-                <div class="step-card">
+                <div class="approach-step">
                     <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Core Layout & Navigation</h3>
-                        <p>Xây dựng responsive navigation và core layout components</p>
-                        <ul>
-                            <li>Mobile hamburger navigation</li>
-                            <li>Responsive header/footer</li>
-                            <li>Main layout containers</li>
-                            <li>Touch-friendly interactions</li>
-                        </ul>
-                        <span class="time">⏱️ 90 phút</span>
-                    </div>
+                    <h4>Mobile-First Build</h4>
+                    <p>Start với 320px design, implement core functionality</p>
                 </div>
                 
-                <div class="step-card">
+                <div class="approach-step">
                     <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Dashboard & Data Visualization</h3>
-                        <p>Tạo responsive dashboard với charts và metrics</p>
-                        <ul>
-                            <li>Responsive chart components</li>
-                            <li>Adaptive grid layouts</li>
-                            <li>Data table responsive patterns</li>
-                            <li>Mobile data visualization</li>
-                        </ul>
-                        <span class="time">⏱️ 120 phút</span>
-                    </div>
+                    <h4>Progressive Enhancement</h4>
+                    <p>Add tablet và desktop features using media queries</p>
                 </div>
                 
-                <div class="step-card">
+                <div class="approach-step">
                     <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Interactive Features</h3>
-                        <p>Implement touch interactions, forms, và media handling</p>
-                        <ul>
-                            <li>Touch gesture support</li>
-                            <li>Responsive forms</li>
-                            <li>Media gallery</li>
-                            <li>Interactive map integration</li>
-                        </ul>
-                        <span class="time">⏱️ 90 phút</span>
-                    </div>
-                </div>
-                
-                <div class="step-card">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>Testing & Optimization</h3>
-                        <p>Cross-device testing và performance optimization</p>
-                        <ul>
-                            <li>Device testing matrix</li>
-                            <li>Performance optimization</li>
-                            <li>Accessibility audit</li>
-                            <li>PWA features implementation</li>
-                        </ul>
-                        <span class="time">⏱️ 60 phút</span>
-                    </div>
+                    <h4>Optimize & Test</h4>
+                    <p>Performance tuning, cross-device testing, accessibility audit</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Resources & Templates -->
-        <section class="resources">
-            <h2>📚 Resources & Starter Kit</h2>
+        </div>
+
+        <div class="resources-section">
+            <h2>📚 Project Resources</h2>
             <div class="resources-grid">
                 <div class="resource-card">
-                    <h3>🎨 CSS Framework</h3>
-                    <p>Mobile-first CSS framework với responsive utilities</p>
-                    <a href="responsive-framework.css" class="download-btn" download>Download CSS</a>
+                    <h4>🧭 Getting Started</h4>
+                    <a href="template.html">Wireframe Template</a>
+                    <a href="PROJECT_GUIDE.md">Implementation Guide</a>
+                    <a href="README.md">Project Overview</a>
                 </div>
                 
                 <div class="resource-card">
-                    <h3>📱 Component Library</h3>
-                    <p>Responsive component templates (nav, cards, forms)</p>
-                    <a href="components.html" class="download-btn" download>Download HTML</a>
+                    <h4>📖 Lab05 Exercises</h4>
+                    <a href="../01-mobile-first.html">Mobile-First Design</a>
+                    <a href="../02-media-queries.html">Media Queries</a>
+                    <a href="../03-flexible-grids.html">CSS Grid & Flexbox</a>
+                    <a href="../04-responsive-images.html">Responsive Images</a>
                 </div>
                 
                 <div class="resource-card">
-                    <h3>⚡ JavaScript Utilities</h3>
-                    <p>Touch handling, responsive utilities, performance helpers</p>
-                    <a href="responsive-utils.js" class="download-btn" download>Download JS</a>
+                    <h4>⚡ Advanced Topics</h4>
+                    <a href="../05-responsive-typography.html">Fluid Typography</a>
+                    <a href="../06-touch-interaction.html">Touch Design</a>
+                    <a href="../07-performance-mobile.html">Performance Optimization</a>
                 </div>
                 
                 <div class="resource-card">
-                    <h3>🖼️ Responsive Assets</h3>
-                    <p>Optimized images, icons cho multiple densities</p>
-                    <a href="assets-pack.zip" class="download-btn" download>Download Assets</a>
-                </div>
-                
-                <div class="resource-card">
-                    <h3>🧪 Testing Toolkit</h3>
-                    <p>Device testing checklist và debugging tools</p>
-                    <a href="testing-kit.zip" class="download-btn" download>Download Kit</a>
-                </div>
-                
-                <div class="resource-card">
-                    <h3>📖 Implementation Guide</h3>
-                    <p>Step-by-step guide với best practices</p>
-                    <a href="guide.html" class="download-btn" download>View Guide</a>
+                    <h4>🔧 Tools & Testing</h4>
+                    <a href="https://developer.chrome.com/docs/devtools/" target="_blank">Chrome DevTools</a>
+                    <a href="https://developers.google.com/web/tools/lighthouse" target="_blank">Lighthouse Audit</a>
+                    <a href="https://validator.w3.org/" target="_blank">HTML Validator</a>
                 </div>
             </div>
-        </section>
-        
-        <!-- Quick Start Options -->
-        <section class="quick-start">
-            <h2>🚀 Quick Start</h2>
-            <div class="start-options">
-                <button class="start-btn primary" onclick="downloadStarter()">
-                    📦 Download Starter Kit
-                </button>
-                <button class="start-btn secondary" onclick="viewDemo()">
-                    👀 View Live Demo
-                </button>
-                <button class="start-btn secondary" onclick="openGuide()">
-                    📖 Implementation Guide
-                </button>
-                <button class="start-btn accent" onclick="openTesting()">
-                    🧪 Testing Toolkit
-                </button>
-            </div>
-            
-            <div class="start-info">
-                <h3>💡 Khuyến nghị</h3>
-                <p>Bắt đầu với <strong>Implementation Guide</strong> để hiểu rõ architecture, sau đó download <strong>Starter Kit</strong> để có foundation code tốt nhất.</p>
-                <p>Nhớ test trên real devices thường xuyên trong quá trình development!</p>
-            </div>
-        </section>
-        
-        <!-- Success Criteria -->
-        <section class="success-criteria">
-            <h2>🎯 Success Criteria</h2>
+        </div>
+
+        <div class="evaluation-section">
+            <h2>📊 Evaluation Criteria</h2>
             <div class="criteria-grid">
                 <div class="criteria-card">
-                    <h3>📱 Mobile Performance</h3>
-                    <ul>
-                        <li>✅ First Contentful Paint < 1.5s</li>
-                        <li>✅ Largest Contentful Paint < 2.5s</li>
-                        <li>✅ Touch targets ≥ 44px</li>
-                        <li>✅ Usable on 3G networks</li>
-                    </ul>
+                    <h4>Technical Excellence <span class="percentage">40%</span></h4>
+                    <p>Code quality, responsive implementation, performance optimization, cross-browser compatibility</p>
                 </div>
                 
                 <div class="criteria-card">
-                    <h3>🎨 Design Quality</h3>
-                    <ul>
-                        <li>✅ Consistent across all breakpoints</li>
-                        <li>✅ No horizontal scroll on any device</li>
-                        <li>✅ Readable typography at all sizes</li>
-                        <li>✅ Proper contrast ratios</li>
-                    </ul>
+                    <h4>Design & UX <span class="percentage">30%</span></h4>
+                    <p>Mobile-first design quality, touch interface usability, visual hierarchy, overall user experience</p>
                 </div>
                 
                 <div class="criteria-card">
-                    <h3>♿ Accessibility</h3>
-                    <ul>
-                        <li>✅ WCAG 2.1 AA compliance</li>
-                        <li>✅ Keyboard navigation</li>
-                        <li>✅ Screen reader friendly</li>
-                        <li>✅ Color contrast ≥ 4.5:1</li>
-                    </ul>
+                    <h4>Innovation & Creativity <span class="percentage">20%</span></h4>
+                    <p>Creative use of responsive techniques, unique design solutions, advanced optimizations</p>
                 </div>
                 
                 <div class="criteria-card">
-                    <h3>🔧 Technical</h3>
-                    <ul>
-                        <li>✅ Valid semantic HTML</li>
-                        <li>✅ Clean, maintainable CSS</li>
-                        <li>✅ Progressive enhancement</li>
-                        <li>✅ Cross-browser compatibility</li>
-                    </ul>
+                    <h4>Documentation <span class="percentage">10%</span></h4>
+                    <p>Code documentation, project setup clarity, testing methodology, problem-solving approach</p>
                 </div>
             </div>
-        </section>
-        
-        <div class="navigation">
-            <a href="../07-performance-mobile.html" class="nav-btn secondary">← Bài 7: Performance</a>
-            <a href="../index.html" class="nav-btn secondary">🏠 Lab05 Home</a>
-            <a href="guide.html" class="nav-btn primary">📖 Implementation Guide →</a>
+        </div>
+
+        <div class="footer-nav">
+            <a href="../07-performance-mobile.html" class="btn-back">← Bài 07: Performance</a>
+            <a href="../index.html" class="btn-home">🏠 Lab05 Home</a>
         </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        // Mark final project as accessed
+        localStorage.setItem('lab05_final-project', 'accessed');
+        
+        // Show motivational message
+        console.log('🚀 Final Project Challenge loaded!');
+        console.log('💡 Remember: This is YOUR chance to showcase responsive design mastery!');
+        console.log('🎯 Start with mobile-first, then enhance for larger screens.');
+        console.log('⚡ Focus on performance and user experience.');
+        
+        // Track project start
+        const startTime = Date.now();
+        sessionStorage.setItem('lab05_project_start', startTime);
+    </script>
 </body>
 </html>
