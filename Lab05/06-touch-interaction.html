@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 06: Touch & Interaction - Lab05</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f8f9fa;
+            --border: #e9ecef;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+            --touch-size: 44px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-dark);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-box {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 2px solid #74b9ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .theory-box h3 {
+            color: #0984e3;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        }
+
+        .theory-box p {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .theory-box ul {
+            color: #2d3436;
+            padding-left: 20px;
+        }
+
+        .theory-box li {
+            margin: 10px 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* Touch Target Demos */
+        .touch-demo {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .touch-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .touch-example {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .touch-example h4 {
+            color: var(--success);
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        /* Touch Targets */
+        .touch-target {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: var(--touch-size);
+            min-height: var(--touch-size);
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .touch-target:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .touch-target:active {
+            transform: translateY(0);
+            background: #5a67d8;
+        }
+
+        .touch-target.small {
+            min-width: 32px;
+            min-height: 32px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            background: var(--danger);
+        }
+
+        .touch-target.large {
+            min-width: 56px;
+            min-height: 56px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            background: var(--success);
+        }
+
+        /* Gesture Demo */
+        .gesture-demo {
+            background: white;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .gesture-area {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border: 2px dashed var(--warning);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            touch-action: pan-x pan-y;
+        }
+
+        .gesture-area.active {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            transform: scale(1.02);
+        }
+
+        /* Swipe Demo */
+        .swipe-demo {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .swipe-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .swipe-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.3s ease;
+            cursor: grab;
+        }
+
+        .swipe-item:active {
+            cursor: grabbing;
+        }
+
+        .swipe-item:nth-child(1) { background: #ff6b6b; }
+        .swipe-item:nth-child(2) { background: #4ecdc4; transform: translateX(100%); }
+        .swipe-item:nth-child(3) { background: #45b7d1; transform: translateX(200%); }
+
+        .swipe-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--primary);
+        }
+
+        /* Mobile Menu Demo */
+        .mobile-menu-demo {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            min-width: var(--touch-size);
+            min-height: var(--touch-size);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger span {
+            width: 20px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .mobile-nav {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-nav.open {
+            max-height: 200px;
+        }
+
+        .mobile-nav a {
+            display: block;
+            padding: 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s ease;
+            min-height: var(--touch-size);
+            display: flex;
+            align-items: center;
+        }
+
+        .mobile-nav a:hover {
+            background: var(--bg-light);
+        }
+
+        /* Code Display */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+
+        .code-comment { color: #68d391; }
+        .code-property { color: #f687b3; }
+        .code-value { color: #faf089; }
+        .code-function { color: #63b3ed; }
+
+        /* Accessibility */
+        .accessibility-demo {
+            background: #fff8e1;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .accessibility-demo h4 {
+            color: #f57c00;
+            margin-bottom: 15px;
+        }
+
+        .accessible-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: var(--touch-size);
+            min-height: var(--touch-size);
+            padding: 12px 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 5px;
+        }
+
+        .accessible-button:focus {
+            outline: 3px solid #4ade80;
+            outline-offset: 2px;
+        }
+
+        .accessible-button:hover {
+            background: #059669;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            min-width: var(--touch-size);
+            min-height: var(--touch-size);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .touch-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+
+        /* Feedback */
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👆 Touch & Interaction</h1>
+        <p class="subtitle">Thiết kế UX/UI tối ưu cho touch devices - từ touch targets đến mobile gestures</p>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2>🎯 Tại sao Touch Design quan trọng?</h2>
+            
+            <div class="theory-box">
+                <h3>📊 Touch Device Statistics</h3>
+                <ul>
+                    <li><strong>Mobile traffic:</strong> >60% tổng web traffic toàn cầu</li>
+                    <li><strong>Touch accuracy:</strong> Average finger tip = 8-10mm</li>
+                    <li><strong>Minimum touch target:</strong> 44px × 44px (Apple), 48dp (Google)</li>
+                    <li><strong>Thumb reach zone:</strong> 75% interaction diễn ra ở vùng thumb-friendly</li>
+                </ul>
+                
+                <p><strong>Mục tiêu:</strong> Tạo interface dễ sử dụng, accessible và intuitive trên touch devices!</p>
+            </div>
+        </section>
+
+        <!-- Touch Targets -->
+        <section class="section">
+            <h2>🎯 Touch Targets</h2>
+            
+            <div class="touch-demo">
+                <div class="demo-title">📏 Touch Target Size Comparison</div>
+                
+                <div class="touch-examples">
+                    <div class="touch-example">
+                        <h4>❌ Too Small (32px)</h4>
+                        <p>Khó touch chính xác, dễ bấm nhầm</p>
+                        <button class="touch-target small" onclick="showFeedback('Too small! Hard to tap accurately')">Small Button</button>
+                    </div>
+                    
+                    <div class="touch-example">
+                        <h4>✅ Optimal (44px+)</h4>
+                        <p>Perfect size cho finger touch</p>
+                        <button class="touch-target" onclick="showFeedback('Perfect! Easy to tap')">Normal Button</button>
+                    </div>
+                    
+                    <div class="touch-example">
+                        <h4>✅ Large (56px+)</h4>
+                        <p>Excellent cho primary actions</p>
+                        <button class="touch-target large" onclick="showFeedback('Great! Very accessible')">Large Button</button>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
+                    👆 Thử touch các buttons để cảm nhận sự khác biệt
+                </p>
+            </div>
+
+            <div class="theory-box">
+                <h3>📐 Touch Target Guidelines</h3>
+                <ul>
+                    <li><strong>Minimum size:</strong> 44px × 44px (iOS), 48dp (Android)</li>
+                    <li><strong>Spacing:</strong> 8px minimum between touch targets</li>
+                    <li><strong>Primary actions:</strong> Có thể larger để dễ access</li>
+                    <li><strong>Edge placement:</strong> Avoid placing targets ở edge màn hình</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">/* Touch Target Best Practices */</span>
+.touch-target {
+    <span class="code-property">min-width</span>: <span class="code-value">44px</span>;
+    <span class="code-property">min-height</span>: <span class="code-value">44px</span>;
+    <span class="code-property">padding</span>: <span class="code-value">8px 16px</span>;
+    <span class="code-property">margin</span>: <span class="code-value">4px</span>; <span class="code-comment">/* Spacing between targets */</span>
+    <span class="code-property">cursor</span>: <span class="code-value">pointer</span>;
+    <span class="code-property">touch-action</span>: <span class="code-value">manipulation</span>; <span class="code-comment">/* Disable double-tap zoom */</span>
+    <span class="code-property">user-select</span>: <span class="code-value">none</span>; <span class="code-comment">/* Prevent text selection */</span>
+    <span class="code-property">-webkit-tap-highlight-color</span>: <span class="code-value">transparent</span>; <span class="code-comment">/* Remove tap highlight */</span>
+}
+
+<span class="code-comment">/* Focus states for accessibility */</span>
+.touch-target:focus {
+    <span class="code-property">outline</span>: <span class="code-value">3px solid #4ade80</span>;
+    <span class="code-property">outline-offset</span>: <span class="code-value">2px</span>;
+}
+            </div>
+        </section>
+
+        <!-- Gestures -->
+        <section class="section">
+            <h2>🤏 Touch Gestures</h2>
+            
+            <div class="gesture-demo">
+                <div class="demo-title">✋ Multi-touch Gesture Demo</div>
+                <div class="gesture-area" id="gestureArea">
+                    Touch this area với multiple fingers
+                </div>
+                <p id="gestureInfo" style="margin-top: 10px; font-size: 0.9rem; color: var(--text-light);">
+                    👆 Try: Single tap, long press, two-finger touch, pinch gestures
+                </p>
+            </div>
+
+            <div class="swipe-demo">
+                <div class="demo-title">👈 Swipe Gesture Demo</div>
+                <div class="swipe-container" id="swipeContainer">
+                    <div class="swipe-item">Slide 1 - Swipe to navigate</div>
+                    <div class="swipe-item">Slide 2 - Touch friendly</div>
+                    <div class="swipe-item">Slide 3 - Mobile optimized</div>
+                </div>
+                <div class="swipe-indicators">
+                    <div class="indicator active" onclick="goToSlide(0)"></div>
+                    <div class="indicator" onclick="goToSlide(1)"></div>
+                    <div class="indicator" onclick="goToSlide(2)"></div>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-light);">
+                    👈 Swipe left/right hoặc tap indicators để navigate
+                </p>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// Touch Event Handling</span>
+<span class="code-property">const</span> element = document.getElementById(<span class="code-value">'gestureArea'</span>);
+<span class="code-property">let</span> startX, startY, startTime;
+
+element.addEventListener(<span class="code-value">'touchstart'</span>, (e) => {
+    <span class="code-property">const</span> touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    startTime = Date.now();
+    
+    <span class="code-comment">// Prevent default to avoid scrolling</span>
+    e.preventDefault();
+});
+
+element.addEventListener(<span class="code-value">'touchmove'</span>, (e) => {
+    <span class="code-comment">// Handle drag/swipe gestures</span>
+    <span class="code-property">const</span> touch = e.touches[0];
+    <span class="code-property">const</span> deltaX = touch.clientX - startX;
+    <span class="code-property">const</span> deltaY = touch.clientY - startY;
+    
+    <span class="code-comment">// Update UI based on gesture</span>
+});
+
+element.addEventListener(<span class="code-value">'touchend'</span>, (e) => {
+    <span class="code-property">const</span> endTime = Date.now();
+    <span class="code-property">const</span> duration = endTime - startTime;
+    
+    <span class="code-comment">// Determine gesture type</span>
+    <span class="code-property">if</span> (duration < 200) {
+        <span class="code-comment">// Quick tap</span>
+    } <span class="code-property">else if</span> (duration > 500) {
+        <span class="code-comment">// Long press</span>
+    }
+});
+            </div>
+        </section>
+
+        <!-- Mobile Navigation -->
+        <section class="section">
+            <h2>📱 Mobile Navigation</h2>
+            
+            <div class="mobile-menu-demo">
+                <div class="demo-title">🍔 Touch-Friendly Mobile Menu</div>
+                
+                <div class="mobile-header">
+                    <h3>Mobile App</h3>
+                    <div class="hamburger" id="hamburgerMenu" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                
+                <nav class="mobile-nav" id="mobileNav">
+                    <a href="#" onclick="closeMenu()">🏠 Home</a>
+                    <a href="#" onclick="closeMenu()">📝 About</a>
+                    <a href="#" onclick="closeMenu()">💼 Services</a>
+                    <a href="#" onclick="closeMenu()">📞 Contact</a>
+                </nav>
+                
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
+                    🍔 Touch hamburger menu để open/close navigation
+                </p>
+            </div>
+
+            <div class="theory-box">
+                <h3>📱 Mobile Navigation Best Practices</h3>
+                <ul>
+                    <li><strong>Touch targets:</strong> Min 44px height cho menu items</li>
+                    <li><strong>Thumb zones:</strong> Place important actions ở bottom right</li>
+                    <li><strong>Visual feedback:</strong> Clear hover/active states</li>
+                    <li><strong>Animation:</strong> Smooth transitions để enhance UX</li>
+                    <li><strong>Accessibility:</strong> Proper ARIA labels và keyboard support</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Accessibility -->
+        <section class="section">
+            <h2>♿ Touch Accessibility</h2>
+            
+            <div class="accessibility-demo">
+                <h4>🎯 Accessible Touch Elements</h4>
+                
+                <button class="accessible-button" onclick="showFeedback('Accessible button clicked!')">
+                    <span>✅</span> Accessible Button
+                </button>
+                
+                <button class="accessible-button" onclick="showFeedback('Icon button with label!')">
+                    <span>🔍</span> Search
+                </button>
+                
+                <button class="accessible-button" onclick="showFeedback('Action button pressed!')">
+                    <span>💾</span> Save
+                </button>
+                
+                <p style="margin-top: 15px; font-size: 0.9rem;">
+                    Try using keyboard Tab/Enter hoặc screen reader với buttons này
+                </p>
+            </div>
+
+            <div class="theory-box">
+                <h3>♿ Accessibility Guidelines</h3>
+                <ul>
+                    <li><strong>Focus states:</strong> Clear visual indicators cho keyboard users</li>
+                    <li><strong>Screen readers:</strong> Proper labels và ARIA attributes</li>
+                    <li><strong>Color contrast:</strong> Minimum 4.5:1 ratio</li>
+                    <li><strong>Motion sensitivity:</strong> Respect prefers-reduced-motion</li>
+                    <li><strong>Touch targets:</strong> Larger targets help users with motor impairments</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">/* Accessibility CSS */</span>
+.accessible-button {
+    <span class="code-property">min-width</span>: <span class="code-value">44px</span>;
+    <span class="code-property">min-height</span>: <span class="code-value">44px</span>;
+    <span class="code-property">font-size</span>: <span class="code-value">1rem</span>; <span class="code-comment">/* Minimum for readability */</span>
+}
+
+<span class="code-comment">/* Focus states */</span>
+.accessible-button:focus {
+    <span class="code-property">outline</span>: <span class="code-value">3px solid #4ade80</span>;
+    <span class="code-property">outline-offset</span>: <span class="code-value">2px</span>;
+}
+
+<span class="code-comment">/* Respect motion preferences */</span>
+@media (prefers-reduced-motion: reduce) {
+    * {
+        <span class="code-property">animation-duration</span>: <span class="code-value">0.01ms</span> !important;
+        <span class="code-property">animation-iteration-count</span>: <span class="code-value">1</span> !important;
+        <span class="code-property">transition-duration</span>: <span class="code-value">0.01ms</span> !important;
+    }
+}
+
+<span class="code-comment">/* High contrast support */</span>
+@media (prefers-contrast: high) {
+    .button {
+        <span class="code-property">border</span>: <span class="code-value">2px solid currentColor</span>;
+    }
+}
+            </div>
+        </section>
+
+        <!-- Performance -->
+        <section class="section">
+            <h2>⚡ Touch Performance</h2>
+            
+            <div class="theory-box">
+                <h3>🚀 Touch Performance Tips</h3>
+                <ul>
+                    <li><strong>touch-action:</strong> Sử dụng để optimize touch handling</li>
+                    <li><strong>passive listeners:</strong> Improve scroll performance</li>
+                    <li><strong>debounce:</strong> Prevent multiple rapid taps</li>
+                    <li><strong>will-change:</strong> Hint browser về animations</li>
+                    <li><strong>GPU acceleration:</strong> Use transform3d cho smooth animations</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">/* Performance optimizations */</span>
+.touch-element {
+    <span class="code-property">touch-action</span>: <span class="code-value">manipulation</span>; <span class="code-comment">/* Disable double-tap zoom */</span>
+    <span class="code-property">will-change</span>: <span class="code-value">transform</span>; <span class="code-comment">/* Hint for animations */</span>
+    <span class="code-property">transform</span>: <span class="code-value">translateZ(0)</span>; <span class="code-comment">/* Force GPU layer */</span>
+}
+
+<span class="code-comment">// Passive event listeners</span>
+element.addEventListener(<span class="code-value">'touchstart'</span>, handler, { 
+    <span class="code-property">passive</span>: <span class="code-value">true</span> 
+});
+
+<span class="code-comment">// Debounce function</span>
+<span class="code-property">function</span> <span class="code-function">debounce</span>(func, wait) {
+    <span class="code-property">let</span> timeout;
+    <span class="code-property">return function</span> executedFunction(...args) {
+        <span class="code-property">const</span> later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+            </div>
+        </section>
+
+        <!-- Practical Exercise -->
+        <section class="section">
+            <h2>🏋️‍♂️ Thực hành</h2>
+            
+            <div class="theory-box">
+                <h3>📝 Bài tập thực hành</h3>
+                <p><strong>Mục tiêu:</strong> Tạo touch-friendly mobile interface</p>
+                
+                <h4>Yêu cầu:</h4>
+                <ol>
+                    <li>Design mobile navigation với proper touch targets</li>
+                    <li>Implement swipe gestures cho image carousel</li>
+                    <li>Create touch-friendly form với accessibility</li>
+                    <li>Add haptic feedback simulation</li>
+                    <li>Test trên real mobile devices</li>
+                </ol>
+                
+                <div class="code-block" style="margin-top: 15px;">
+<span class="code-comment">/* Touch-Friendly Component Template */</span>
+.mobile-component {
+    <span class="code-comment">/* Touch targets */</span>
+    <span class="code-property">min-width</span>: <span class="code-value">44px</span>;
+    <span class="code-property">min-height</span>: <span class="code-value">44px</span>;
+    <span class="code-property">padding</span>: <span class="code-value">12px 20px</span>;
+    
+    <span class="code-comment">/* Touch optimization */</span>
+    <span class="code-property">touch-action</span>: <span class="code-value">manipulation</span>;
+    <span class="code-property">user-select</span>: <span class="code-value">none</span>;
+    <span class="code-property">-webkit-tap-highlight-color</span>: <span class="code-value">transparent</span>;
+    
+    <span class="code-comment">/* Visual feedback */</span>
+    <span class="code-property">transition</span>: <span class="code-value">all 0.2s ease</span>;
+    <span class="code-property">cursor</span>: <span class="code-value">pointer</span>;
+}
+
+.mobile-component:hover {
+    <span class="code-property">transform</span>: <span class="code-value">translateY(-1px)</span>;
+    <span class="code-property">box-shadow</span>: <span class="code-value">0 4px 12px rgba(0,0,0,0.1)</span>;
+}
+
+.mobile-component:active {
+    <span class="code-property">transform</span>: <span class="code-value">translateY(0)</span>;
+    <span class="code-property">box-shadow</span>: <span class="code-value">0 2px 4px rgba(0,0,0,0.1)</span>;
+}
+
+<span class="code-comment">/* Accessibility */</span>
+.mobile-component:focus {
+    <span class="code-property">outline</span>: <span class="code-value">3px solid #4ade80</span>;
+    <span class="code-property">outline-offset</span>: <span class="code-value">2px</span>;
+}
+                </div>
+            </div>
+        </section>
+
+        <div class="navigation">
+            <a href="05-responsive-typography.html" class="nav-btn secondary">← Bài 05: Typography</a>
+            <a href="index.html" class="nav-btn secondary">🏠 Lab05 Home</a>
+            <a href="07-performance-mobile.html" class="nav-btn primary">Tiếp theo: Performance →</a>
+        </div>
+    </div>
+
+    <!-- Feedback popup -->
+    <div class="feedback" id="feedback"></div>
+
+    <script>
+        // Feedback system
+        function showFeedback(message) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.classList.add('show');
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        // Gesture demo
+        const gestureArea = document.getElementById('gestureArea');
+        const gestureInfo = document.getElementById('gestureInfo');
+        let touchStartTime;
+
+        gestureArea.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            gestureArea.classList.add('active');
+            
+            const touchCount = e.touches.length;
+            gestureInfo.textContent = `${touchCount} finger(s) detected`;
+            
+            e.preventDefault();
+        });
+
+        gestureArea.addEventListener('touchend', (e) => {
+            const duration = Date.now() - touchStartTime;
+            gestureArea.classList.remove('active');
+            
+            if (duration > 500) {
+                gestureInfo.textContent = 'Long press detected! ⏰';
+                showFeedback('Long press gesture detected!');
+            } else {
+                gestureInfo.textContent = 'Quick tap! 👆';
+                showFeedback('Quick tap gesture detected!');
+            }
+            
+            setTimeout(() => {
+                gestureInfo.textContent = '👆 Try: Single tap, long press, two-finger touch, pinch gestures';
+            }, 2000);
+        });
+
+        // Swipe carousel
+        let currentSlide = 0;
+        const totalSlides = 3;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        const swipeContainer = document.getElementById('swipeContainer');
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateSlide() {
+            const slides = document.querySelectorAll('.swipe-item');
+            slides.forEach((slide, index) => {
+                slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`;
+            });
+            
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+            showFeedback(`Slide ${index + 1} selected`);
+        }
+
+        // Touch events for swipe
+        swipeContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        swipeContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diffX = startX - currentX;
+            
+            // Visual feedback during drag
+            const slides = document.querySelectorAll('.swipe-item');
+            slides.forEach((slide, index) => {
+                const translateX = (index - currentSlide) * 100 - (diffX / swipeContainer.offsetWidth * 100);
+                slide.style.transform = `translateX(${translateX}%)`;
+            });
+        });
+
+        swipeContainer.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diffX = startX - currentX;
+            const threshold = 50;
+            
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0 && currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                } else if (diffX < 0 && currentSlide > 0) {
+                    currentSlide--;
+                }
+            }
+            
+            updateSlide();
+            showFeedback(`Swipe to slide ${currentSlide + 1}`);
+        });
+
+        // Mobile menu
+        function toggleMobileMenu() {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('open');
+            
+            const isOpen = mobileNav.classList.contains('open');
+            showFeedback(isOpen ? 'Menu opened' : 'Menu closed');
+        }
+
+        function closeMenu() {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            hamburger.classList.remove('active');
+            mobileNav.classList.remove('open');
+            showFeedback('Menu item selected');
+        }
+
+        // Initialize
+        updateSlide();
+
+        // Mark as completed
+        localStorage.setItem('lab05_06-touch-interaction', 'completed');
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide sections for animation
+        document.querySelectorAll('.section').forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            sectionObserver.observe(section);
+        });
+
+        // Log touch capabilities
+        console.log('🖱️ Touch Info:');
+        console.log('Touch support:', 'ontouchstart' in window);
+        console.log('Max touch points:', navigator.maxTouchPoints);
+        console.log('Pointer events:', 'onpointerdown' in window);
+    </script>
+</body>
+</html>

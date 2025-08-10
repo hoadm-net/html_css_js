@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 07: Performance Optimization - Lab05</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f8f9fa;
+            --border: #e9ecef;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-dark);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-box {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            border: 2px solid #74b9ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .theory-box h3 {
+            color: #0984e3;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        }
+
+        .theory-box p {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .theory-box ul {
+            color: #2d3436;
+            padding-left: 20px;
+        }
+
+        .theory-box li {
+            margin: 10px 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* Performance Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .metric-card h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .metric-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Performance Demo */
+        .performance-demo {
+            background: white;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .demo-btn:hover {
+            background: var(--secondary);
+        }
+
+        .demo-results {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 100px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Critical CSS Demo */
+        .critical-demo {
+            background: white;
+            border: 2px solid var(--danger);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .above-fold {
+            background: #e8f5e8;
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .below-fold {
+            background: #fff3e0;
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* Resource Hints Demo */
+        .hints-demo {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .hint-example {
+            background: #f5f5f5;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Loading Strategies */
+        .loading-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .loading-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .loading-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .loading-example {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        /* Code Display */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+
+        .code-comment { color: #68d391; }
+        .code-property { color: #f687b3; }
+        .code-value { color: #faf089; }
+        .code-function { color: #63b3ed; }
+        .code-string { color: #9f7aea; }
+
+        /* Performance Tips */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tip-card h5 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .tip-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .loading-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                display: block;
+                margin: 5px 0;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Performance Optimization</h1>
+        <p class="subtitle">Tối ưu performance cho mobile devices - Critical CSS, resource hints và loading strategies</p>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2>🎯 Tại sao Mobile Performance quan trọng?</h2>
+            
+            <div class="theory-box">
+                <h3>📊 Performance Impact Statistics</h3>
+                <ul>
+                    <li><strong>Loading time +1s:</strong> 7% conversion rate decrease</li>
+                    <li><strong>Mobile users:</strong> 53% abandon sites loading >3s</li>
+                    <li><strong>Core Web Vitals:</strong> Google ranking factor từ 2021</li>
+                    <li><strong>Mobile networks:</strong> 3G/4G có latency cao hơn WiFi</li>
+                    <li><strong>Battery life:</strong> Poor performance = faster battery drain</li>
+                </ul>
+                
+                <p><strong>Mục tiêu:</strong> Tạo lightning-fast mobile experience!</p>
+            </div>
+        </section>
+
+        <!-- Core Web Vitals -->
+        <section class="section">
+            <h2>📏 Core Web Vitals</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">🚀</div>
+                    <h4>Largest Contentful Paint (LCP)</h4>
+                    <div class="metric-value" id="lcpValue">2.5s</div>
+                    <div class="metric-description">Time until largest content element loads</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <h4>First Input Delay (FID)</h4>
+                    <div class="metric-value" id="fidValue">100ms</div>
+                    <div class="metric-description">Time from first user interaction to response</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">📐</div>
+                    <h4>Cumulative Layout Shift (CLS)</h4>
+                    <div class="metric-value" id="clsValue">0.1</div>
+                    <div class="metric-description">Amount of unexpected layout shifts</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">🎨</div>
+                    <h4>First Contentful Paint (FCP)</h4>
+                    <div class="metric-value" id="fcpValue">1.8s</div>
+                    <div class="metric-description">Time until first content appears</div>
+                </div>
+            </div>
+
+            <div class="theory-box">
+                <h3>🎯 Good Performance Thresholds</h3>
+                <ul>
+                    <li><strong>LCP:</strong> ≤ 2.5s (Good), 2.5-4s (Needs Improvement), >4s (Poor)</li>
+                    <li><strong>FID:</strong> ≤ 100ms (Good), 100-300ms (Needs Improvement), >300ms (Poor)</li>
+                    <li><strong>CLS:</strong> ≤ 0.1 (Good), 0.1-0.25 (Needs Improvement), >0.25 (Poor)</li>
+                    <li><strong>FCP:</strong> ≤ 1.8s (Good), 1.8-3s (Needs Improvement), >3s (Poor)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Critical CSS -->
+        <section class="section">
+            <h2>🔥 Critical CSS Strategy</h2>
+            
+            <div class="critical-demo">
+                <div class="demo-title">📊 Critical vs Non-Critical CSS</div>
+                
+                <div class="above-fold">
+                    <h4>✅ Above-the-fold (Critical CSS)</h4>
+                    <p>Header, hero section, navigation - Load immediately trong &lt;style&gt; inline</p>
+                </div>
+                
+                <div class="below-fold">
+                    <h4>⏳ Below-the-fold (Non-Critical CSS)</h4>
+                    <p>Footer, modal dialogs, secondary content - Load asynchronously</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">&lt;!-- Critical CSS Strategy --&gt;</span>
+&lt;<span class="code-property">head</span>&gt;
+    <span class="code-comment">&lt;!-- Inline critical CSS --&gt;</span>
+    &lt;<span class="code-property">style</span>&gt;
+        <span class="code-comment">/* Above-the-fold styles only */</span>
+        .header { <span class="code-value">/* critical styles */</span> }
+        .hero { <span class="code-value">/* critical styles */</span> }
+        .navigation { <span class="code-value">/* critical styles */</span> }
+    &lt;/<span class="code-property">style</span>&gt;
+    
+    <span class="code-comment">&lt;!-- Preload non-critical CSS --&gt;</span>
+    &lt;<span class="code-property">link</span> <span class="code-string">rel</span>=<span class="code-value">"preload"</span> <span class="code-string">href</span>=<span class="code-value">"non-critical.css"</span> 
+          <span class="code-string">as</span>=<span class="code-value">"style"</span> <span class="code-string">onload</span>=<span class="code-value">"this.onload=null;this.rel='stylesheet'"</span>&gt;
+    
+    <span class="code-comment">&lt;!-- Fallback for browsers without JS --&gt;</span>
+    &lt;<span class="code-property">noscript</span>&gt;
+        &lt;<span class="code-property">link</span> <span class="code-string">rel</span>=<span class="code-value">"stylesheet"</span> <span class="code-string">href</span>=<span class="code-value">"non-critical.css"</span>&gt;
+    &lt;/<span class="code-property">noscript</span>&gt;
+&lt;/<span class="code-property">head</span>&gt;
+            </div>
+        </section>
+
+        <!-- Resource Hints -->
+        <section class="section">
+            <h2>🔗 Resource Hints</h2>
+            
+            <div class="hints-demo">
+                <div class="demo-title">💡 Resource Hints Examples</div>
+                
+                <div class="hint-example">
+                    &lt;link rel="dns-prefetch" href="//fonts.googleapis.com"&gt;
+                    <br><span style="color: #666;">// Resolve DNS lookup early</span>
+                </div>
+                
+                <div class="hint-example">
+                    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+                    <br><span style="color: #666;">// Establish connection early</span>
+                </div>
+                
+                <div class="hint-example">
+                    &lt;link rel="preload" href="hero-image.jpg" as="image"&gt;
+                    <br><span style="color: #666;">// Load critical resources immediately</span>
+                </div>
+                
+                <div class="hint-example">
+                    &lt;link rel="prefetch" href="next-page.html"&gt;
+                    <br><span style="color: #666;">// Load resources for next navigation</span>
+                </div>
+            </div>
+
+            <div class="theory-box">
+                <h3>🔧 Resource Hints Strategy</h3>
+                <ul>
+                    <li><strong>dns-prefetch:</strong> Resolve DNS cho external domains sớm</li>
+                    <li><strong>preconnect:</strong> Establish full connection (DNS + TCP + TLS)</li>
+                    <li><strong>preload:</strong> Load critical resources với high priority</li>
+                    <li><strong>prefetch:</strong> Load resources cho future navigation</li>
+                    <li><strong>modulepreload:</strong> Preload ES modules</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Loading Strategies -->
+        <section class="section">
+            <h2>📦 Loading Strategies</h2>
+            
+            <div class="loading-grid">
+                <div class="loading-card">
+                    <h4>🎯 Script Loading</h4>
+                    <div class="loading-example">
+                        &lt;script src="script.js"&gt;&lt;/script&gt;
+                        <span style="color: #666;">// Blocking</span>
+                    </div>
+                    <div class="loading-example">
+                        &lt;script async src="script.js"&gt;&lt;/script&gt;
+                        <span style="color: #666;">// Download parallel, execute ASAP</span>
+                    </div>
+                    <div class="loading-example">
+                        &lt;script defer src="script.js"&gt;&lt;/script&gt;
+                        <span style="color: #666;">// Download parallel, execute after DOM</span>
+                    </div>
+                </div>
+                
+                <div class="loading-card">
+                    <h4>🖼️ Image Loading</h4>
+                    <div class="loading-example">
+                        &lt;img loading="lazy" src="image.jpg"&gt;
+                        <span style="color: #666;">// Native lazy loading</span>
+                    </div>
+                    <div class="loading-example">
+                        &lt;img loading="eager" src="hero.jpg"&gt;
+                        <span style="color: #666;">// Load immediately</span>
+                    </div>
+                    <div class="loading-example">
+                        &lt;link rel="preload" as="image" href="critical.jpg"&gt;
+                        <span style="color: #666;">// Preload critical images</span>
+                    </div>
+                </div>
+                
+                <div class="loading-card">
+                    <h4>🎨 Font Loading</h4>
+                    <div class="loading-example">
+                        font-display: swap;
+                        <span style="color: #666;">// Show fallback, then swap</span>
+                    </div>
+                    <div class="loading-example">
+                        font-display: optional;
+                        <span style="color: #666;">// Use only if cached</span>
+                    </div>
+                    <div class="loading-example">
+                        &lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;
+                        <span style="color: #666;">// Preload critical fonts</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Demo -->
+        <section class="section">
+            <h2>🧪 Performance Testing</h2>
+            
+            <div class="performance-demo">
+                <div class="demo-title">⚡ Live Performance Metrics</div>
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="measureNavigationTiming()">📊 Navigation Timing</button>
+                    <button class="demo-btn" onclick="measurePaintTiming()">🎨 Paint Timing</button>
+                    <button class="demo-btn" onclick="measureResourceTiming()">📦 Resource Timing</button>
+                    <button class="demo-btn" onclick="measureMemoryUsage()">🧠 Memory Usage</button>
+                </div>
+                
+                <div class="demo-results" id="performanceResults">
+                    Click buttons trên để measure performance metrics...
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// Performance Measurement API</span>
+<span class="code-comment">// Navigation Timing</span>
+<span class="code-property">const</span> navigation = performance.getEntriesByType(<span class="code-value">'navigation'</span>)[0];
+<span class="code-property">const</span> loadTime = navigation.loadEventEnd - navigation.fetchStart;
+
+<span class="code-comment">// Paint Timing</span>
+<span class="code-property">const</span> paintTiming = performance.getEntriesByType(<span class="code-value">'paint'</span>);
+<span class="code-property">const</span> fcp = paintTiming.find(entry => entry.name === <span class="code-value">'first-contentful-paint'</span>);
+
+<span class="code-comment">// Core Web Vitals</span>
+<span class="code-property">new</span> PerformanceObserver((list) => {
+    <span class="code-property">for</span> (<span class="code-property">const</span> entry <span class="code-property">of</span> list.getEntries()) {
+        <span class="code-property">if</span> (entry.entryType === <span class="code-value">'largest-contentful-paint'</span>) {
+            console.log(<span class="code-value">'LCP:'</span>, entry.startTime);
+        }
+    }
+}).observe({ entryTypes: [<span class="code-value">'largest-contentful-paint'</span>] });
+            </div>
+        </section>
+
+        <!-- Mobile Optimization Tips -->
+        <section class="section">
+            <h2>📱 Mobile Optimization Tips</h2>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🗜️</div>
+                    <h5>Minimize JS Bundle</h5>
+                    <p>Code splitting, tree shaking, dynamic imports để reduce initial bundle size</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">🖼️</div>
+                    <h5>Optimize Images</h5>
+                    <p>WebP/AVIF formats, responsive images, lazy loading below fold</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">📦</div>
+                    <h5>Enable Compression</h5>
+                    <p>Gzip/Brotli compression cho text assets. CDN với global distribution</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">🔄</div>
+                    <h5>Cache Strategy</h5>
+                    <p>Service Worker caching, HTTP cache headers, Edge Side Includes</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">⚡</div>
+                    <h5>Critical Path</h5>
+                    <p>Inline critical CSS, defer non-critical JS, preload key resources</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">🎯</div>
+                    <h5>Third-party Scripts</h5>
+                    <p>Async/defer loading, only load khi cần thiết, self-host nếu có thể</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">🔧</div>
+                    <h5>Build Optimization</h5>
+                    <p>Minification, dead code elimination, modern build tools (Vite, esbuild)</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">📊</div>
+                    <h5>Monitor Performance</h5>
+                    <p>Real User Monitoring (RUM), Core Web Vitals tracking, performance budgets</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Techniques -->
+        <section class="section">
+            <h2>🚀 Advanced Techniques</h2>
+            
+            <div class="theory-box">
+                <h3>🔬 Advanced Performance Patterns</h3>
+                <ul>
+                    <li><strong>App Shell Architecture:</strong> Cache app shell separately from content</li>
+                    <li><strong>PRPL Pattern:</strong> Push, Render, Pre-cache, Lazy-load</li>
+                    <li><strong>Streaming SSR:</strong> Send HTML chunks as soon as ready</li>
+                    <li><strong>Islands Architecture:</strong> Hydrate only interactive components</li>
+                    <li><strong>Edge Computing:</strong> Run code closer to users</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// Service Worker cho Performance</span>
+<span class="code-property">const</span> CACHE_NAME = <span class="code-value">'app-v1'</span>;
+<span class="code-property">const</span> CRITICAL_RESOURCES = [
+    <span class="code-value">'/'</span>,
+    <span class="code-value">'/critical.css'</span>,
+    <span class="code-value">'/app.js'</span>
+];
+
+<span class="code-comment">// Install event - cache critical resources</span>
+self.addEventListener(<span class="code-value">'install'</span>, (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(CRITICAL_RESOURCES))
+    );
+});
+
+<span class="code-comment">// Fetch event - stale-while-revalidate strategy</span>
+self.addEventListener(<span class="code-value">'fetch'</span>, (event) => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                <span class="code-comment">// Return cached version</span>
+                <span class="code-property">if</span> (response) {
+                    <span class="code-comment">// Update cache in background</span>
+                    fetch(event.request)
+                        .then(freshResponse => {
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.put(event.request, freshResponse.clone()));
+                        });
+                    <span class="code-property">return</span> response;
+                }
+                <span class="code-comment">// Fetch from network</span>
+                <span class="code-property">return</span> fetch(event.request);
+            })
+    );
+});
+            </div>
+        </section>
+
+        <!-- Practical Exercise -->
+        <section class="section">
+            <h2>🏋️‍♂️ Thực hành</h2>
+            
+            <div class="theory-box">
+                <h3>📝 Bài tập thực hành</h3>
+                <p><strong>Mục tiêu:</strong> Optimize một mobile website để đạt Perfect Core Web Vitals</p>
+                
+                <h4>Yêu cầu:</h4>
+                <ol>
+                    <li>Implement critical CSS strategy</li>
+                    <li>Setup proper resource hints</li>
+                    <li>Optimize images với modern formats</li>
+                    <li>Add Service Worker caching</li>
+                    <li>Measure và optimize Core Web Vitals</li>
+                    <li>Achieve Lighthouse score >90</li>
+                </ol>
+                
+                <div class="code-block" style="margin-top: 15px;">
+<span class="code-comment">&lt;!-- Performance-Optimized HTML Template --&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+    <span class="code-comment">&lt;!-- Critical meta tags --&gt;</span>
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    
+    <span class="code-comment">&lt;!-- DNS prefetch for external domains --&gt;</span>
+    &lt;link rel="dns-prefetch" href="//fonts.googleapis.com"&gt;
+    &lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;
+    
+    <span class="code-comment">&lt;!-- Preconnect to critical origins --&gt;</span>
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+    
+    <span class="code-comment">&lt;!-- Preload critical resources --&gt;</span>
+    &lt;link rel="preload" href="hero-image.webp" as="image"&gt;
+    &lt;link rel="preload" href="critical-font.woff2" as="font" type="font/woff2" crossorigin&gt;
+    
+    <span class="code-comment">&lt;!-- Inline critical CSS --&gt;</span>
+    &lt;style&gt;
+        /* Critical above-the-fold styles only */
+        body { margin: 0; font-family: system-ui; }
+        .header { /* critical header styles */ }
+        .hero { /* critical hero styles */ }
+    &lt;/style&gt;
+    
+    <span class="code-comment">&lt;!-- Async load non-critical CSS --&gt;</span>
+    &lt;link rel="preload" href="non-critical.css" as="style" 
+          onload="this.onload=null;this.rel='stylesheet'"&gt;
+    &lt;noscript&gt;&lt;link rel="stylesheet" href="non-critical.css"&gt;&lt;/noscript&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    <span class="code-comment">&lt;!-- Critical above-the-fold content --&gt;</span>
+    &lt;header class="header"&gt;...&lt;/header&gt;
+    &lt;main class="hero"&gt;...&lt;/main&gt;
+    
+    <span class="code-comment">&lt;!-- Defer non-critical scripts --&gt;</span>
+    &lt;script src="app.js" defer&gt;&lt;/script&gt;
+    &lt;script src="analytics.js" async&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </div>
+            </div>
+        </section>
+
+        <div class="navigation">
+            <a href="06-touch-interaction.html" class="nav-btn secondary">← Bài 06: Touch Interaction</a>
+            <a href="index.html" class="nav-btn secondary">🏠 Lab05 Home</a>
+            <a href="final-project/index.html" class="nav-btn primary">Final Project →</a>
+        </div>
+    </div>
+
+    <script>
+        // Performance measurement functions
+        function measureNavigationTiming() {
+            const navigation = performance.getEntriesByType('navigation')[0];
+            const results = document.getElementById('performanceResults');
+            
+            const metrics = {
+                'DNS Lookup': `${(navigation.domainLookupEnd - navigation.domainLookupStart).toFixed(2)}ms`,
+                'TCP Connection': `${(navigation.connectEnd - navigation.connectStart).toFixed(2)}ms`,
+                'Request/Response': `${(navigation.responseEnd - navigation.requestStart).toFixed(2)}ms`,
+                'DOM Processing': `${(navigation.domContentLoadedEventEnd - navigation.responseEnd).toFixed(2)}ms`,
+                'Total Load Time': `${(navigation.loadEventEnd - navigation.fetchStart).toFixed(2)}ms`
+            };
+            
+            let output = '📊 Navigation Timing:\n';
+            for (const [key, value] of Object.entries(metrics)) {
+                output += `${key}: ${value}\n`;
+            }
+            
+            results.textContent = output;
+        }
+
+        function measurePaintTiming() {
+            const paintTiming = performance.getEntriesByType('paint');
+            const results = document.getElementById('performanceResults');
+            
+            let output = '🎨 Paint Timing:\n';
+            paintTiming.forEach(entry => {
+                output += `${entry.name}: ${entry.startTime.toFixed(2)}ms\n`;
+            });
+            
+            results.textContent = output;
+        }
+
+        function measureResourceTiming() {
+            const resources = performance.getEntriesByType('resource');
+            const results = document.getElementById('performanceResults');
+            
+            let totalSize = 0;
+            let output = '📦 Resource Timing (Top 5):\n';
+            
+            resources
+                .sort((a, b) => b.transferSize - a.transferSize)
+                .slice(0, 5)
+                .forEach(resource => {
+                    const size = resource.transferSize || 0;
+                    totalSize += size;
+                    const name = resource.name.split('/').pop() || resource.name;
+                    output += `${name}: ${(size/1024).toFixed(1)}KB, ${resource.duration.toFixed(2)}ms\n`;
+                });
+            
+            output += `\nTotal: ${(totalSize/1024).toFixed(1)}KB`;
+            results.textContent = output;
+        }
+
+        function measureMemoryUsage() {
+            const results = document.getElementById('performanceResults');
+            
+            if ('memory' in performance) {
+                const memory = performance.memory;
+                const output = `🧠 Memory Usage:
+Used: ${(memory.usedJSHeapSize / 1048576).toFixed(2)}MB
+Total: ${(memory.totalJSHeapSize / 1048576).toFixed(2)}MB
+Limit: ${(memory.jsHeapSizeLimit / 1048576).toFixed(2)}MB`;
+                
+                results.textContent = output;
+            } else {
+                results.textContent = '🧠 Memory API not available in this browser';
+            }
+        }
+
+        // Update live metrics
+        function updateLiveMetrics() {
+            // Simulate realistic values
+            document.getElementById('lcpValue').textContent = (2.1 + Math.random() * 0.8).toFixed(1) + 's';
+            document.getElementById('fidValue').textContent = Math.floor(80 + Math.random() * 40) + 'ms';
+            document.getElementById('clsValue').textContent = (0.05 + Math.random() * 0.1).toFixed(3);
+            document.getElementById('fcpValue').textContent = (1.5 + Math.random() * 0.6).toFixed(1) + 's';
+        }
+
+        // Update metrics every 3 seconds
+        setInterval(updateLiveMetrics, 3000);
+        updateLiveMetrics();
+
+        // Measure actual Core Web Vitals if APIs are available
+        if ('PerformanceObserver' in window) {
+            // LCP
+            new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                document.getElementById('lcpValue').textContent = (lastEntry.startTime / 1000).toFixed(1) + 's';
+            }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+            // FCP
+            new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                const fcp = entries.find(entry => entry.name === 'first-contentful-paint');
+                if (fcp) {
+                    document.getElementById('fcpValue').textContent = (fcp.startTime / 1000).toFixed(1) + 's';
+                }
+            }).observe({ entryTypes: ['paint'] });
+        }
+
+        // Mark as completed
+        localStorage.setItem('lab05_07-performance-mobile', 'completed');
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide sections for animation
+        document.querySelectorAll('.section').forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            sectionObserver.observe(section);
+        });
+
+        // Log performance info
+        console.log('⚡ Performance Info:');
+        console.log('Navigation:', performance.getEntriesByType('navigation')[0]);
+        console.log('Paint timing:', performance.getEntriesByType('paint'));
+        console.log('Memory:', performance.memory);
+    </script>
+</body>
+</html>
