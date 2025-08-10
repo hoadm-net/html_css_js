@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form liên hệ - Lab02</title>
+</head>
+<body>
+    <h1>Form liên hệ</h1>
+    
+    <p>Vui lòng điền thông tin vào form dưới đây để liên hệ với chúng tôi:</p>
+    
+    <!-- Form liên hệ cơ bản -->
+    <form action="#" method="post">
+        <!-- Họ và tên -->
+        <label for="name">Họ và tên:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <!-- Email -->
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <!-- Số điện thoại -->
+        <label for="phone">Số điện thoại:</label><br>
+        <input type="tel" id="phone" name="phone"><br><br>
+        
+        <!-- Chủ đề -->
+        <label for="topic">Chủ đề:</label><br>
+        <select id="topic" name="topic" required>
+            <option value="">-- Chọn chủ đề --</option>
+            <option value="hoc">Học tập</option>
+            <option value="congviec">Công việc</option>
+            <option value="tuvan">Tư vấn</option>
+            <option value="hotro">Hỗ trợ kỹ thuật</option>
+            <option value="khac">Khác</option>
+        </select><br><br>
+        
+        <!-- Mức độ ưu tiên -->
+        <label for="priority">Mức độ ưu tiên:</label><br>
+        <input type="radio" id="low" name="priority" value="low">
+        <label for="low">Thấp</label><br>
+        <input type="radio" id="medium" name="priority" value="medium" checked>
+        <label for="medium">Bình thường</label><br>
+        <input type="radio" id="high" name="priority" value="high">
+        <label for="high">Cao</label><br><br>
+        
+        <!-- Dịch vụ quan tâm -->
+        <fieldset>
+            <legend>Dịch vụ bạn quan tâm:</legend>
+            <input type="checkbox" id="web-design" name="services[]" value="web-design">
+            <label for="web-design">Thiết kế web</label><br>
+            <input type="checkbox" id="web-dev" name="services[]" value="web-dev">
+            <label for="web-dev">Lập trình web</label><br>
+            <input type="checkbox" id="seo" name="services[]" value="seo">
+            <label for="seo">SEO</label><br>
+            <input type="checkbox" id="maintenance" name="services[]" value="maintenance">
+            <label for="maintenance">Bảo trì website</label><br>
+        </fieldset><br>
+        
+        <!-- Nội dung tin nhắn -->
+        <label for="message">Nội dung tin nhắn:</label><br>
+        <textarea id="message" name="message" rows="6" cols="50" 
+                  placeholder="Vui lòng nhập nội dung chi tiết..."></textarea><br><br>
+        
+        <!-- File đính kèm -->
+        <label for="attachment">File đính kèm (nếu có):</label><br>
+        <input type="file" id="attachment" name="attachment"><br><br>
+        
+        <!-- Ngày mong muốn liên hệ -->
+        <label for="contact-date">Ngày mong muốn được liên hệ:</label><br>
+        <input type="date" id="contact-date" name="contact-date"><br><br>
+        
+        <!-- Thời gian mong muốn -->
+        <label for="contact-time">Thời gian thuận tiện:</label><br>
+        <input type="time" id="contact-time" name="contact-time"><br><br>
+        
+        <!-- Đồng ý điều khoản -->
+        <input type="checkbox" id="agree" name="agree" required>
+        <label for="agree">Tôi đồng ý với điều khoản sử dụng dịch vụ</label><br><br>
+        
+        <!-- Nút submit và reset -->
+        <button type="submit">Gửi</button>
+        <button type="reset">Xóa form</button>
+    </form>
+    
+    <hr>
+    
+    <!-- Thông tin liên hệ khác -->
+    <h2>Thông tin liên hệ khác</h2>
+    <p><strong>Email:</strong> contact@example.com</p>
+    <p><strong>Điện thoại:</strong> 0123-456-789</p>
+    <p><strong>Địa chỉ:</strong> 123 Đường ABC, Phường XYZ, Quận 1, TP.HCM</p>
+    
+    <!-- Social media links -->
+    <h3>Kết nối với chúng tôi:</h3>
+    <ul>
+        <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+        <li><a href="https://github.com" target="_blank">GitHub</a></li>
+    </ul>
+</body>
+</html>

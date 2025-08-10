@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực hành tổng hợp - Lab02</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Học viện Lập trình ABC</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">Giới thiệu</a></li>
+                <li><a href="#courses">Khóa học</a></li>
+                <li><a href="#instructors">Giảng viên</a></li>
+                <li><a href="#schedule">Lịch học</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- About section -->
+        <section id="about">
+            <h2>Giới thiệu về học viện</h2>
+            <article>
+                <h3>Về chúng tôi</h3>
+                <p>Học viện Lập trình ABC là một trong những trung tâm đào tạo lập trình 
+                hàng đầu tại Việt Nam. Chúng tôi cung cấp các khóa học chất lượng cao từ 
+                cơ bản đến nâng cao.</p>
+                
+                <img src="https://via.placeholder.com/400x200/007bff/white?text=Learning+Environment" 
+                     alt="Môi trường học tập tại học viện ABC" 
+                     width="400" height="200">
+            </article>
+            
+            <article>
+                <h3>Sứ mệnh</h3>
+                <p>Đào tạo những lập trình viên tài năng, có kỹ năng thực tiễn cao, 
+                đáp ứng nhu cầu của thị trường công nghệ.</p>
+            </article>
+        </section>
+
+        <!-- Courses section -->
+        <section id="courses">
+            <h2>Các khóa học</h2>
+            
+            <article>
+                <h3>Front-end Development</h3>
+                <p>Học HTML, CSS, JavaScript và các framework hiện đại</p>
+                <h4>Nội dung khóa học:</h4>
+                <ol>
+                    <li>HTML5 & CSS3 Fundamentals</li>
+                    <li>JavaScript ES6+</li>
+                    <li>React.js</li>
+                    <li>Vue.js</li>
+                    <li>Responsive Design</li>
+                </ol>
+                <p><strong>Thời gian:</strong> 4 tháng</p>
+                <p><strong>Học phí:</strong> 8,000,000 VNĐ</p>
+            </article>
+            
+            <article>
+                <h3>Back-end Development</h3>
+                <p>Học Node.js, databases và server-side programming</p>
+                <h4>Nội dung khóa học:</h4>
+                <ol>
+                    <li>Node.js & Express.js</li>
+                    <li>Databases (MongoDB, MySQL)</li>
+                    <li>RESTful API</li>
+                    <li>Authentication & Security</li>
+                    <li>Deployment</li>
+                </ol>
+                <p><strong>Thời gian:</strong> 5 tháng</p>
+                <p><strong>Học phí:</strong> 10,000,000 VNĐ</p>
+            </article>
+            
+            <article>
+                <h3>Full-stack Development</h3>
+                <p>Khóa học toàn diện từ front-end đến back-end</p>
+                <h4>Bao gồm:</h4>
+                <ul>
+                    <li>Tất cả nội dung Front-end</li>
+                    <li>Tất cả nội dung Back-end</li>
+                    <li>DevOps cơ bản</li>
+                    <li>Dự án thực tế</li>
+                </ul>
+                <p><strong>Thời gian:</strong> 8 tháng</p>
+                <p><strong>Học phí:</strong> 15,000,000 VNĐ</p>
+            </article>
+        </section>
+
+        <!-- Instructors section -->
+        <section id="instructors">
+            <h2>Đội ngũ giảng viên</h2>
+            
+            <table border="1">
+                <caption>Thông tin giảng viên</caption>
+                <thead>
+                    <tr>
+                        <th>Tên</th>
+                        <th>Chuyên môn</th>
+                        <th>Kinh nghiệm</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nguyễn Văn A</td>
+                        <td>JavaScript, React</td>
+                        <td>8 năm</td>
+                        <td>nguyenvana@abc.edu.vn</td>
+                    </tr>
+                    <tr>
+                        <td>Trần Thị B</td>
+                        <td>Node.js, Database</td>
+                        <td>6 năm</td>
+                        <td>tranthib@abc.edu.vn</td>
+                    </tr>
+                    <tr>
+                        <td>Lê Văn C</td>
+                        <td>HTML/CSS, UI/UX</td>
+                        <td>5 năm</td>
+                        <td>levanc@abc.edu.vn</td>
+                    </tr>
+                    <tr>
+                        <td>Phạm Thị D</td>
+                        <td>Python, Data Science</td>
+                        <td>7 năm</td>
+                        <td>phamthid@abc.edu.vn</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Schedule section -->
+        <section id="schedule">
+            <h2>Lịch học mẫu</h2>
+            
+            <h3>Khóa Front-end Development</h3>
+            <table border="1">
+                <tr>
+                    <th rowspan="2">Tuần</th>
+                    <th colspan="3">Lịch học</th>
+                </tr>
+                <tr>
+                    <th>Thứ 2</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 6</th>
+                </tr>
+                <tr>
+                    <td>1-2</td>
+                    <td>HTML Basics</td>
+                    <td>CSS Fundamentals</td>
+                    <td>Practice Project</td>
+                </tr>
+                <tr>
+                    <td>3-4</td>
+                    <td>CSS Advanced</td>
+                    <td>Responsive Design</td>
+                    <td>Project Review</td>
+                </tr>
+                <tr>
+                    <td>5-8</td>
+                    <td>JavaScript Basics</td>
+                    <td>DOM Manipulation</td>
+                    <td>Interactive Projects</td>
+                </tr>
+                <tr>
+                    <td>9-12</td>
+                    <td>ES6+ Features</td>
+                    <td>Async Programming</td>
+                    <td>API Integration</td>
+                </tr>
+                <tr>
+                    <td>13-16</td>
+                    <td>React Fundamentals</td>
+                    <td>Component Development</td>
+                    <td>Final Project</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Registration section -->
+        <section id="registration">
+            <h2>Đăng ký học</h2>
+            
+            <form action="#" method="post">
+                <fieldset>
+                    <legend>Thông tin cá nhân</legend>
+                    
+                    <label for="fullname">Họ và tên:</label><br>
+                    <input type="text" id="fullname" name="fullname" required><br><br>
+                    
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br><br>
+                    
+                    <label for="phone">Số điện thoại:</label><br>
+                    <input type="tel" id="phone" name="phone" required><br><br>
+                    
+                    <label for="age">Tuổi:</label><br>
+                    <input type="number" id="age" name="age" min="16" max="65"><br><br>
+                    
+                    <label for="education">Trình độ học vấn:</label><br>
+                    <select id="education" name="education">
+                        <option value="">-- Chọn trình độ --</option>
+                        <option value="highschool">Trung học phổ thông</option>
+                        <option value="college">Cao đẳng</option>
+                        <option value="university">Đại học</option>
+                        <option value="master">Thạc sĩ</option>
+                        <option value="other">Khác</option>
+                    </select><br><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Lựa chọn khóa học</legend>
+                    
+                    <input type="radio" id="frontend" name="course" value="frontend">
+                    <label for="frontend">Front-end Development</label><br>
+                    
+                    <input type="radio" id="backend" name="course" value="backend">
+                    <label for="backend">Back-end Development</label><br>
+                    
+                    <input type="radio" id="fullstack" name="course" value="fullstack">
+                    <label for="fullstack">Full-stack Development</label><br><br>
+                    
+                    <label for="start-date">Ngày bắt đầu mong muốn:</label><br>
+                    <input type="date" id="start-date" name="start-date"><br><br>
+                    
+                    <label>Thời gian học ưa thích:</label><br>
+                    <input type="checkbox" id="morning" name="time[]" value="morning">
+                    <label for="morning">Sáng (8:00-12:00)</label><br>
+                    <input type="checkbox" id="afternoon" name="time[]" value="afternoon">
+                    <label for="afternoon">Chiều (14:00-18:00)</label><br>
+                    <input type="checkbox" id="evening" name="time[]" value="evening">
+                    <label for="evening">Tối (19:00-21:00)</label><br><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Thông tin bổ sung</legend>
+                    
+                    <label for="experience">Kinh nghiệm lập trình (nếu có):</label><br>
+                    <textarea id="experience" name="experience" rows="4" cols="50" 
+                              placeholder="Mô tả kinh nghiệm của bạn..."></textarea><br><br>
+                    
+                    <label for="motivation">Lý do học lập trình:</label><br>
+                    <textarea id="motivation" name="motivation" rows="4" cols="50" 
+                              placeholder="Chia sẻ động lực học tập của bạn..."></textarea><br><br>
+                    
+                    <input type="checkbox" id="newsletter" name="newsletter" value="yes">
+                    <label for="newsletter">Đăng ký nhận thông tin khóa học mới</label><br><br>
+                    
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">Tôi đồng ý với điều khoản và điều kiện</label><br><br>
+                </fieldset>
+                
+                <button type="submit">Đăng ký</button>
+                <button type="reset">Xóa form</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Sidebar -->
+    <aside>
+        <h3>Thông báo</h3>
+        <article>
+            <h4>Khai giảng khóa mới</h4>
+            <p><time datetime="2025-02-01">01/02/2025</time></p>
+            <p>Đăng ký sớm nhận ưu đãi 20%</p>
+        </article>
+        
+        <h3>Liên kết hữu ích</h3>
+        <ul>
+            <li><a href="https://developer.mozilla.org/" target="_blank">MDN Web Docs</a></li>
+            <li><a href="https://www.w3schools.com/" target="_blank">W3Schools</a></li>
+            <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+            <li><a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a></li>
+        </ul>
+    </aside>
+
+    <!-- Contact section -->
+    <section id="contact">
+        <h2>Thông tin liên hệ</h2>
+        
+        <address>
+            <h3>Học viện Lập trình ABC</h3>
+            <p><strong>Địa chỉ:</strong> 123 Đường Lê Lợi, Quận 1, TP.HCM</p>
+            <p><strong>Điện thoại:</strong> <a href="tel:+84901234567">090-123-4567</a></p>
+            <p><strong>Email:</strong> <a href="mailto:info@abc-academy.edu.vn">info@abc-academy.edu.vn</a></p>
+            <p><strong>Website:</strong> <a href="https://abc-academy.edu.vn">www.abc-academy.edu.vn</a></p>
+        </address>
+        
+        <h3>Giờ làm việc</h3>
+        <table border="1">
+            <tr>
+                <th>Ngày</th>
+                <th>Giờ mở cửa</th>
+            </tr>
+            <tr>
+                <td>Thứ 2 - Thứ 6</td>
+                <td>8:00 - 21:00</td>
+            </tr>
+            <tr>
+                <td>Thứ 7</td>
+                <td>8:00 - 17:00</td>
+            </tr>
+            <tr>
+                <td>Chủ nhật</td>
+                <td>Nghỉ</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <hr>
+        <p>&copy; 2025 Học viện Lập trình ABC. Tất cả quyền được bảo lưu.</p>
+        
+        <nav>
+            <h4>Kết nối với chúng tôi:</h4>
+            <ul>
+                <li><a href="https://facebook.com/abc-academy" target="_blank">Facebook</a></li>
+                <li><a href="https://youtube.com/abc-academy" target="_blank">YouTube</a></li>
+                <li><a href="https://linkedin.com/company/abc-academy" target="_blank">LinkedIn</a></li>
+            </ul>
+        </nav>
+        
+        <p><small>Trang web này được tạo ra nhằm mục đích thực hành HTML cơ bản.</small></p>
+    </footer>
+</body>
+</html>
