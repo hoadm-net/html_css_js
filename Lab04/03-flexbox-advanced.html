@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 3: Flexbox Advanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section-title {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .demo-container {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            background: #fff;
+        }
+        
+        /* Demo 1: Flex Grow/Shrink Advanced */
+        .flex-grow-demo {
+            display: flex;
+            gap: 10px;
+            height: 120px;
+        }
+        
+        .grow-item {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 60px;
+            transition: all 0.3s ease;
+        }
+        
+        .grow-1 { flex: 1 1 100px; }
+        .grow-2 { flex: 2 1 100px; }
+        .grow-3 { flex: 3 1 100px; }
+        
+        /* Demo 2: Nested Flexbox */
+        .nested-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-height: 300px;
+        }
+        
+        .header-section {
+            background: linear-gradient(90deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 5px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 15px;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .content-area {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .footer-section {
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Demo 3: Complex Alignment */
+        .alignment-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .align-row {
+            display: flex;
+            height: 100px;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 10px;
+            gap: 10px;
+        }
+        
+        .align-item {
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            min-height: 40px;
+        }
+        
+        .justify-start { justify-content: flex-start; }
+        .justify-center { justify-content: center; }
+        .justify-end { justify-content: flex-end; }
+        .justify-between { justify-content: space-between; }
+        .justify-around { justify-content: space-around; }
+        .justify-evenly { justify-content: space-evenly; }
+        
+        .align-start { align-items: flex-start; }
+        .align-center { align-items: center; }
+        .align-end { align-items: flex-end; }
+        .align-stretch { align-items: stretch; }
+        
+        /* Demo 4: Responsive Flex */
+        .responsive-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .flex-card {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1 1 250px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .flex-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Demo 5: Holy Grail Layout with Flexbox */
+        .holy-grail {
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .holy-header {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .holy-body {
+            display: flex;
+            flex: 1;
+        }
+        
+        .holy-nav {
+            background: linear-gradient(180deg, #fd79a8, #e84393);
+            color: white;
+            padding: 20px;
+            flex: 0 0 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .holy-main {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .holy-aside {
+            background: linear-gradient(180deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            flex: 0 0 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .holy-footer {
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        /* Interactive Controls */
+        .controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .control-group {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        
+        .control-group select, .control-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .interactive-flex {
+            display: flex;
+            gap: 10px;
+            min-height: 150px;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .interactive-item {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 60px;
+            min-height: 60px;
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-button.secondary {
+            background: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .holy-body {
+                flex-direction: column;
+            }
+            
+            .holy-nav, .holy-aside {
+                flex: none;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Bài 3: Flexbox Advanced</h1>
+        <p class="subtitle">Kỹ thuật Flexbox nâng cao: Nested layouts, Complex alignments và Flex properties mastery</p>
+        
+        <!-- Section 1: Flex Grow/Shrink Advanced -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Flex Grow/Shrink Advanced
+            </h2>
+            <p>Hiểu sâu về flex-grow, flex-shrink và flex-basis để kiểm soát hoàn toàn cách items phân bố không gian.</p>
+            
+            <div class="code-example">
+.item-1 { flex: 1 1 100px; }  /* grow: 1, shrink: 1, basis: 100px */
+.item-2 { flex: 2 1 100px; }  /* grow: 2, shrink: 1, basis: 100px */
+.item-3 { flex: 3 1 100px; }  /* grow: 3, shrink: 1, basis: 100px */
+
+/* Item 2 sẽ lớn gấp đôi item 1, item 3 gấp 3 lần */
+            </div>
+            
+            <div class="demo-container">
+                <div class="flex-grow-demo">
+                    <div class="grow-item grow-1">Flex: 1</div>
+                    <div class="grow-item grow-2">Flex: 2</div>
+                    <div class="grow-item grow-3">Flex: 3</div>
+                </div>
+            </div>
+            
+            <p><em>💡 Thử thay đổi kích thước cửa sổ để thấy items tự động điều chỉnh theo tỷ lệ!</em></p>
+        </div>
+        
+        <!-- Section 2: Nested Flexbox Layout -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Nested Flexbox Layout
+            </h2>
+            <p>Kết hợp nhiều flexbox containers để tạo layouts phức tạp và linh hoạt.</p>
+            
+            <div class="code-example">
+.main-layout {
+    display: flex;
+    flex-direction: column;  /* Vertical stacking */
+}
+
+.content-row {
+    display: flex;           /* Horizontal layout */
+    flex: 1;                 /* Take remaining space */
+}
+
+.sidebar { flex: 0 0 200px; }  /* Fixed width */
+.main { flex: 1; }             /* Fill remaining space */
+            </div>
+            
+            <div class="demo-container">
+                <div class="nested-flex">
+                    <div class="header-section">
+                        <div>🏠 Website Header</div>
+                        <div class="nav-items">
+                            <div class="nav-item">Home</div>
+                            <div class="nav-item">About</div>
+                            <div class="nav-item">Contact</div>
+                        </div>
+                    </div>
+                    
+                    <div class="main-content">
+                        <div class="sidebar">
+                            <div>📋 Menu 1</div>
+                            <div>📋 Menu 2</div>
+                            <div>📋 Menu 3</div>
+                        </div>
+                        <div class="content-area">
+                            <h3>📝 Main Content Area</h3>
+                            <p>Nested Flexbox Layout</p>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        🔗 Footer Section
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Complex Alignment -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Complex Alignment Techniques
+            </h2>
+            <p>Tất cả combinations của justify-content và align-items để đạt được alignment hoàn hảo.</p>
+            
+            <div class="code-example">
+/* Justify Content Options */
+justify-content: flex-start | center | flex-end | space-between | space-around | space-evenly;
+
+/* Align Items Options */
+align-items: flex-start | center | flex-end | stretch | baseline;
+
+/* Perfect Centering */
+.perfect-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="alignment-demo">
+                    <div class="align-row justify-start align-center">
+                        <div class="align-item">Start</div>
+                        <div class="align-item">Center</div>
+                    </div>
+                    
+                    <div class="align-row justify-center align-center">
+                        <div class="align-item">Perfect</div>
+                        <div class="align-item">Center</div>
+                    </div>
+                    
+                    <div class="align-row justify-between align-stretch">
+                        <div class="align-item">Space</div>
+                        <div class="align-item">Between</div>
+                        <div class="align-item">Stretch</div>
+                    </div>
+                    
+                    <div class="align-row justify-evenly align-end">
+                        <div class="align-item">Space</div>
+                        <div class="align-item">Evenly</div>
+                        <div class="align-item">End</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Responsive Flex Cards -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Responsive Flex Cards
+            </h2>
+            <p>Tạo card layouts tự động responsive với flex-wrap và flex-basis.</p>
+            
+            <div class="code-example">
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.card {
+    flex: 1 1 250px;  /* Tối thiểu 250px, sau đó grow equally */
+    min-height: 120px;
+}
+/* Cards tự động xuống hàng khi không đủ 250px */
+            </div>
+            
+            <div class="demo-container">
+                <div class="responsive-flex">
+                    <div class="flex-card">
+                        <h4>📱 Card 1</h4>
+                        <p>Responsive Design</p>
+                    </div>
+                    <div class="flex-card">
+                        <h4>💻 Card 2</h4>
+                        <p>Flexible Layout</p>
+                    </div>
+                    <div class="flex-card">
+                        <h4>🖥️ Card 3</h4>
+                        <p>Auto Wrapping</p>
+                    </div>
+                    <div class="flex-card">
+                        <h4>⌚ Card 4</h4>
+                        <p>Equal Sizing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Holy Grail Layout -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Holy Grail Layout với Flexbox
+            </h2>
+            <p>Layout cổ điển: Header, Footer full-width, giữa có Navigation, Main content và Sidebar.</p>
+            
+            <div class="code-example">
+.holy-grail {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.body {
+    display: flex;
+    flex: 1;  /* Take remaining space between header & footer */
+}
+
+.nav { flex: 0 0 150px; }    /* Fixed width navigation */
+.main { flex: 1; }           /* Main takes remaining space */
+.aside { flex: 0 0 120px; }  /* Fixed width sidebar */
+            </div>
+            
+            <div class="demo-container">
+                <div class="holy-grail">
+                    <div class="holy-header">🎯 Header Section</div>
+                    <div class="holy-body">
+                        <div class="holy-nav">
+                            <div>🧭 Nav 1</div>
+                            <div>🧭 Nav 2</div>
+                            <div>🧭 Nav 3</div>
+                        </div>
+                        <div class="holy-main">
+                            <div>
+                                <h3>📄 Main Content</h3>
+                                <p>Holy Grail Layout</p>
+                            </div>
+                        </div>
+                        <div class="holy-aside">
+                            <div>📊 Ads</div>
+                            <div>📈 Stats</div>
+                        </div>
+                    </div>
+                    <div class="holy-footer">🔗 Footer Links</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Interactive Playground -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">🎮</span>
+                Interactive Flexbox Playground
+            </h2>
+            <p>Thử nghiệm với các thuộc tính Flexbox:</p>
+            
+            <div class="controls">
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="flex-direction">Flex Direction:</label>
+                        <select id="flex-direction" onchange="updateFlex()">
+                            <option value="row">row</option>
+                            <option value="row-reverse">row-reverse</option>
+                            <option value="column">column</option>
+                            <option value="column-reverse">column-reverse</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="justify-content">Justify Content:</label>
+                        <select id="justify-content" onchange="updateFlex()">
+                            <option value="flex-start">flex-start</option>
+                            <option value="center">center</option>
+                            <option value="flex-end">flex-end</option>
+                            <option value="space-between">space-between</option>
+                            <option value="space-around">space-around</option>
+                            <option value="space-evenly">space-evenly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="align-items">Align Items:</label>
+                        <select id="align-items" onchange="updateFlex()">
+                            <option value="stretch">stretch</option>
+                            <option value="flex-start">flex-start</option>
+                            <option value="center">center</option>
+                            <option value="flex-end">flex-end</option>
+                            <option value="baseline">baseline</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="flex-wrap">Flex Wrap:</label>
+                        <select id="flex-wrap" onchange="updateFlex()">
+                            <option value="nowrap">nowrap</option>
+                            <option value="wrap">wrap</option>
+                            <option value="wrap-reverse">wrap-reverse</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-container">
+                <div class="interactive-flex" id="interactive-flex">
+                    <div class="interactive-item">1</div>
+                    <div class="interactive-item">2</div>
+                    <div class="interactive-item">3</div>
+                    <div class="interactive-item">4</div>
+                    <div class="interactive-item">5</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Best Practices -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">💡</span>
+                Flexbox Best Practices
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Khi nào dùng Flexbox?</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ 1D layouts (hàng hoặc cột)</li>
+                        <li>✅ Component-level layouts</li>
+                        <li>✅ Navigation bars</li>
+                        <li>✅ Card arrangements</li>
+                        <li>✅ Centering content</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Flex Properties Priority</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ flex-basis: initial size</li>
+                        <li>✅ flex-grow: how to grow</li>
+                        <li>✅ flex-shrink: how to shrink</li>
+                        <li>✅ flex: shorthand property</li>
+                        <li>✅ Use flex: 1 for equal sizing</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Common Patterns</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Header-Content-Footer</li>
+                        <li>✅ Sidebar layouts</li>
+                        <li>✅ Card grids with wrapping</li>
+                        <li>✅ Perfect centering</li>
+                        <li>✅ Space distribution</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="02-advanced-grid.html" class="nav-button secondary">← Bài trước: Advanced Grid</a>
+            <a href="index.html" class="nav-button secondary">Lab04 Home</a>
+            <a href="04-responsive-patterns.html" class="nav-button">Bài tiếp theo: Responsive Patterns →</a>
+        </div>
+    </div>
+    
+    <script>
+        function updateFlex() {
+            const flex = document.getElementById('interactive-flex');
+            const direction = document.getElementById('flex-direction').value;
+            const justify = document.getElementById('justify-content').value;
+            const align = document.getElementById('align-items').value;
+            const wrap = document.getElementById('flex-wrap').value;
+            
+            flex.style.flexDirection = direction;
+            flex.style.justifyContent = justify;
+            flex.style.alignItems = align;
+            flex.style.flexWrap = wrap;
+        }
+        
+        // Add hover effects to demo items
+        document.querySelectorAll('.grow-item, .align-item, .flex-card, .interactive-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

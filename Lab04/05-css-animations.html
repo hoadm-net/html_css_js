@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 5: CSS Animations & Transitions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section-title {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .demo-container {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+        }
+        
+        /* Demo 1: Basic Transitions */
+        .transition-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .transition-box:hover {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            border-radius: 50%;
+        }
+        
+        .easing-demo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 10px;
+        }
+        
+        .ease-linear { transition: transform 1s linear; }
+        .ease-in { transition: transform 1s ease-in; }
+        .ease-out { transition: transform 1s ease-out; }
+        .ease-in-out { transition: transform 1s ease-in-out; }
+        .ease-custom { transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        
+        .easing-demo:hover {
+            transform: translateX(100px);
+        }
+        
+        /* Demo 2: Keyframe Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .bounce-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            border-radius: 50%;
+            animation: bounce 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .rotate-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            border-radius: 10px;
+            animation: rotate 3s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .pulse-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Demo 3: Loading Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes dots {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .dots-loader {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: dots 1.4s ease-in-out infinite both;
+        }
+        
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(3) { animation-delay: 0s; }
+        
+        /* Demo 4: Advanced Animations */
+        @keyframes morphing {
+            0% {
+                border-radius: 10px;
+                background: linear-gradient(45deg, #74b9ff, #0984e3);
+            }
+            25% {
+                border-radius: 50%;
+                background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            }
+            50% {
+                border-radius: 10px 50px;
+                background: linear-gradient(45deg, #00b894, #00cec9);
+            }
+            75% {
+                border-radius: 50% 10px;
+                background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            }
+            100% {
+                border-radius: 10px;
+                background: linear-gradient(45deg, #74b9ff, #0984e3);
+            }
+        }
+        
+        .morph-box {
+            width: 100px;
+            height: 100px;
+            animation: morphing 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Demo 5: Hover Effects */
+        .hover-card {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hover-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .hover-card:hover::before {
+            left: 100%;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Demo 6: Text Animations */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid #667eea;
+            white-space: nowrap;
+            animation: 
+                typewriter 3s steps(40, end),
+                blink 0.75s step-end infinite;
+            font-family: monospace;
+            font-size: 1.2em;
+            color: #2d3436;
+        }
+        
+        /* Interactive Controls */
+        .animation-controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #2d3436;
+            min-width: 120px;
+        }
+        
+        .control-group select, .control-group input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .animated-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        /* Performance Demo */
+        .performance-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        
+        .perf-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            border-radius: 8px;
+            animation: pulse 1s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-button.secondary {
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Bài 5: CSS Animations & Transitions</h1>
+        <p class="subtitle">Tạo hiệu ứng chuyển động mượt mà với CSS Animations, Keyframes và Advanced Transitions</p>
+        
+        <!-- Section 1: CSS Transitions -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                CSS Transitions Basic
+            </h2>
+            <p>Transitions tạo hiệu ứng chuyển đổi mượt mà giữa các states của element.</p>
+            
+            <div class="code-example">
+.box {
+    transition: all 0.3s ease;
+    /* property | duration | timing-function | delay */
+}
+
+.box:hover {
+    transform: scale(1.1) rotate(5deg);
+    background: #fd79a8;
+    border-radius: 50%;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="transition-box">Hover me!</div>
+            </div>
+            
+            <p><strong>🎯 Timing Functions (Easing):</strong></p>
+            <div class="demo-container" style="flex-direction: column; align-items: stretch;">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                    <div class="easing-demo ease-linear">Linear</div>
+                    <div class="easing-demo ease-in">Ease-in</div>
+                    <div class="easing-demo ease-out">Ease-out</div>
+                    <div class="easing-demo ease-in-out">Ease-in-out</div>
+                    <div class="easing-demo ease-custom">Custom</div>
+                </div>
+                <p style="text-align: center; margin-top: 15px; color: #636e72;">
+                    <em>Hover để xem các easing functions khác nhau</em>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Section 2: CSS Keyframe Animations -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Keyframe Animations
+            </h2>
+            <p>Tạo animations phức tạp với nhiều keyframes và timing controls.</p>
+            
+            <div class="code-example">
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.bounce-element {
+    animation: bounce 2s infinite;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="bounce-box">Bounce</div>
+                <div class="rotate-box">Rotate</div>
+                <div class="pulse-box">Pulse</div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Loading Animations -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Loading Animations
+            </h2>
+            <p>Các pattern loading animations phổ biến cho UX tốt hơn.</p>
+            
+            <div class="code-example">
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes dots {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 20px;"><strong>🔄 Spinner Loading:</strong></p>
+                    <div class="spinner"></div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 20px;"><strong>⚫ Dots Loading:</strong></p>
+                    <div class="dots-loader">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Advanced Morphing -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Shape Morphing Animation
+            </h2>
+            <p>Animation phức tạp với shape morphing và gradient changes.</p>
+            
+            <div class="code-example">
+@keyframes morphing {
+    0% {
+        border-radius: 10px;
+        background: linear-gradient(45deg, #74b9ff, #0984e3);
+    }
+    25% {
+        border-radius: 50%;
+        background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+    }
+    50% {
+        border-radius: 10px 50px;
+        background: linear-gradient(45deg, #00b894, #00cec9);
+    }
+    100% {
+        border-radius: 10px;
+        background: linear-gradient(45deg, #74b9ff, #0984e3);
+    }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="morph-box">Morph</div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Hover Effects -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Advanced Hover Effects
+            </h2>
+            <p>Hover effects phức tạp với pseudo-elements và múltiple animations.</p>
+            
+            <div class="code-example">
+.card::before {
+    content: '';
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.card:hover::before {
+    left: 100%; /* Shine effect */
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="hover-card">
+                    <div>
+                        <h4>✨ Hover Card</h4>
+                        <p>Shine + Lift Effect</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Text Animations -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Text Animations
+            </h2>
+            <p>Hiệu ứng text động như typewriter, fade-in, và text reveals.</p>
+            
+            <div class="code-example">
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: 3px solid;
+    white-space: nowrap;
+    animation: 
+        typewriter 3s steps(40, end),
+        blink 0.75s step-end infinite;
+}
+            </div>
+            
+            <div class="demo-container" style="flex-direction: column;">
+                <div class="typewriter">CSS Animations are awesome! ✨</div>
+            </div>
+        </div>
+        
+        <!-- Section 7: Interactive Animation Controls -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">🎮</span>
+                Interactive Animation Playground
+            </h2>
+            <p>Thử nghiệm với các thuộc tính animation:</p>
+            
+            <div class="animation-controls">
+                <div class="control-group">
+                    <label for="animation-name">Animation:</label>
+                    <select id="animation-name" onchange="updateAnimation()">
+                        <option value="bounce">Bounce</option>
+                        <option value="rotate">Rotate</option>
+                        <option value="pulse">Pulse</option>
+                        <option value="morphing">Morphing</option>
+                    </select>
+                    
+                    <label for="duration">Duration:</label>
+                    <input type="range" id="duration" min="0.5" max="5" step="0.5" value="2" onchange="updateAnimation()">
+                    <span id="duration-value">2s</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="timing">Timing Function:</label>
+                    <select id="timing" onchange="updateAnimation()">
+                        <option value="linear">linear</option>
+                        <option value="ease">ease</option>
+                        <option value="ease-in">ease-in</option>
+                        <option value="ease-out">ease-out</option>
+                        <option value="ease-in-out">ease-in-out</option>
+                    </select>
+                    
+                    <label for="iteration">Iteration:</label>
+                    <select id="iteration" onchange="updateAnimation()">
+                        <option value="1">1 time</option>
+                        <option value="3">3 times</option>
+                        <option value="infinite">infinite</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <button class="play-button" onclick="restartAnimation()">🔄 Restart Animation</button>
+                </div>
+            </div>
+            
+            <div class="demo-container">
+                <div class="animated-box" id="animated-box">Demo</div>
+            </div>
+        </div>
+        
+        <!-- Section 8: Performance Considerations -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">⚡</span>
+                Performance & Best Practices
+            </h2>
+            <p>Optimization tips cho smooth animations và tránh layout thrashing.</p>
+            
+            <div class="code-example">
+/* ✅ Good - Animate transform and opacity */
+.smooth-animation {
+    transform: translateX(100px) scale(1.2);
+    opacity: 0.8;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ❌ Avoid - Animating layout properties */
+.laggy-animation {
+    width: 200px;    /* Causes layout recalculation */
+    height: 200px;   /* Expensive! */
+    margin-left: 50px;
+}
+
+/* 🚀 Use transform instead */
+.better-animation {
+    transform: translateX(50px) scale(1.2);
+}
+            </div>
+            
+            <div class="demo-container" style="flex-direction: column;">
+                <h4>🚀 Optimized Animation Demo (60fps):</h4>
+                <div class="performance-demo">
+                    <div class="perf-box" style="--delay: 0;"></div>
+                    <div class="perf-box" style="--delay: 1;"></div>
+                    <div class="perf-box" style="--delay: 2;"></div>
+                    <div class="perf-box" style="--delay: 3;"></div>
+                    <div class="perf-box" style="--delay: 4;"></div>
+                    <div class="perf-box" style="--delay: 5;"></div>
+                    <div class="perf-box" style="--delay: 6;"></div>
+                    <div class="perf-box" style="--delay: 7;"></div>
+                </div>
+                <p style="text-align: center; color: #636e72; margin-top: 15px;">
+                    <em>Using CSS custom properties for staggered animations</em>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Best Practices -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">💡</span>
+                Animation Best Practices
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Performance Tips</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Animate transform & opacity</li>
+                        <li>✅ Use will-change property</li>
+                        <li>✅ Avoid animating layout</li>
+                        <li>✅ Use CSS instead of JS</li>
+                        <li>✅ Debounce scroll animations</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 UX Guidelines</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Duration: 200-500ms for UI</li>
+                        <li>✅ Use easing functions</li>
+                        <li>✅ Respect prefers-reduced-motion</li>
+                        <li>✅ Provide loading states</li>
+                        <li>✅ Keep it subtle</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Common Patterns</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Hover states</li>
+                        <li>✅ Loading animations</li>
+                        <li>✅ Page transitions</li>
+                        <li>✅ Micro-interactions</li>
+                        <li>✅ Progress indicators</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="04-responsive-patterns.html" class="nav-button secondary">← Bài trước: Responsive Patterns</a>
+            <a href="index.html" class="nav-button secondary">Lab04 Home</a>
+            <a href="06-modern-layout.html" class="nav-button">Bài tiếp theo: Modern Layout →</a>
+        </div>
+    </div>
+    
+    <script>
+        function updateAnimation() {
+            const box = document.getElementById('animated-box');
+            const animationName = document.getElementById('animation-name').value;
+            const duration = document.getElementById('duration').value;
+            const timing = document.getElementById('timing').value;
+            const iteration = document.getElementById('iteration').value;
+            
+            box.style.animation = `${animationName} ${duration}s ${timing} ${iteration}`;
+            
+            document.getElementById('duration-value').textContent = duration + 's';
+        }
+        
+        function restartAnimation() {
+            const box = document.getElementById('animated-box');
+            box.style.animation = 'none';
+            box.offsetHeight; // Trigger reflow
+            updateAnimation();
+        }
+        
+        // Auto-restart typewriter animation
+        setInterval(() => {
+            const typewriter = document.querySelector('.typewriter');
+            typewriter.style.animation = 'none';
+            typewriter.offsetHeight; // Trigger reflow
+            typewriter.style.animation = 'typewriter 3s steps(40, end), blink 0.75s step-end infinite';
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab04: CSS Nâng cao cho Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 0;
+        }
+        
+        .exercise-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .exercise-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .exercise-number {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-title {
+            font-size: 1.4em;
+            color: #2d3436;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .exercise-description {
+            color: #636e72;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .exercise-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .difficulty {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .difficulty.basic {
+            background: #00b894;
+            color: white;
+        }
+        
+        .difficulty.intermediate {
+            background: #fdcb6e;
+            color: #2d3436;
+        }
+        
+        .difficulty.advanced {
+            background: #e17055;
+            color: white;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .skill-tag {
+            background: #f1f2f6;
+            color: #2d3436;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            border: 1px solid #ddd;
+        }
+        
+        .progress-section {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            border-radius: 5px;
+            animation: fillProgress 2s ease-out forwards;
+        }
+        
+        @keyframes fillProgress {
+            to { width: 12.5%; }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .exercises-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Lab04: CSS Nâng cao cho Layout</h1>
+            <p>Khám phá các kỹ thuật layout chuyên nghiệp: CSS Grid, Flexbox nâng cao, Responsive Design và CSS Animation</p>
+        </div>
+        
+        <div class="exercises-grid">
+            <div class="exercise-card">
+                <div class="difficulty basic">Cơ bản</div>
+                <div class="exercise-number">01</div>
+                <h3 class="exercise-title">CSS Grid Foundation</h3>
+                <p class="exercise-description">Tìm hiểu cơ bản về CSS Grid - hệ thống layout 2 chiều mạnh mẽ nhất trong CSS hiện đại.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">grid-template</span>
+                    <span class="skill-tag">grid-area</span>
+                    <span class="skill-tag">grid-gap</span>
+                </div>
+                <a href="01-css-grid-foundation.html" class="exercise-link">Bắt đầu học</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty intermediate">Trung bình</div>
+                <div class="exercise-number">02</div>
+                <h3 class="exercise-title">Advanced Grid Layouts</h3>
+                <p class="exercise-description">Tạo các layout phức tạp với Grid Areas, Auto-fit, Auto-fill và responsive grid systems.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">grid-template-areas</span>
+                    <span class="skill-tag">auto-fit</span>
+                    <span class="skill-tag">minmax()</span>
+                </div>
+                <a href="02-advanced-grid.html" class="exercise-link">Khám phá</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty intermediate">Trung bình</div>
+                <div class="exercise-number">03</div>
+                <h3 class="exercise-title">Flexbox Advanced</h3>
+                <p class="exercise-description">Kỹ thuật Flexbox nâng cao: nested flexbox, complex alignments và flex-grow/shrink mastery.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">flex-grow</span>
+                    <span class="skill-tag">flex-shrink</span>
+                    <span class="skill-tag">nested-flex</span>
+                </div>
+                <a href="03-flexbox-advanced.html" class="exercise-link">Thực hành</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty advanced">Nâng cao</div>
+                <div class="exercise-number">04</div>
+                <h3 class="exercise-title">Responsive Design Patterns</h3>
+                <p class="exercise-description">Các mẫu thiết kế responsive hiện đại: Mobile-first, Container Queries và Fluid Typography.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">mobile-first</span>
+                    <span class="skill-tag">fluid-design</span>
+                    <span class="skill-tag">container-queries</span>
+                </div>
+                <a href="04-responsive-patterns.html" class="exercise-link">Tìm hiểu</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty advanced">Nâng cao</div>
+                <div class="exercise-number">05</div>
+                <h3 class="exercise-title">CSS Animations & Transitions</h3>
+                <p class="exercise-description">Tạo các hiệu ứng chuyển động mượt mà với CSS Animations, Keyframes và Advanced Transitions.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">@keyframes</span>
+                    <span class="skill-tag">transform</span>
+                    <span class="skill-tag">easing</span>
+                </div>
+                <a href="05-css-animations.html" class="exercise-link">Tạo hiệu ứng</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty advanced">Nâng cao</div>
+                <div class="exercise-number">06</div>
+                <h3 class="exercise-title">Modern Layout Techniques</h3>
+                <p class="exercise-description">Kết hợp Grid + Flexbox, CSS Subgrid, Container Units và các kỹ thuật layout cutting-edge.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">subgrid</span>
+                    <span class="skill-tag">container-units</span>
+                    <span class="skill-tag">hybrid-layouts</span>
+                </div>
+                <a href="06-modern-layout.html" class="exercise-link">Khám phá</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty advanced">Nâng cao</div>
+                <div class="exercise-number">07</div>
+                <h3 class="exercise-title">Performance & Optimization</h3>
+                <p class="exercise-description">Tối ưu hóa CSS cho performance: Critical CSS, CSS-in-JS strategies và loading optimization.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">critical-css</span>
+                    <span class="skill-tag">optimization</span>
+                    <span class="skill-tag">performance</span>
+                </div>
+                <a href="07-css-performance.html" class="exercise-link">Tối ưu hóa</a>
+            </div>
+            
+            <div class="exercise-card">
+                <div class="difficulty advanced">Nâng cao</div>
+                <div class="exercise-number">08</div>
+                <h3 class="exercise-title">Final Project: Modern Portfolio</h3>
+                <p class="exercise-description">Dự án tổng hợp: Tạo Modern Portfolio Website responsive và chuyên nghiệp sử dụng tất cả kỹ thuật Lab04.</p>
+                <div class="skills-list">
+                    <span class="skill-tag">portfolio</span>
+                    <span class="skill-tag">modern-css</span>
+                    <span class="skill-tag">responsive</span>
+                    <span class="skill-tag">integration</span>
+                </div>
+                <a href="final-project/index.html" class="exercise-link">Bắt đầu dự án</a>
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <h3>📊 Tiến độ học tập</h3>
+            <p>Lab04 Progress: 0/8 bài tập hoàn thành</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p>🎯 Mục tiêu: Thành thạo CSS Layout nâng cao và tạo ra các website chuyên nghiệp</p>
+        </div>
+    </div>
+</body>
+</html>

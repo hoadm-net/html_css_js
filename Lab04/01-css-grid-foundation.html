@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 1: CSS Grid Foundation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section-title {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .demo-grid {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        
+        /* Demo 1: Basic Grid */
+        .grid-basic {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 100px 100px;
+            gap: 10px;
+        }
+        
+        .grid-item {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .grid-item:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        
+        /* Demo 2: Fixed and Flexible */
+        .grid-mixed {
+            display: grid;
+            grid-template-columns: 200px 1fr 100px;
+            grid-template-rows: 80px 80px;
+            gap: 15px;
+        }
+        
+        .item-fixed {
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        /* Demo 3: Grid Areas */
+        .grid-areas {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: 60px 120px 60px;
+            grid-template-areas: 
+                "header header header"
+                "sidebar main aside"
+                "footer footer footer";
+            gap: 10px;
+        }
+        
+        .grid-header { 
+            grid-area: header; 
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .grid-sidebar { 
+            grid-area: sidebar; 
+            background: linear-gradient(90deg, #fd79a8, #fdcb6e);
+        }
+        .grid-main { 
+            grid-area: main; 
+            background: linear-gradient(90deg, #74b9ff, #0984e3);
+        }
+        .grid-aside { 
+            grid-area: aside; 
+            background: linear-gradient(90deg, #00b894, #00cec9);
+        }
+        .grid-footer { 
+            grid-area: footer; 
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+        }
+        
+        /* Demo 4: Responsive Grid */
+        .grid-responsive {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .responsive-item {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Interactive Controls */
+        .controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            margin: 15px 0;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .interactive-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-button.secondary {
+            background: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .grid-basic {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .grid-mixed {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-areas {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "main"
+                    "sidebar"
+                    "aside"
+                    "footer";
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Bài 1: CSS Grid Foundation</h1>
+        <p class="subtitle">Nền tảng cơ bản về CSS Grid - Hệ thống layout 2 chiều mạnh mẽ</p>
+        
+        <!-- Section 1: Grid Basics -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Grid Cơ Bản
+            </h2>
+            <p>CSS Grid là hệ thống layout 2 chiều cho phép bạn kiểm soát cả hàng và cột. Khác với Flexbox (1 chiều), Grid hoàn hảo cho layouts phức tạp.</p>
+            
+            <div class="code-example">
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 cột bằng nhau */
+    grid-template-rows: 100px 100px;    /* 2 hàng 100px */
+    gap: 10px;                          /* Khoảng cách 10px */
+}
+            </div>
+            
+            <div class="demo-grid">
+                <div class="grid-basic">
+                    <div class="grid-item">Item 1</div>
+                    <div class="grid-item">Item 2</div>
+                    <div class="grid-item">Item 3</div>
+                    <div class="grid-item">Item 4</div>
+                    <div class="grid-item">Item 5</div>
+                    <div class="grid-item">Item 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 2: Fixed vs Flexible -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Kết Hợp Fixed và Flexible
+            </h2>
+            <p>Bạn có thể mix các đơn vị: pixel (cố định), fr (linh hoạt), auto (theo nội dung).</p>
+            
+            <div class="code-example">
+.grid-mixed {
+    display: grid;
+    grid-template-columns: 200px 1fr 100px; /* Fixed - Flexible - Fixed */
+    gap: 15px;
+}
+            </div>
+            
+            <div class="demo-grid">
+                <div class="grid-mixed">
+                    <div class="item-fixed">200px Fixed</div>
+                    <div class="item-fixed">1fr Flexible</div>
+                    <div class="item-fixed">100px Fixed</div>
+                    <div class="item-fixed">Sidebar</div>
+                    <div class="item-fixed">Main Content Area</div>
+                    <div class="item-fixed">Ads</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Grid Areas -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Grid Template Areas
+            </h2>
+            <p>Cách tuyệt vời để tạo layout semantic - đặt tên cho các vùng và sắp xếp chúng như một bản đồ.</p>
+            
+            <div class="code-example">
+.layout {
+    display: grid;
+    grid-template-areas: 
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+            </div>
+            
+            <div class="demo-grid">
+                <div class="grid-areas">
+                    <div class="grid-item grid-header">Header</div>
+                    <div class="grid-item grid-sidebar">Sidebar</div>
+                    <div class="grid-item grid-main">Main Content</div>
+                    <div class="grid-item grid-aside">Aside</div>
+                    <div class="grid-item grid-footer">Footer</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Responsive Grid -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Responsive Grid với auto-fit
+            </h2>
+            <p>Tạo grid tự động responsive mà không cần media queries!</p>
+            
+            <div class="code-example">
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+/* auto-fit: tự động fit các items
+   minmax(150px, 1fr): tối thiểu 150px, tối đa chia đều */
+            </div>
+            
+            <div class="demo-grid">
+                <div class="grid-responsive">
+                    <div class="responsive-item">Card 1</div>
+                    <div class="responsive-item">Card 2</div>
+                    <div class="responsive-item">Card 3</div>
+                    <div class="responsive-item">Card 4</div>
+                    <div class="responsive-item">Card 5</div>
+                    <div class="responsive-item">Card 6</div>
+                </div>
+            </div>
+            <p><em>💡 Thử thay đổi kích thước cửa sổ để xem grid tự động điều chỉnh!</em></p>
+        </div>
+        
+        <!-- Section 5: Interactive Controls -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Thực Hành Tương Tác
+            </h2>
+            <p>Thử nghiệm với các thuộc tính Grid:</p>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="columns">Grid Template Columns:</label>
+                    <select id="columns" onchange="updateGrid()">
+                        <option value="1fr 1fr 1fr">1fr 1fr 1fr (3 cột bằng nhau)</option>
+                        <option value="200px 1fr 100px">200px 1fr 100px (Fixed-Flex-Fixed)</option>
+                        <option value="repeat(4, 1fr)">repeat(4, 1fr) (4 cột bằng nhau)</option>
+                        <option value="repeat(auto-fit, minmax(100px, 1fr))">auto-fit minmax(100px, 1fr)</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="gap">Gap (khoảng cách):</label>
+                    <input type="range" id="gap" min="0" max="30" value="10" onchange="updateGrid()">
+                    <span id="gap-value">10px</span>
+                </div>
+            </div>
+            
+            <div class="demo-grid">
+                <div class="interactive-grid" id="interactive-grid">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Concepts Summary -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">📝</span>
+                Tóm Tắt Kiến Thức
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Grid Container Properties</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✅ display: grid</li>
+                        <li>✅ grid-template-columns</li>
+                        <li>✅ grid-template-rows</li>
+                        <li>✅ grid-template-areas</li>
+                        <li>✅ gap (grid-gap)</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Grid Units</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✅ fr (fraction) - chia tỷ lệ</li>
+                        <li>✅ px, em, % - fixed units</li>
+                        <li>✅ auto - theo nội dung</li>
+                        <li>✅ minmax() - min/max</li>
+                        <li>✅ repeat() - lặp lại</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #00b894, #00cec9); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Responsive Functions</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✅ auto-fit - fit items</li>
+                        <li>✅ auto-fill - fill space</li>
+                        <li>✅ minmax() - responsive sizing</li>
+                        <li>✅ clamp() - fluid sizing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="index.html" class="nav-button secondary">← Quay lại Lab04</a>
+            <a href="02-advanced-grid.html" class="nav-button">Bài tiếp theo: Advanced Grid →</a>
+        </div>
+    </div>
+    
+    <script>
+        function updateGrid() {
+            const grid = document.getElementById('interactive-grid');
+            const columns = document.getElementById('columns').value;
+            const gap = document.getElementById('gap').value;
+            
+            grid.style.gridTemplateColumns = columns;
+            grid.style.gap = gap + 'px';
+            
+            document.getElementById('gap-value').textContent = gap + 'px';
+        }
+        
+        // Add hover effects
+        document.querySelectorAll('.grid-item, .responsive-item, .item-fixed').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

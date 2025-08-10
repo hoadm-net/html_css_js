@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn thực hiện - Lab04 Final Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for guide page */
+        .guide-navigation {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .guide-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .guide-steps-nav {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+        }
+
+        .guide-steps-nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .guide-steps-nav a.active,
+        .guide-steps-nav a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .guide-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .step-number-large {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .step-info h2 {
+            margin: 0 0 10px 0;
+            color: var(--text-dark);
+            font-size: 2rem;
+        }
+
+        .step-info .step-description {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .step-content {
+            display: grid;
+            gap: 30px;
+        }
+
+        .substep {
+            padding: 25px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .substep h3 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .substep p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-example .comment {
+            color: #68d391;
+        }
+
+        .code-example .tag {
+            color: #f687b3;
+        }
+
+        .code-example .attribute {
+            color: #63b3ed;
+        }
+
+        .code-example .string {
+            color: #faf089;
+        }
+
+        .tips-box {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+            border: 2px solid #68d391;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tips-box h4 {
+            color: #2f855a;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tips-box ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #2f855a;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fef5e7, #fff8ed);
+            border: 2px solid #f6ad55;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box h4 {
+            color: #c05621;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .warning-box p {
+            color: #c05621;
+            margin: 0;
+        }
+
+        .image-example {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .image-example img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .image-example .caption {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .checklist {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .checklist h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.2);
+            accent-color: var(--primary);
+        }
+
+        .checklist-item label {
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .progress-tracker {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            z-index: 50;
+        }
+
+        .progress-tracker h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .progress-step.completed .progress-dot {
+            background: var(--primary);
+        }
+
+        .progress-step.active .progress-dot {
+            background: var(--accent);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .next-step-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .next-step-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .progress-tracker {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .guide-steps-nav {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .guide-steps-nav a {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            .step-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .step-number-large {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .step-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .code-example {
+                font-size: 0.8rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="guide-navigation">
+        <div class="guide-nav-content">
+            <div class="nav-logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    ← Lab04 Final Project
+                </a>
+            </div>
+            <ul class="guide-steps-nav">
+                <li><a href="#step1" class="active">Bước 1</a></li>
+                <li><a href="#step2">Bước 2</a></li>
+                <li><a href="#step3">Bước 3</a></li>
+                <li><a href="#step4">Bước 4</a></li>
+                <li><a href="#step5">Bước 5</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+        <h4>Tiến độ</h4>
+        <div class="progress-steps">
+            <div class="progress-step active">
+                <div class="progress-dot"></div>
+                <span>Chuẩn bị</span>
+            </div>
+            <div class="progress-step">
+                <div class="progress-dot"></div>
+                <span>Setup</span>
+            </div>
+            <div class="progress-step">
+                <div class="progress-dot"></div>
+                <span>Layout</span>
+            </div>
+            <div class="progress-step">
+                <div class="progress-dot"></div>
+                <span>Content</span>
+            </div>
+            <div class="progress-step">
+                <div class="progress-dot"></div>
+                <span>Deploy</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Step 1: Preparation -->
+        <section id="step1" class="guide-section">
+            <div class="step-header">
+                <div class="step-number-large">1</div>
+                <div class="step-info">
+                    <h2>Chuẩn bị dự án</h2>
+                    <p class="step-description">Thiết lập môi trường và tải template cần thiết</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="substep">
+                    <h3>📁 Tạo thư mục dự án</h3>
+                    <p>Tạo thư mục mới cho portfolio của bạn và mở trong VS Code:</p>
+                    <div class="code-example">
+mkdir my-portfolio
+cd my-portfolio
+code .
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>📄 Tải template</h3>
+                    <p>Sao chép nội dung từ template.html vào file index.html mới:</p>
+                    <div class="tips-box">
+                        <h4>💡 Mẹo:</h4>
+                        <ul>
+                            <li>Đặt tên file là <code>index.html</code> để làm trang chính</li>
+                            <li>Tạo thêm file <code>style.css</code> để tách riêng CSS</li>
+                            <li>Tạo file <code>script.js</code> cho JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>🔧 Cấu trúc file</h3>
+                    <p>Tổ chức file theo cấu trúc sau:</p>
+                    <div class="file-tree">
+my-portfolio/
+├── index.html          <span class="comment"># Trang chính</span>
+├── style.css           <span class="comment"># File CSS chính</span>
+├── script.js           <span class="comment"># File JavaScript</span>
+├── images/             <span class="comment"># Thư mục ảnh</span>
+│   ├── profile.jpg     <span class="comment"># Ảnh cá nhân</span>
+│   └── projects/       <span class="comment"># Ảnh dự án</span>
+└── assets/             <span class="comment"># Tài nguyên khác</span>
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <h4>✅ Checklist Bước 1:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1-1">
+                        <label for="check1-1">Đã tạo thư mục dự án</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1-2">
+                        <label for="check1-2">Đã mở VS Code</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1-3">
+                        <label for="check1-3">Đã tạo file index.html</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1-4">
+                        <label for="check1-4">Đã sao chép template</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="next-step-btn" onclick="scrollToStep(2)">Tiếp theo: Setup HTML</button>
+        </section>
+
+        <!-- Step 2: HTML Setup -->
+        <section id="step2" class="guide-section">
+            <div class="step-header">
+                <div class="step-number-large">2</div>
+                <div class="step-info">
+                    <h2>Thiết lập HTML</h2>
+                    <p class="step-description">Tùy chỉnh nội dung và cấu trúc HTML</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="substep">
+                    <h3>📝 Cập nhật thông tin cá nhân</h3>
+                    <p>Thay đổi các phần sau trong HTML:</p>
+                    <div class="code-example">
+<span class="comment">&lt;!-- Trong navigation --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"logo"</span><span class="tag">&gt;</span>Tên Của Bạn<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Trong hero section --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Xin chào, tôi là [Tên của bạn]<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;p&gt;</span>Web Developer & UI/UX Designer<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>🎨 Thêm thông tin About</h3>
+                    <p>Viết giới thiệu về bản thân trong section About:</p>
+                    <div class="code-example">
+<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"about-text"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Về tôi<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;p&gt;</span>
+        Tôi là một web developer đam mê tạo ra những 
+        trải nghiệm web tuyệt vời. Với kinh nghiệm 
+        trong HTML, CSS, JavaScript...
+    <span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>🛠️ Cập nhật Skills</h3>
+                    <p>Thay đổi danh sách kỹ năng phù hợp với bạn:</p>
+                    <div class="code-example">
+<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"skill-card"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"skill-icon"</span><span class="tag">&gt;</span>🎨<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;h3&gt;</span>Frontend<span class="tag">&lt;/h3&gt;</span>
+    <span class="tag">&lt;p&gt;</span>HTML5, CSS3, JavaScript ES6+, React<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Lưu ý:</h4>
+                    <p>Nhớ thay đổi tất cả placeholder text và thông tin mẫu thành thông tin thật của bạn. Kiểm tra kỹ trước khi chuyển bước tiếp theo.</p>
+                </div>
+
+                <div class="checklist">
+                    <h4>✅ Checklist Bước 2:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2-1">
+                        <label for="check2-1">Đã cập nhật tên và logo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2-2">
+                        <label for="check2-2">Đã viết phần giới thiệu</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2-3">
+                        <label for="check2-3">Đã cập nhật skills</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2-4">
+                        <label for="check2-4">Đã kiểm tra toàn bộ nội dung</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="next-step-btn" onclick="scrollToStep(3)">Tiếp theo: CSS Layout</button>
+        </section>
+
+        <!-- Step 3: CSS Layout -->
+        <section id="step3" class="guide-section">
+            <div class="step-header">
+                <div class="step-number-large">3</div>
+                <div class="step-info">
+                    <h2>Tùy chỉnh CSS Layout</h2>
+                    <p class="step-description">Thiết kế layout và màu sắc theo ý thích</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="substep">
+                    <h3>🎨 Tùy chỉnh màu sắc</h3>
+                    <p>Thay đổi CSS variables để đổi màu toàn bộ website:</p>
+                    <div class="code-example">
+:root {
+    <span class="comment">/* Thay đổi màu chính */</span>
+    --primary: <span class="string">#667eea</span>;        <span class="comment">/* Màu chính */</span>
+    --secondary: <span class="string">#764ba2</span>;      <span class="comment">/* Màu phụ */</span>
+    --accent: <span class="string">#10d5c2</span>;         <span class="comment">/* Màu nhấn */</span>
+    --text-dark: <span class="string">#2d3436</span>;      <span class="comment">/* Chữ đậm */</span>
+    --text-light: <span class="string">#636e72</span>;     <span class="comment">/* Chữ nhạt */</span>
+}
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>📐 Điều chỉnh Grid Layout</h3>
+                    <p>Tùy chỉnh layout grid cho các section:</p>
+                    <div class="code-example">
+<span class="comment">/* Skills Grid - Thay đổi số cột */</span>
+.skills-grid {
+    display: grid;
+    grid-template-columns: <span class="string">repeat(3, 1fr)</span>; <span class="comment">/* 3 cột thay vì auto-fit */</span>
+    gap: 2rem;
+}
+
+<span class="comment">/* Portfolio Grid - Layout khác */</span>
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: <span class="string">2fr 1fr 1fr</span>; <span class="comment">/* Cột đầu to hơn */</span>
+    gap: 2rem;
+}
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>✨ Thêm animations</h3>
+                    <p>Tạo hiệu ứng chuyển động cho các element:</p>
+                    <div class="code-example">
+<span class="comment">/* Hover effect cho cards */</span>
+.skill-card {
+    transition: <span class="string">all 0.3s ease</span>;
+}
+
+.skill-card:hover {
+    transform: <span class="string">translateY(-10px) scale(1.02)</span>;
+    box-shadow: <span class="string">0 15px 40px rgba(0,0,0,0.2)</span>;
+}
+
+<span class="comment">/* Animation khi scroll */</span>
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+                    </div>
+                </div>
+
+                <div class="tips-box">
+                    <h4>💡 Mẹo CSS:</h4>
+                    <ul>
+                        <li>Sử dụng CSS Grid cho layout chính, Flexbox cho alignment</li>
+                        <li>Dùng CSS variables để dễ thay đổi màu sắc</li>
+                        <li>Thêm transition cho mọi hover effect</li>
+                        <li>Test responsive trên nhiều kích thước màn hình</li>
+                    </ul>
+                </div>
+
+                <div class="checklist">
+                    <h4>✅ Checklist Bước 3:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3-1">
+                        <label for="check3-1">Đã tùy chỉnh màu sắc</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3-2">
+                        <label for="check3-2">Đã điều chỉnh grid layout</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3-3">
+                        <label for="check3-3">Đã thêm animations</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3-4">
+                        <label for="check3-4">Đã test responsive</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="next-step-btn" onclick="scrollToStep(4)">Tiếp theo: Thêm nội dung</button>
+        </section>
+
+        <!-- Step 4: Content Addition -->
+        <section id="step4" class="guide-section">
+            <div class="step-header">
+                <div class="step-number-large">4</div>
+                <div class="step-info">
+                    <h2>Thêm nội dung Portfolio</h2>
+                    <p class="step-description">Upload ảnh và thêm dự án thực tế</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="substep">
+                    <h3>📸 Thêm ảnh cá nhân</h3>
+                    <p>Thay thế ảnh placeholder bằng ảnh thật:</p>
+                    <div class="code-example">
+<span class="comment">&lt;!-- Thay đổi src của ảnh --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attribute">src</span>=<span class="string">"images/profile.jpg"</span> <span class="attribute">alt</span>=<span class="string">"Ảnh của tôi"</span><span class="tag">&gt;</span>
+                    </div>
+                    <div class="tips-box">
+                        <h4>💡 Mẹo về ảnh:</h4>
+                        <ul>
+                            <li>Kích thước ảnh nên từ 400x400px trở lên</li>
+                            <li>Format: JPG hoặc PNG, nén để giảm dung lượng</li>
+                            <li>Ảnh nên có ánh sáng tốt và rõ nét</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>💼 Thêm dự án Portfolio</h3>
+                    <p>Cập nhật section portfolio với dự án thật:</p>
+                    <div class="code-example">
+<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"portfolio-item"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;img</span> <span class="attribute">src</span>=<span class="string">"images/projects/project1.jpg"</span> <span class="attribute">alt</span>=<span class="string">"Website thương mại điện tử"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"portfolio-info"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h3&gt;</span>Website Bán Hàng<span class="tag">&lt;/h3&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Website thương mại điện tử với React, Node.js<span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;a</span> <span class="attribute">href</span>=<span class="string">"https://github.com/username/project"</span> <span class="attribute">class</span>=<span class="string">"portfolio-link"</span><span class="tag">&gt;</span>
+            Xem trên GitHub →
+        <span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>📞 Cập nhật thông tin liên hệ</h3>
+                    <p>Thay đổi email, phone và social links:</p>
+                    <div class="code-example">
+<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="string">"contact-info"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h3&gt;</span>Thông tin liên hệ<span class="tag">&lt;/h3&gt;</span>
+    <span class="tag">&lt;p&gt;</span>📧 Email: your.real.email@gmail.com<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;p&gt;</span>📱 Phone: +84 xxx xxx xxx<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;p&gt;</span>💼 LinkedIn: /in/your-linkedin<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;p&gt;</span>🐙 GitHub: /your-github<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Bảo mật:</h4>
+                    <p>Cân nhắc kỹ trước khi public thông tin cá nhân như số phone. Có thể chỉ để email và social links.</p>
+                </div>
+
+                <div class="checklist">
+                    <h4>✅ Checklist Bước 4:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4-1">
+                        <label for="check4-1">Đã thêm ảnh cá nhân</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4-2">
+                        <label for="check4-2">Đã thêm ít nhất 3 dự án</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4-3">
+                        <label for="check4-3">Đã cập nhật thông tin liên hệ</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4-4">
+                        <label for="check4-4">Đã kiểm tra tất cả links</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="next-step-btn" onclick="scrollToStep(5)">Tiếp theo: Deploy website</button>
+        </section>
+
+        <!-- Step 5: Deployment -->
+        <section id="step5" class="guide-section">
+            <div class="step-header">
+                <div class="step-number-large">5</div>
+                <div class="step-info">
+                    <h2>Deploy và chia sẻ</h2>
+                    <p class="step-description">Đưa website lên internet để mọi người xem</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="substep">
+                    <h3>🚀 Deploy với GitHub Pages</h3>
+                    <p>Cách miễn phí và dễ nhất để host website:</p>
+                    <div class="code-example">
+<span class="comment"># 1. Tạo repository mới trên GitHub</span>
+<span class="comment"># 2. Upload code lên GitHub</span>
+git init
+git add .
+git commit -m "Initial portfolio"
+git remote add origin https://github.com/username/portfolio.git
+git push -u origin main
+
+<span class="comment"># 3. Enable GitHub Pages trong Settings</span>
+<span class="comment"># 4. Website sẽ có link: username.github.io/portfolio</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>🌐 Deploy với Netlify</h3>
+                    <p>Platform hosting miễn phí với nhiều tính năng:</p>
+                    <div class="tips-box">
+                        <h4>💡 Ưu điểm Netlify:</h4>
+                        <ul>
+                            <li>Drag & drop để deploy</li>
+                            <li>Custom domain miễn phí</li>
+                            <li>Auto deploy khi update code</li>
+                            <li>HTTPS tự động</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>🔧 Tối ưu trước deploy</h3>
+                    <p>Checklist để website chạy tốt nhất:</p>
+                    <div class="code-example">
+<span class="comment">/* Minify CSS */</span>
+<span class="comment">/* Compress images */</span>
+<span class="comment">/* Test trên mobile */</span>
+<span class="comment">/* Kiểm tra loading speed */</span>
+<span class="comment">/* Validate HTML/CSS */</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <h3>📈 Theo dõi và cải thiện</h3>
+                    <p>Sau khi deploy, bạn có thể:</p>
+                    <ul>
+                        <li>Thêm Google Analytics để theo dõi traffic</li>
+                        <li>Test speed với PageSpeed Insights</li>
+                        <li>Thu thập feedback từ bạn bè</li>
+                        <li>Cập nhật nội dung định kỳ</li>
+                    </ul>
+                </div>
+
+                <div class="checklist">
+                    <h4>✅ Checklist Bước 5:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5-1">
+                        <label for="check5-1">Đã tối ưu ảnh và code</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5-2">
+                        <label for="check5-2">Đã test trên mobile</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5-3">
+                        <label for="check5-3">Đã deploy lên hosting</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5-4">
+                        <label for="check5-4">Đã chia sẻ link với bạn bè</label>
+                    </div>
+                </div>
+
+                <div class="tips-box">
+                    <h4>🎉 Chúc mừng!</h4>
+                    <ul>
+                        <li>Bạn đã hoàn thành portfolio website đầu tiên!</li>
+                        <li>Đây là nền tảng để phát triển skills frontend</li>
+                        <li>Hãy tiếp tục học và cải thiện website</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="next-step-btn" onclick="window.open('https://github.com/pages', '_blank')">
+                    🚀 Đi đến GitHub Pages
+                </button>
+                <button class="next-step-btn" onclick="window.open('https://netlify.com', '_blank')" style="margin-left: 15px;">
+                    🌐 Đi đến Netlify
+                </button>
+            </div>
+        </section>
+
+        <!-- Navigation back to main -->
+        <div class="navigation">
+            <a href="index.html" class="nav-btn primary">← Quay lại trang chính</a>
+            <a href="../index.html" class="nav-btn secondary">← Quay lại Lab04</a>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function scrollToStep(stepNumber) {
+            const step = document.querySelector(`#step${stepNumber}`);
+            if (step) {
+                step.scrollIntoView({ behavior: 'smooth' });
+                updateActiveNav(stepNumber);
+                updateProgressTracker(stepNumber);
+            }
+        }
+
+        function updateActiveNav(stepNumber) {
+            const navLinks = document.querySelectorAll('.guide-steps-nav a');
+            navLinks.forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === stepNumber) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function updateProgressTracker(stepNumber) {
+            const progressSteps = document.querySelectorAll('.progress-step');
+            progressSteps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < stepNumber) {
+                    step.classList.add('completed');
+                } else if (index + 1 === stepNumber) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Intersection Observer for auto-updating navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.guide-section');
+            const navLinks = document.querySelectorAll('.guide-steps-nav a');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.id;
+                        const stepNumber = parseInt(sectionId.replace('step', ''));
+                        updateActiveNav(stepNumber);
+                        updateProgressTracker(stepNumber);
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '-20% 0px -20% 0px'
+            });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Navigation click handlers
+            navLinks.forEach((link, index) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    scrollToStep(index + 1);
+                });
+            });
+
+            // Checklist functionality
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.parentElement.style.opacity = '0.7';
+                        this.parentElement.style.textDecoration = 'line-through';
+                    } else {
+                        this.parentElement.style.opacity = '1';
+                        this.parentElement.style.textDecoration = 'none';
+                    }
+                });
+            });
+
+            // Load saved progress
+            loadProgress();
+        });
+
+        // Save and load progress
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            const progress = {};
+            checkboxes.forEach(checkbox => {
+                progress[checkbox.id] = checkbox.checked;
+            });
+            localStorage.setItem('portfolioProgress', JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('portfolioProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                Object.keys(progress).forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox && progress[id]) {
+                        checkbox.checked = true;
+                        checkbox.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
+        }
+
+        // Auto-save progress
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') {
+                saveProgress();
+            }
+        });
+    </script>
+</body>
+</html>

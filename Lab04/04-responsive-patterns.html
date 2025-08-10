@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4: Responsive Design Patterns</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #fd79a8;
+        }
+        
+        .section-title {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .demo-container {
+            border: 2px solid #fd79a8;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            background: #fff;
+        }
+        
+        /* Demo 1: Mobile-First Grid */
+        .mobile-first-grid {
+            display: grid;
+            gap: 15px;
+            /* Mobile first: 1 column */
+            grid-template-columns: 1fr;
+        }
+        
+        .grid-item {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Tablet: 2 columns */
+        @media (min-width: 768px) {
+            .mobile-first-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Desktop: 3 columns */
+        @media (min-width: 1024px) {
+            .mobile-first-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Demo 2: Fluid Typography */
+        .fluid-text {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .fluid-heading {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .fluid-subheading {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .fluid-body {
+            font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+            line-height: 1.6;
+            max-width: 60ch;
+            margin: 0 auto;
+        }
+        
+        /* Demo 3: Container Queries Simulation */
+        .container-demo {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .card-container {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .responsive-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .responsive-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* When card is wide, use horizontal layout */
+        @container (min-width: 400px) {
+            .responsive-card {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+        
+        /* Demo 4: Intrinsic Web Design */
+        .intrinsic-layout {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        }
+        
+        .intrinsic-item {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        /* Demo 5: Responsive Navigation */
+        .responsive-nav {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #667eea;
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-container {
+                position: relative;
+            }
+        }
+        
+        /* Demo 6: Responsive Images */
+        .image-demo {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .image-container {
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .responsive-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 3rem;
+        }
+        
+        /* Demo 7: Responsive Grid Layout */
+        .responsive-grid-layout {
+            display: grid;
+            gap: 20px;
+            grid-template-areas: 
+                "header"
+                "main"
+                "sidebar"
+                "footer";
+            grid-template-rows: auto 1fr auto auto;
+            min-height: 400px;
+        }
+        
+        .grid-header {
+            grid-area: header;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .grid-main {
+            grid-area: main;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grid-sidebar {
+            grid-area: sidebar;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .grid-footer {
+            grid-area: footer;
+            background: linear-gradient(90deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        /* Tablet Layout */
+        @media (min-width: 768px) {
+            .responsive-grid-layout {
+                grid-template-areas: 
+                    "header header"
+                    "sidebar main"
+                    "footer footer";
+                grid-template-columns: 200px 1fr;
+                grid-template-rows: auto 1fr auto;
+            }
+        }
+        
+        /* Desktop Layout */
+        @media (min-width: 1024px) {
+            .responsive-grid-layout {
+                grid-template-areas: 
+                    "header header header"
+                    "sidebar main main"
+                    "footer footer footer";
+                grid-template-columns: 200px 1fr 200px;
+            }
+        }
+        
+        /* Interactive Controls */
+        .responsive-controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .viewport-simulator {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 10px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            resize: horizontal;
+        }
+        
+        .viewport-content {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .device-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .device-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .device-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .device-btn.active {
+            background: #fd79a8;
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+        
+        .nav-button.secondary {
+            background: #6c757d;
+        }
+        
+        /* Responsive breakpoints demonstration */
+        .breakpoint-demo {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed #fd79a8;
+            text-align: center;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        
+        .breakpoint-demo::before {
+            content: "📱 Mobile View (< 768px)";
+        }
+        
+        @media (min-width: 768px) {
+            .breakpoint-demo::before {
+                content: "📱 Tablet View (768px - 1023px)";
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .breakpoint-demo::before {
+                content: "💻 Desktop View (≥ 1024px)";
+            }
+        }
+        
+        /* Utility classes for responsive design */
+        .hide-mobile {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .hide-mobile {
+                display: block;
+            }
+            
+            .hide-desktop {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Bài 4: Responsive Design Patterns</h1>
+        <p class="subtitle">Các mẫu thiết kế responsive hiện đại: Mobile-first, Container Queries, Fluid Design</p>
+        
+        <!-- Section 1: Mobile-First Approach -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Mobile-First Grid System
+            </h2>
+            <p>Thiết kế từ mobile trước, sau đó mở rộng cho tablet và desktop với media queries.</p>
+            
+            <div class="code-example">
+/* Mobile First: Start with 1 column */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="mobile-first-grid">
+                    <div class="grid-item">📱 Item 1</div>
+                    <div class="grid-item">📱 Item 2</div>
+                    <div class="grid-item">📱 Item 3</div>
+                    <div class="grid-item">📱 Item 4</div>
+                    <div class="grid-item">📱 Item 5</div>
+                    <div class="grid-item">📱 Item 6</div>
+                </div>
+            </div>
+            
+            <div class="breakpoint-demo"></div>
+        </div>
+        
+        <!-- Section 2: Fluid Typography -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Fluid Typography với clamp()
+            </h2>
+            <p>Typography tự động scale theo viewport width sử dụng CSS clamp() function.</p>
+            
+            <div class="code-example">
+/* Fluid Typography with clamp() */
+.heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    /* min: 1.5rem, preferred: 4vw, max: 3rem */
+}
+
+.body-text {
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    line-height: 1.6;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="fluid-text">
+                    <h2 class="fluid-heading">🎯 Fluid Typography</h2>
+                    <h3 class="fluid-subheading">Scales with viewport width</h3>
+                    <p class="fluid-body">
+                        Text này sẽ tự động scale từ nhỏ đến lớn theo kích thước màn hình. 
+                        Sử dụng clamp() để set min, preferred, và max values. 
+                        Thử thay đổi kích thước cửa sổ để thấy effect!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Container Queries (Simulation) -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Container-Based Responsive Design
+            </h2>
+            <p>Responsive dựa theo kích thước container thay vì viewport (Container Queries simulation).</p>
+            
+            <div class="code-example">
+/* Traditional: Based on viewport */
+@media (min-width: 768px) { ... }
+
+/* Container Queries: Based on container size */
+@container (min-width: 400px) {
+    .card {
+        display: flex;
+        align-items: center;
+    }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="container-demo">
+                    <h3 style="margin-bottom: 20px;">🔄 Container-Responsive Cards</h3>
+                    <div class="card-container">
+                        <div class="responsive-card">
+                            <div>
+                                <h4>💻 Card 1</h4>
+                                <p>Responsive to container width</p>
+                            </div>
+                        </div>
+                        <div class="responsive-card">
+                            <div>
+                                <h4>📱 Card 2</h4>
+                                <p>Layout changes based on space available</p>
+                            </div>
+                        </div>
+                        <div class="responsive-card">
+                            <div>
+                                <h4>🖥️ Card 3</h4>
+                                <p>Independent of viewport size</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Intrinsic Web Design -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Intrinsic Web Design
+            </h2>
+            <p>Layout tự nhiên thích ứng với content và container mà không cần nhiều media queries.</p>
+            
+            <div class="code-example">
+.intrinsic-grid {
+    display: grid;
+    gap: 20px;
+    /* Intrinsic sizing: min(300px, 100%) prevents overflow */
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+
+/* No media queries needed! Grid adapts naturally */
+            </div>
+            
+            <div class="demo-container">
+                <div class="intrinsic-layout">
+                    <div class="intrinsic-item">
+                        <h4>🎨 Design</h4>
+                        <p>Intrinsic sizing adapts naturally</p>
+                    </div>
+                    <div class="intrinsic-item">
+                        <h4>⚡ Performance</h4>
+                        <p>No complex media queries needed</p>
+                    </div>
+                    <div class="intrinsic-item">
+                        <h4>📐 Flexible</h4>
+                        <p>Content-aware responsive design</p>
+                    </div>
+                    <div class="intrinsic-item">
+                        <h4>🚀 Modern</h4>
+                        <p>CSS Grid native capabilities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Responsive Navigation -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Responsive Navigation Pattern
+            </h2>
+            <p>Navigation hamburger menu với smooth transitions cho mobile và desktop.</p>
+            
+            <div class="code-example">
+/* Desktop Navigation */
+.nav-menu {
+    display: flex;
+    gap: 30px;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-menu {
+        position: absolute;
+        flex-direction: column;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-menu.active {
+        transform: translateY(0);
+    }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="responsive-nav">
+                    <div class="nav-container">
+                        <div class="logo">🚀 Brand</div>
+                        <nav class="nav-menu" id="nav-menu">
+                            <a href="#" class="nav-item">Home</a>
+                            <a href="#" class="nav-item">About</a>
+                            <a href="#" class="nav-item">Services</a>
+                            <a href="#" class="nav-item">Contact</a>
+                        </nav>
+                        <div class="hamburger" id="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Responsive Grid Layout -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Multi-Layout Grid System
+            </h2>
+            <p>Layout thay đổi hoàn toàn structure cho từng breakpoint sử dụng grid-template-areas.</p>
+            
+            <div class="code-example">
+/* Mobile: Stack vertically */
+.layout {
+    grid-template-areas: 
+        "header"
+        "main"
+        "sidebar"
+        "footer";
+}
+
+/* Tablet: Sidebar left */
+@media (min-width: 768px) {
+    .layout {
+        grid-template-areas: 
+            "header header"
+            "sidebar main"
+            "footer footer";
+    }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="responsive-grid-layout">
+                    <div class="grid-header">📋 Header Section</div>
+                    <div class="grid-main">
+                        <div>
+                            <h3>📄 Main Content</h3>
+                            <p>Layout changes at different breakpoints</p>
+                        </div>
+                    </div>
+                    <div class="grid-sidebar">
+                        <h4>📊 Sidebar</h4>
+                        <p>Position changes responsive</p>
+                    </div>
+                    <div class="grid-footer">🔗 Footer Links</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 7: Responsive Testing -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">🎮</span>
+                Responsive Testing Simulator
+            </h2>
+            <p>Test responsive design ở các kích thước device khác nhau:</p>
+            
+            <div class="responsive-controls">
+                <div class="device-buttons">
+                    <button class="device-btn" onclick="setViewport(320, 'Mobile Portrait')">📱 Mobile</button>
+                    <button class="device-btn" onclick="setViewport(768, 'Tablet')">📱 Tablet</button>
+                    <button class="device-btn" onclick="setViewport(1024, 'Desktop')">💻 Desktop</button>
+                    <button class="device-btn" onclick="setViewport(1440, 'Large Desktop')">🖥️ Large</button>
+                </div>
+                
+                <div class="viewport-simulator" id="viewport-simulator" style="width: 100%; max-width: 1200px;">
+                    <div class="viewport-content" id="viewport-content">
+                        <h3 id="device-name">💻 Responsive Demo</h3>
+                        <p id="viewport-size">Thay đổi kích thước để test responsive</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 20px; width: 100%;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">Card 1</div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">Card 2</div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">Card 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Best Practices -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">💡</span>
+                Responsive Design Best Practices
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>📱 Mobile-First Strategy</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Thiết kế mobile trước</li>
+                        <li>✅ Progressive enhancement</li>
+                        <li>✅ Performance oriented</li>
+                        <li>✅ Touch-friendly interactions</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Breakpoint Strategy</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Content-based breakpoints</li>
+                        <li>✅ Major: 768px, 1024px</li>
+                        <li>✅ Use em/rem for consistency</li>
+                        <li>✅ Test between breakpoints</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #00b894, #00cec9); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>⚡ Performance Tips</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Optimize images</li>
+                        <li>✅ Minimize HTTP requests</li>
+                        <li>✅ Critical CSS first</li>
+                        <li>✅ Lazy load content</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="03-flexbox-advanced.html" class="nav-button secondary">← Bài trước: Flexbox Advanced</a>
+            <a href="index.html" class="nav-button secondary">Lab04 Home</a>
+            <a href="05-css-animations.html" class="nav-button">Bài tiếp theo: CSS Animations →</a>
+        </div>
+    </div>
+    
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Viewport simulator
+        function setViewport(width, deviceName) {
+            const simulator = document.getElementById('viewport-simulator');
+            const content = document.getElementById('viewport-content');
+            const nameElement = document.getElementById('device-name');
+            const sizeElement = document.getElementById('viewport-size');
+            
+            simulator.style.width = width + 'px';
+            simulator.style.maxWidth = width + 'px';
+            nameElement.textContent = deviceName;
+            sizeElement.textContent = `${width}px width`;
+            
+            // Update active button
+            document.querySelectorAll('.device-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Add hover effects
+        document.querySelectorAll('.grid-item, .responsive-card, .intrinsic-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 6: Modern Layout Techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section-title {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .demo-container {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fff;
+            min-height: 300px;
+        }
+        
+        /* Demo 1: CSS Grid + Flexbox Hybrid */
+        .hybrid-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas: 
+                "sidebar header"
+                "sidebar main"
+                "footer footer";
+            height: 400px;
+            gap: 15px;
+        }
+        
+        .hybrid-sidebar {
+            grid-area: sidebar;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .hybrid-header {
+            grid-area: header;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .hybrid-main {
+            grid-area: main;
+            background: #f1f3f4;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            align-content: start;
+        }
+        
+        .hybrid-footer {
+            grid-area: footer;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+        }
+        
+        /* Demo 2: Container Queries Simulation */
+        .container-query-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .responsive-component {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            container: card / inline-size;
+        }
+        
+        /* Future CSS Container Queries (current browsers support) */
+        @container card (max-width: 250px) {
+            .responsive-component {
+                flex-direction: column;
+                font-size: 0.9em;
+            }
+            .responsive-component h4 {
+                font-size: 1em;
+            }
+        }
+        
+        @container card (min-width: 300px) {
+            .responsive-component {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .responsive-component h4 {
+                font-size: 1.2em;
+            }
+        }
+        
+        /* Demo 3: Intrinsic Web Design */
+        .intrinsic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .intrinsic-card {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            aspect-ratio: 1;
+        }
+        
+        /* Demo 4: Subgrid Simulation */
+        .subgrid-demo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .subgrid-item {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-rows: subgrid;
+            gap: 10px;
+        }
+        
+        .subgrid-header {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .subgrid-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Demo 5: CSS Logical Properties */
+        .logical-demo {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .logical-box {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 200px;
+            flex: 1;
+            
+            /* Logical Properties */
+            margin-block-start: 10px;
+            margin-inline-end: 15px;
+            padding-block: 20px;
+            padding-inline: 25px;
+            border-inline-start: 4px solid #fff;
+        }
+        
+        /* Demo 6: CSS Clamp for Fluid Typography */
+        .fluid-typography {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .fluid-heading {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .fluid-text {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            max-width: 65ch;
+            margin: 0 auto;
+        }
+        
+        /* Demo 7: Modern CSS Units */
+        .modern-units-demo {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .unit-box {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100px;
+        }
+        
+        .vh-box { height: 20vh; }
+        .vw-box { width: min(100%, 25vw); }
+        .vmin-box { font-size: 3vmin; }
+        .ch-box { width: 20ch; font-family: monospace; }
+        
+        /* Demo 8: Advanced Layout Patterns */
+        .pancake-stack {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 300px;
+            gap: 15px;
+        }
+        
+        .pancake-header {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .pancake-main {
+            background: #f1f3f4;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+        }
+        
+        .pancake-footer {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        /* Demo 9: Multi-Column Layout */
+        .multi-column {
+            columns: 3;
+            column-gap: 30px;
+            column-rule: 2px solid #667eea;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .multi-column p {
+            margin-bottom: 15px;
+            text-align: justify;
+            break-inside: avoid;
+        }
+        
+        .multi-column h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            break-after: avoid;
+        }
+        
+        /* Interactive Controls */
+        .layout-controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #2d3436;
+            min-width: 120px;
+        }
+        
+        .control-group select, .control-group input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-button.secondary {
+            background: #6c757d;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hybrid-layout {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "main"
+                    "sidebar"
+                    "footer";
+            }
+            
+            .multi-column {
+                columns: 1;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Bài 6: Modern Layout Techniques</h1>
+        <p class="subtitle">Kết hợp Grid + Flexbox, Container Queries, Intrinsic Web Design và CSS Units hiện đại</p>
+        
+        <!-- Section 1: Grid + Flexbox Hybrid -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                CSS Grid + Flexbox Hybrid Layout
+            </h2>
+            <p>Kết hợp sức mạnh của Grid cho layout tổng thể và Flexbox cho alignment chi tiết.</p>
+            
+            <div class="code-example">
+.layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        "sidebar header"
+        "sidebar main"
+        "footer footer";
+}
+
+.header {
+    display: flex;              /* Flexbox inside Grid */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main {
+    display: grid;              /* Nested Grid */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="hybrid-layout">
+                    <div class="hybrid-sidebar">
+                        <h4>🔧 Sidebar</h4>
+                        <div>Navigation</div>
+                        <div>Menu Items</div>
+                        <div>Settings</div>
+                    </div>
+                    <div class="hybrid-header">
+                        <h3>📱 Header</h3>
+                        <div>User Menu</div>
+                    </div>
+                    <div class="hybrid-main">
+                        <div class="card-item">Card 1</div>
+                        <div class="card-item">Card 2</div>
+                        <div class="card-item">Card 3</div>
+                        <div class="card-item">Card 4</div>
+                    </div>
+                    <div class="hybrid-footer">© 2024 Modern Layout</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 2: Container Queries -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Container Queries & Intrinsic Sizing
+            </h2>
+            <p>Responsive components dựa trên kích thước container thay vì viewport.</p>
+            
+            <div class="code-example">
+.component {
+    container: card / inline-size;
+}
+
+@container card (max-width: 250px) {
+    .component {
+        flex-direction: column;
+        font-size: 0.9em;
+    }
+}
+
+@container card (min-width: 300px) {
+    .component {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="container-query-demo">
+                    <div class="responsive-component">
+                        <h4>📦 Component 1</h4>
+                        <p>Responsive to container</p>
+                    </div>
+                    <div class="responsive-component">
+                        <h4>📦 Component 2</h4>
+                        <p>Not viewport</p>
+                    </div>
+                    <div class="responsive-component">
+                        <h4>📦 Component 3</h4>
+                        <p>Try resizing!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Intrinsic Web Design -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Intrinsic Web Design
+            </h2>
+            <p>Layout tự thích ứng với nội dung sử dụng min(), max(), clamp().</p>
+            
+            <div class="code-example">
+.intrinsic-grid {
+    display: grid;
+    /* Responsive without media queries */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+}
+
+.fluid-typography {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    width: min(90%, 1200px);
+    margin: 0 auto;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="intrinsic-grid">
+                    <div class="intrinsic-card">
+                        <h4>🔄 Auto-fit</h4>
+                        <p>Tự động điều chỉnh</p>
+                    </div>
+                    <div class="intrinsic-card">
+                        <h4>📐 Min-max</h4>
+                        <p>Kích thước linh hoạt</p>
+                    </div>
+                    <div class="intrinsic-card">
+                        <h4>📱 Responsive</h4>
+                        <p>Không cần media queries</p>
+                    </div>
+                    <div class="intrinsic-card">
+                        <h4>⚡ Performance</h4>
+                        <p>Tối ưu tự động</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Fluid Typography -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Fluid Typography & Spacing
+            </h2>
+            <p>Typography và spacing thích ứng mượt mà với clamp() function.</p>
+            
+            <div class="code-example">
+.fluid-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    /* min: 1.5rem, preferred: 4vw, max: 3rem */
+}
+
+.fluid-spacing {
+    margin: clamp(1rem, 5vw, 3rem);
+    padding: clamp(0.5rem, 2vw, 2rem);
+}
+
+.fluid-width {
+    width: min(90%, 1200px);
+    margin: 0 auto;
+}
+            </div>
+            
+            <div class="demo-container">
+                <div class="fluid-typography">
+                    <h2 class="fluid-heading">🎨 Fluid Typography</h2>
+                    <p class="fluid-text">
+                        Đây là đoạn text sử dụng fluid typography với clamp(). 
+                        Kích thước font sẽ thay đổi mượt mà theo viewport, 
+                        từ 0.9rem đến 1.2rem. Thử thay đổi kích thước cửa sổ 
+                        để xem hiệu ứng!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Modern CSS Units -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Modern CSS Units & Logical Properties
+            </h2>
+            <p>Viewport units, logical properties và các units hiện đại cho responsive design.</p>
+            
+            <div class="code-example">
+/* Viewport Units */
+.hero { height: 100vh; }
+.sidebar { width: 25vw; }
+.responsive-text { font-size: 4vmin; }
+
+/* Logical Properties */
+.box {
+    margin-block-start: 1rem;    /* margin-top */
+    margin-inline-end: 2rem;     /* margin-right */
+    padding-block: 1rem;         /* padding-top + bottom */
+    padding-inline: 2rem;        /* padding-left + right */
+    border-inline-start: 2px solid blue;  /* border-left */
+}
+
+/* Character Units */
+.code { width: 40ch; }  /* 40 characters wide */
+            </div>
+            
+            <div class="demo-container">
+                <div class="modern-units-demo">
+                    <div class="unit-box vh-box">
+                        <h4>20vh</h4>
+                        <p>Viewport Height</p>
+                    </div>
+                    <div class="unit-box vw-box">
+                        <h4>25vw</h4>
+                        <p>Viewport Width</p>
+                    </div>
+                    <div class="unit-box vmin-box">
+                        <h4>3vmin</h4>
+                        <p>Viewport Min</p>
+                    </div>
+                    <div class="unit-box ch-box">
+                        <h4>20ch width</h4>
+                        <p>Character units</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="logical-demo">
+                        <div class="logical-box">
+                            <h4>📝 Logical Properties</h4>
+                            <p>Sử dụng logical properties thay vì physical properties cho internationalization tốt hơn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Layout Patterns -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Common Modern Layout Patterns
+            </h2>
+            <p>Các pattern layout phổ biến: Pancake Stack, Multi-column, Card Grid.</p>
+            
+            <div class="code-example">
+/* Pancake Stack Pattern */
+.layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+
+/* Multi-column Layout */
+.article {
+    columns: 3;
+    column-gap: 2rem;
+    column-rule: 2px solid #ccc;
+}
+
+/* Responsive Card Grid */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+            </div>
+            
+            <div class="demo-container">
+                <h4 style="margin-bottom: 15px;">🥞 Pancake Stack Pattern:</h4>
+                <div class="pancake-stack">
+                    <div class="pancake-header">Header: Auto height</div>
+                    <div class="pancake-main">
+                        <div style="text-align: center;">
+                            <h4>Main: Flexible height (1fr)</h4>
+                            <p>Takes up remaining space</p>
+                        </div>
+                    </div>
+                    <div class="pancake-footer">Footer: Auto height</div>
+                </div>
+                
+                <h4 style="margin: 20px 0 15px;">📰 Multi-column Layout:</h4>
+                <div class="multi-column">
+                    <h4>Modern CSS Features</h4>
+                    <p>CSS Grid đã revolutionize cách chúng ta tạo layout. Với Grid, chúng ta có thể tạo ra những layout phức tạp mà trước đây rất khó thực hiện.</p>
+                    
+                    <h4>Flexbox Integration</h4>
+                    <p>Flexbox hoàn hảo cho alignment và distribution. Kết hợp Grid và Flexbox cho những layout mạnh mẽ và linh hoạt.</p>
+                    
+                    <h4>Container Queries</h4>
+                    <p>Container Queries cho phép responsive design dựa trên container size thay vì viewport, mang lại flexibility cao hơn cho components.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 7: Interactive Layout Builder -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">🎮</span>
+                Interactive Layout Builder
+            </h2>
+            <p>Thử nghiệm với các thuộc tính layout:</p>
+            
+            <div class="layout-controls">
+                <div class="control-group">
+                    <label for="grid-columns">Grid Columns:</label>
+                    <select id="grid-columns" onchange="updateLayout()">
+                        <option value="repeat(auto-fit, minmax(150px, 1fr))">Auto-fit 150px</option>
+                        <option value="repeat(auto-fit, minmax(200px, 1fr))">Auto-fit 200px</option>
+                        <option value="repeat(3, 1fr)">3 columns</option>
+                        <option value="repeat(4, 1fr)">4 columns</option>
+                        <option value="1fr 2fr 1fr">1fr 2fr 1fr</option>
+                    </select>
+                    
+                    <label for="gap-size">Gap Size:</label>
+                    <input type="range" id="gap-size" min="10" max="40" value="20" onchange="updateLayout()">
+                    <span id="gap-value">20px</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="align-items">Align Items:</label>
+                    <select id="align-items" onchange="updateLayout()">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                    </select>
+                    
+                    <label for="justify-content">Justify Content:</label>
+                    <select id="justify-content" onchange="updateLayout()">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="demo-container">
+                <div id="interactive-grid" class="intrinsic-grid">
+                    <div class="intrinsic-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <h4>📦 Item 1</h4>
+                        <p>Interactive demo</p>
+                    </div>
+                    <div class="intrinsic-card" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+                        <h4>📦 Item 2</h4>
+                        <p>Modify controls</p>
+                    </div>
+                    <div class="intrinsic-card" style="background: linear-gradient(135deg, #fd79a8, #fdcb6e);">
+                        <h4>📦 Item 3</h4>
+                        <p>See changes</p>
+                    </div>
+                    <div class="intrinsic-card" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                        <h4>📦 Item 4</h4>
+                        <p>Real-time update</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Best Practices -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">💡</span>
+                Modern Layout Best Practices
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🏗️ Layout Strategy</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Grid for 2D layouts</li>
+                        <li>✅ Flexbox for 1D layouts</li>
+                        <li>✅ Combine both strategically</li>
+                        <li>✅ Use logical properties</li>
+                        <li>✅ Think mobile-first</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>📐 Sizing Strategy</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Use clamp() for fluid sizing</li>
+                        <li>✅ min() max() cho constraints</li>
+                        <li>✅ Viewport units strategically</li>
+                        <li>✅ Intrinsic sizing patterns</li>
+                        <li>✅ Container-based responsiveness</li>
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; padding: 20px; border-radius: 10px;">
+                    <h4>🎯 Performance Tips</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>✅ Reduce layout thrashing</li>
+                        <li>✅ Use CSS containment</li>
+                        <li>✅ Minimize media queries</li>
+                        <li>✅ Optimize critical CSS</li>
+                        <li>✅ Test on real devices</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="05-css-animations.html" class="nav-button secondary">← Bài trước: CSS Animations</a>
+            <a href="index.html" class="nav-button secondary">Lab04 Home</a>
+            <a href="07-css-performance.html" class="nav-button">Bài tiếp theo: Performance →</a>
+        </div>
+    </div>
+    
+    <script>
+        function updateLayout() {
+            const grid = document.getElementById('interactive-grid');
+            const columns = document.getElementById('grid-columns').value;
+            const gap = document.getElementById('gap-size').value;
+            const alignItems = document.getElementById('align-items').value;
+            const justifyContent = document.getElementById('justify-content').value;
+            
+            grid.style.gridTemplateColumns = columns;
+            grid.style.gap = gap + 'px';
+            grid.style.alignItems = alignItems;
+            grid.style.justifyContent = justifyContent;
+            
+            document.getElementById('gap-value').textContent = gap + 'px';
+        }
+        
+        // Initialize
+        updateLayout();
+    </script>
+</body>
+</html>

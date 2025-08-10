@@ -1,10 +1,112 @@
-# Khóa học Lập trình Web Cơ bản (HTML, CSS, JavaScript)
+# 🎯 HTML CSS JavaScript Learning Labs
 
-Nội dung tập trung vào HTML, CSS và JavaScript thuần, kết hợp thực hành để xây dựng một website tĩnh hoàn chỉnh và responsive.
+## 📚 Khóa học HTML, CSS, JavaScript từ cơ bản đến nâng cao
+
+Nội dung tập trung vào HTML, CSS và JavaScript thuần, kết hợp thực hành để xây dựng các website responsive và chuyên nghiệp.
+
+### 🏗️ Cấu trúc dự án
+
+```
+html_css_js/
+├── README.md                    # Tài liệu chính
+├── Lab01/                       # HTML Fundamentals
+├── Lab02/                       # CSS Basics & Styling
+├── Lab03/                       # CSS Layout & Positioning
+└── Lab04/                       # CSS Advanced Layout ⭐
+    ├── index.html               # Lab04 Navigation
+    ├── 01-css-grid-foundation.html     # CSS Grid cơ bản
+    ├── 02-advanced-grid.html           # Grid nâng cao
+    ├── 03-flexbox-advanced.html        # Flexbox nâng cao
+    ├── 04-responsive-patterns.html     # Responsive Design
+    ├── 05-css-animations.html          # CSS Animations
+    ├── 06-modern-layout.html           # Modern Layout
+    ├── 07-css-performance.html         # Performance & Optimization
+    └── final-project/                  # 🚀 Final Project
+        ├── index.html                  # Project Overview
+        ├── template.html               # Portfolio Template
+        ├── styles.css                  # CSS Framework
+        ├── script.js                   # Interactive Features
+        └── guide.html                  # Step-by-step Guide
+```
 
 ---
 
-## Nội dung khóa học
+## 🚀 Lab04: CSS Advanced Layout ⭐
+
+### Tổng quan
+Lab04 tập trung vào các kỹ thuật CSS layout nâng cao, từ CSS Grid, Flexbox đến Responsive Design và Performance optimization.
+
+### 📋 Nội dung học
+
+| Bài | Chủ đề | Mức độ | Thời gian |
+|-----|--------|---------|-----------|
+| 01 | CSS Grid Foundation | Cơ bản | 45 phút |
+| 02 | Advanced Grid Techniques | Trung bình | 60 phút |
+| 03 | Flexbox Advanced | Trung bình | 45 phút |
+| 04 | Responsive Design Patterns | Trung bình | 60 phút |
+| 05 | CSS Animations | Trung bình | 45 phút |
+| 06 | Modern Layout Techniques | Nâng cao | 60 phút |
+| 07 | Performance & Optimization | Nâng cao | 45 phút |
+| 08 | **Final Project: Modern Portfolio** | Nâng cao | 120 phút |
+
+### 🎯 Final Project: Modern Portfolio Website
+
+Dự án tổng hợp tạo một Portfolio Website chuyên nghiệp với:
+
+#### ✨ Tính năng
+- **Responsive Design**: Mobile-first, tương thích mọi thiết bị
+- **Modern CSS**: Grid, Flexbox, Custom Properties, Animations
+- **Performance**: Tối ưu loading, efficient CSS
+- **Interactive**: Smooth animations, hover effects
+- **Professional**: Clean code, semantic HTML
+
+#### 🛠️ Công nghệ sử dụng
+- HTML5 semantic
+- CSS Grid & Flexbox
+- CSS Custom Properties
+- CSS Animations & Transitions
+- JavaScript ES6+
+- Mobile-first Responsive Design
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone repository
+```bash
+git clone https://github.com/hoadm-net/html_css_js.git
+cd html_css_js
+```
+
+### 2. Mở Lab04
+```bash
+cd Lab04
+# Mở file index.html trong browser
+open index.html
+```
+
+### 3. Bắt đầu Final Project
+```bash
+cd Lab04/final-project
+# Mở project overview
+open index.html
+```
+
+## 📖 Hướng dẫn học
+
+### Dành cho người mới bắt đầu:
+1. Học tuần tự từ bài 01 → 07
+2. Thực hành code theo từng bài
+3. Hoàn thành Final Project
+
+### Dành cho người có kinh nghiệm:
+1. Review nhanh các bài cơ bản
+2. Tập trung vào bài 05-07 (nâng cao)
+3. Thực hiện Final Project
+
+---
+
+## Nội dung khóa học (Chi tiết)
 
 ### Chương 1: Giới thiệu Web & Môi trường làm việc
 - Cách web hoạt động (mô hình client–server, HTTP/HTTPS).
@@ -47,12 +149,49 @@ Nội dung tập trung vào HTML, CSS và JavaScript thuần, kết hợp thực
 
 ---
 
-## Mini-Project
+## 🎯 Mục tiêu học tập
 
-**Mục tiêu:** Xây dựng một trang web giới thiệu cá nhân hoặc landing page sản phẩm, áp dụng toàn bộ kiến thức từ chương 1–6.
+Sau khi hoàn thành khóa học, bạn sẽ:
 
-**Yêu cầu tối thiểu:**
-- Header với navbar.
+- ✅ Thành thạo HTML semantic và accessibility
+- ✅ Thành thạo CSS Grid và Flexbox
+- ✅ Tạo được layout responsive chuyên nghiệp
+- ✅ Hiểu và áp dụng CSS animations
+- ✅ Tối ưu performance CSS
+- ✅ Xây dựng được Portfolio Website hoàn chỉnh
+- ✅ Áp dụng modern CSS techniques
+- ✅ Code clean và maintainable
+- ✅ Thành thạo JavaScript DOM manipulation
+
+## 🔗 Resources
+
+### Online Tools
+- [CSS Grid Generator](https://cssgrid-generator.netlify.app/)
+- [Flexbox Froggy](https://flexboxfroggy.com/)
+- [Grid Garden](https://cssgridgarden.com/)
+- [Can I Use](https://caniuse.com/)
+
+### Documentation
+- [MDN CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout)
+- [MDN Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout)
+- [CSS Tricks Grid Guide](https://css-tricks.com/snippets/css/complete-guide-grid/)
+
+## 🤝 Contributing
+
+Hoan nghênh mọi đóng góp! Vui lòng tạo Pull Request hoặc mở Issue.
+
+## 📄 License
+
+MIT License
+
+## 👨‍💻 Author
+
+**Hoa Dinh**
+- GitHub: [@hoadm-net](https://github.com/hoadm-net)
+
+---
+
+⭐ Nếu repository này hữu ích, hãy star để ủng hộ nhé!
 - Hero section hoặc phần giới thiệu.
 - Khu vực nội dung chính (grid sản phẩm hoặc gallery).
 - Footer với thông tin liên hệ.
