@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS07: DOM Basics - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-number {
+            color: #f6ad55;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-button.purple {
+            background: var(--purple);
+            color: white;
+        }
+
+        .demo-button.teal {
+            background: var(--teal);
+            color: white;
+        }
+
+        .demo-button.pink {
+            background: var(--pink);
+            color: white;
+        }
+
+        .demo-button.success {
+            background: var(--success);
+            color: white;
+        }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .dom-tree {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .tree-node {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0 10px 20px;
+            position: relative;
+        }
+
+        .tree-node::before {
+            content: "📄";
+            position: absolute;
+            left: -25px;
+            top: 15px;
+        }
+
+        .tree-node.element::before {
+            content: "🏷️";
+        }
+
+        .tree-node.text::before {
+            content: "📝";
+        }
+
+        .live-demo {
+            background: linear-gradient(135deg, #fff3e0, #fce4ec);
+            border: 2px solid var(--pink);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .demo-playground {
+            background: white;
+            border: 2px dashed var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 100px;
+        }
+
+        .sample-element {
+            background: var(--info);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .sample-element:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: var(--warning) !important;
+            color: white !important;
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS07</div>
+            <h1>🌳 DOM Basics</h1>
+            <p>Learn to interact with and manipulate web page elements</p>
+        </div>
+
+        <!-- DOM Introduction -->
+        <section class="section">
+            <h2>🌐 What is the DOM?</h2>
+            
+            <p><strong>DOM (Document Object Model)</strong> is a programming interface that represents the HTML document as a tree structure. JavaScript can use the DOM to:</p>
+            
+            <ul style="margin: 20px 0; padding-left: 30px;">
+                <li>📝 <strong>Read</strong> content from web pages</li>
+                <li>✏️ <strong>Modify</strong> text, attributes, và styles</li>
+                <li>➕ <strong>Add</strong> new elements và content</li>
+                <li>❌ <strong>Remove</strong> elements from the page</li>
+                <li>👂 <strong>Listen</strong> for user interactions</li>
+            </ul>
+
+            <div class="dom-tree">
+                <h3>🌳 DOM Tree Structure</h3>
+                <div class="tree-node">
+                    <strong>document</strong> (root)
+                    <div class="tree-node element">
+                        <strong>&lt;html&gt;</strong>
+                        <div class="tree-node element">
+                            <strong>&lt;head&gt;</strong>
+                            <div class="tree-node element">
+                                <strong>&lt;title&gt;</strong>
+                                <div class="tree-node text">Page Title</div>
+                            </div>
+                        </div>
+                        <div class="tree-node element">
+                            <strong>&lt;body&gt;</strong>
+                            <div class="tree-node element">
+                                <strong>&lt;h1&gt;</strong>
+                                <div class="tree-node text">Main Heading</div>
+                            </div>
+                            <div class="tree-node element">
+                                <strong>&lt;p&gt;</strong>
+                                <div class="tree-node text">Paragraph text</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selecting Elements -->
+        <section class="section">
+            <h2>🎯 Selecting Elements</h2>
+            
+            <p>Before you can manipulate elements, you need to select them from the DOM:</p>
+
+            <h3>Basic Selection Methods</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Select by ID</span>
+<span class="code-keyword">let</span> element = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"myId"</span>);
+
+<span class="code-comment">// Select by class name (returns HTMLCollection)</span>
+<span class="code-keyword">let</span> elements = <span class="code-keyword">document</span>.<span class="code-keyword">getElementsByClassName</span>(<span class="code-string">"myClass"</span>);
+
+<span class="code-comment">// Select by tag name</span>
+<span class="code-keyword">let</span> paragraphs = <span class="code-keyword">document</span>.<span class="code-keyword">getElementsByTagName</span>(<span class="code-string">"p"</span>);
+
+<span class="code-comment">// Modern CSS selectors (recommended)</span>
+<span class="code-keyword">let</span> singleElement = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">"#myId"</span>); <span class="code-comment">// First match</span>
+<span class="code-keyword">let</span> multipleElements = <span class="code-keyword">document</span>.<span class="code-keyword">querySelectorAll</span>(<span class="code-string">".myClass"</span>); <span class="code-comment">// All matches</span>
+
+<span class="code-comment">// Complex selectors</span>
+<span class="code-keyword">let</span> specificElement = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">"div.container > p:first-child"</span>);
+<span class="code-keyword">let</span> allButtons = <span class="code-keyword">document</span>.<span class="code-keyword">querySelectorAll</span>(<span class="code-string">"button[type='submit']"</span>);</code></pre>
+            </div>
+
+            <h3>Selection Examples</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Check if element exists before using</span>
+<span class="code-keyword">let</span> myElement = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"header"</span>);
+<span class="code-keyword">if</span> (myElement) {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Element found!"</span>);
+} <span class="code-keyword">else</span> {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Element not found!"</span>);
+}
+
+<span class="code-comment">// Working with NodeList (querySelectorAll)</span>
+<span class="code-keyword">let</span> allParagraphs = <span class="code-keyword">document</span>.<span class="code-keyword">querySelectorAll</span>(<span class="code-string">"p"</span>);
+allParagraphs.<span class="code-keyword">forEach</span>((<span class="code-keyword">paragraph</span>, <span class="code-keyword">index</span>) => {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">`Paragraph ${index}: ${paragraph.textContent}`</span>);
+});
+
+<span class="code-comment">// Convert HTMLCollection to Array</span>
+<span class="code-keyword">let</span> divs = <span class="code-keyword">document</span>.<span class="code-keyword">getElementsByTagName</span>(<span class="code-string">"div"</span>);
+<span class="code-keyword">let</span> divsArray = <span class="code-keyword">Array</span>.<span class="code-keyword">from</span>(divs);
+divsArray.<span class="code-keyword">forEach</span>(<span class="code-keyword">div</span> => {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(div.<span class="code-keyword">className</span>);
+});</code></pre>
+            </div>
+        </section>
+
+        <!-- Manipulating Elements -->
+        <section class="section">
+            <h2>✏️ Manipulating Elements</h2>
+            
+            <h3>Changing Content</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Change text content</span>
+<span class="code-keyword">let</span> heading = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">"h1"</span>);
+heading.<span class="code-keyword">textContent</span> = <span class="code-string">"New Heading Text"</span>;
+
+<span class="code-comment">// Change HTML content</span>
+<span class="code-keyword">let</span> container = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"container"</span>);
+container.<span class="code-keyword">innerHTML</span> = <span class="code-string">"&lt;p&gt;New &lt;strong&gt;HTML&lt;/strong&gt; content&lt;/p&gt;"</span>;
+
+<span class="code-comment">// Safer alternative to innerHTML</span>
+container.<span class="code-keyword">textContent</span> = <span class="code-string">"Safe text content"</span>; <span class="code-comment">// Won't execute scripts</span>
+
+<span class="code-comment">// Get current content</span>
+<span class="code-keyword">let</span> currentText = heading.<span class="code-keyword">textContent</span>;
+<span class="code-keyword">let</span> currentHTML = container.<span class="code-keyword">innerHTML</span>;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Current text:"</span>, currentText);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Current HTML:"</span>, currentHTML);</code></pre>
+            </div>
+
+            <h3>Changing Attributes</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Set attributes</span>
+<span class="code-keyword">let</span> image = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">"img"</span>);
+image.<span class="code-keyword">setAttribute</span>(<span class="code-string">"src"</span>, <span class="code-string">"new-image.jpg"</span>);
+image.<span class="code-keyword">setAttribute</span>(<span class="code-string">"alt"</span>, <span class="code-string">"New description"</span>);
+
+<span class="code-comment">// Direct property access (preferred for common attributes)</span>
+image.<span class="code-keyword">src</span> = <span class="code-string">"another-image.jpg"</span>;
+image.<span class="code-keyword">alt</span> = <span class="code-string">"Another description"</span>;
+
+<span class="code-comment">// Get attributes</span>
+<span class="code-keyword">let</span> imageSrc = image.<span class="code-keyword">getAttribute</span>(<span class="code-string">"src"</span>);
+<span class="code-keyword">let</span> imageAlt = image.<span class="code-keyword">alt</span>; <span class="code-comment">// Direct property</span>
+
+<span class="code-comment">// Check if attribute exists</span>
+<span class="code-keyword">if</span> (image.<span class="code-keyword">hasAttribute</span>(<span class="code-string">"data-id"</span>)) {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Has data-id attribute"</span>);
+}
+
+<span class="code-comment">// Remove attributes</span>
+image.<span class="code-keyword">removeAttribute</span>(<span class="code-string">"data-old"</span>);</code></pre>
+            </div>
+
+            <h3>Changing Styles</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Direct style manipulation</span>
+<span class="code-keyword">let</span> element = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"myElement"</span>);
+element.<span class="code-keyword">style</span>.<span class="code-keyword">color</span> = <span class="code-string">"red"</span>;
+element.<span class="code-keyword">style</span>.<span class="code-keyword">backgroundColor</span> = <span class="code-string">"yellow"</span>;
+element.<span class="code-keyword">style</span>.<span class="code-keyword">fontSize</span> = <span class="code-string">"20px"</span>;
+element.<span class="code-keyword">style</span>.<span class="code-keyword">display</span> = <span class="code-string">"none"</span>; <span class="code-comment">// Hide element</span>
+
+<span class="code-comment">// CSS classes (recommended approach)</span>
+element.<span class="code-keyword">className</span> = <span class="code-string">"new-class"</span>; <span class="code-comment">// Replace all classes</span>
+element.<span class="code-keyword">className</span> += <span class="code-string">" additional-class"</span>; <span class="code-comment">// Add class</span>
+
+<span class="code-comment">// Modern classList methods</span>
+element.<span class="code-keyword">classList</span>.<span class="code-keyword">add</span>(<span class="code-string">"highlight"</span>); <span class="code-comment">// Add class</span>
+element.<span class="code-keyword">classList</span>.<span class="code-keyword">remove</span>(<span class="code-string">"old-class"</span>); <span class="code-comment">// Remove class</span>
+element.<span class="code-keyword">classList</span>.<span class="code-keyword">toggle</span>(<span class="code-string">"active"</span>); <span class="code-comment">// Toggle class</span>
+element.<span class="code-keyword">classList</span>.<span class="code-keyword">contains</span>(<span class="code-string">"highlight"</span>); <span class="code-comment">// Check if has class</span>
+
+<span class="code-comment">// Multiple style changes</span>
+<span class="code-keyword">Object</span>.<span class="code-keyword">assign</span>(element.<span class="code-keyword">style</span>, {
+    color: <span class="code-string">"blue"</span>,
+    backgroundColor: <span class="code-string">"lightgray"</span>,
+    padding: <span class="code-string">"10px"</span>,
+    border: <span class="code-string">"2px solid black"</span>
+});</code></pre>
+            </div>
+        </section>
+
+        <!-- Creating and Adding Elements -->
+        <section class="section">
+            <h2>➕ Creating & Adding Elements</h2>
+            
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Create new elements</span>
+<span class="code-keyword">let</span> newParagraph = <span class="code-keyword">document</span>.<span class="code-keyword">createElement</span>(<span class="code-string">"p"</span>);
+newParagraph.<span class="code-keyword">textContent</span> = <span class="code-string">"This is a new paragraph"</span>;
+newParagraph.<span class="code-keyword">className</span> = <span class="code-string">"new-paragraph"</span>;
+
+<span class="code-comment">// Create text nodes</span>
+<span class="code-keyword">let</span> textNode = <span class="code-keyword">document</span>.<span class="code-keyword">createTextNode</span>(<span class="code-string">"Just some text"</span>);
+
+<span class="code-comment">// Add elements to the DOM</span>
+<span class="code-keyword">let</span> container = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"container"</span>);
+
+<span class="code-comment">// Append to end</span>
+container.<span class="code-keyword">appendChild</span>(newParagraph);
+
+<span class="code-comment">// Insert at specific position</span>
+<span class="code-keyword">let</span> firstChild = container.<span class="code-keyword">firstElementChild</span>;
+container.<span class="code-keyword">insertBefore</span>(newParagraph, firstChild);
+
+<span class="code-comment">// Modern methods (more flexible)</span>
+container.<span class="code-keyword">prepend</span>(newParagraph); <span class="code-comment">// Add to beginning</span>
+container.<span class="code-keyword">append</span>(newParagraph); <span class="code-comment">// Add to end</span>
+firstChild.<span class="code-keyword">before</span>(newParagraph); <span class="code-comment">// Insert before element</span>
+firstChild.<span class="code-keyword">after</span>(newParagraph); <span class="code-comment">// Insert after element</span>
+
+<span class="code-comment">// Create complex structures</span>
+<span class="code-keyword">let</span> newDiv = <span class="code-keyword">document</span>.<span class="code-keyword">createElement</span>(<span class="code-string">"div"</span>);
+newDiv.<span class="code-keyword">innerHTML</span> = <span class="code-string">`
+    &lt;h3&gt;New Section&lt;/h3&gt;
+    &lt;p&gt;Content goes here&lt;/p&gt;
+    &lt;button&gt;Click me&lt;/button&gt;
+`</span>;
+container.<span class="code-keyword">append</span>(newDiv);</code></pre>
+            </div>
+
+            <h3>Removing Elements</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Remove element (modern way)</span>
+<span class="code-keyword">let</span> elementToRemove = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">".remove-me"</span>);
+<span class="code-keyword">if</span> (elementToRemove) {
+    elementToRemove.<span class="code-keyword">remove</span>();
+}
+
+<span class="code-comment">// Remove element (traditional way)</span>
+<span class="code-keyword">let</span> parent = elementToRemove.<span class="code-keyword">parentNode</span>;
+<span class="code-keyword">if</span> (parent) {
+    parent.<span class="code-keyword">removeChild</span>(elementToRemove);
+}
+
+<span class="code-comment">// Remove all children</span>
+<span class="code-keyword">let</span> container = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"container"</span>);
+container.<span class="code-keyword">innerHTML</span> = <span class="code-string">""</span>; <span class="code-comment">// Quick but not always best</span>
+
+<span class="code-comment">// Remove children one by one (safer)</span>
+<span class="code-keyword">while</span> (container.<span class="code-keyword">firstChild</span>) {
+    container.<span class="code-keyword">removeChild</span>(container.<span class="code-keyword">firstChild</span>);
+}
+
+<span class="code-comment">// Modern alternative</span>
+container.<span class="code-keyword">replaceChildren</span>(); <span class="code-comment">// Remove all children</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demos -->
+        <section class="section">
+            <h2>🎮 Interactive DOM Lab</h2>
+            
+            <div class="demo-grid">
+                <div class="interactive-demo">
+                    <h4>🎯 Element Selector</h4>
+                    <p>Practice selecting elements:</p>
+                    
+                    <input type="text" id="selectorInput" class="demo-input" placeholder="CSS selector (e.g., .sample-element)" value=".sample-element">
+                    
+                    <div>
+                        <button class="demo-button" onclick="selectElements('single')">querySelector</button>
+                        <button class="demo-button" onclick="selectElements('multiple')">querySelectorAll</button>
+                        <button class="demo-button purple" onclick="selectElements('highlight')">Highlight Selected</button>
+                    </div>
+                    
+                    <div id="selectorOutput" class="demo-output">
+                        Selection results will appear here...
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>✏️ Content Modifier</h4>
+                    <p>Change element content and attributes:</p>
+                    
+                    <input type="text" id="contentText" class="demo-input" placeholder="New text content" value="Updated content!">
+                    <input type="text" id="attributeKey" class="demo-input" placeholder="Attribute name" value="data-info">
+                    <input type="text" id="attributeValue" class="demo-input" placeholder="Attribute value" value="modified">
+                    
+                    <div>
+                        <button class="demo-button" onclick="modifyContent('text')">Change Text</button>
+                        <button class="demo-button" onclick="modifyContent('attribute')">Set Attribute</button>
+                        <button class="demo-button teal" onclick="modifyContent('style')">Change Style</button>
+                    </div>
+                    
+                    <div id="modifierOutput" class="demo-output">
+                        Modification results will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <div class="live-demo">
+                <h4>🏗️ Live DOM Playground</h4>
+                <p>Interactive elements you can manipulate:</p>
+                
+                <div class="demo-playground" id="livePlayground">
+                    <div class="sample-element" id="element1">Sample Element 1</div>
+                    <div class="sample-element" id="element2">Sample Element 2</div>
+                    <div class="sample-element" id="element3">Sample Element 3</div>
+                </div>
+                
+                <div>
+                    <button class="demo-button" onclick="domOperations('create')">Create Element</button>
+                    <button class="demo-button" onclick="domOperations('remove')">Remove Last</button>
+                    <button class="demo-button pink" onclick="domOperations('toggle')">Toggle Classes</button>
+                    <button class="demo-button success" onclick="domOperations('reset')">Reset Playground</button>
+                </div>
+                
+                <div id="playgroundOutput" class="demo-output">
+                    DOM operation logs will appear here...
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tree -->
+        <section class="section">
+            <h2>🧭 DOM Navigation</h2>
+            
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Parent navigation</span>
+<span class="code-keyword">let</span> element = <span class="code-keyword">document</span>.<span class="code-keyword">querySelector</span>(<span class="code-string">".child"</span>);
+<span class="code-keyword">let</span> parent = element.<span class="code-keyword">parentNode</span>; <span class="code-comment">// Any parent node</span>
+<span class="code-keyword">let</span> parentElement = element.<span class="code-keyword">parentElement</span>; <span class="code-comment">// Parent element only</span>
+
+<span class="code-comment">// Children navigation</span>
+<span class="code-keyword">let</span> container = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">"container"</span>);
+<span class="code-keyword">let</span> allChildren = container.<span class="code-keyword">children</span>; <span class="code-comment">// HTMLCollection of elements</span>
+<span class="code-keyword">let</span> allChildNodes = container.<span class="code-keyword">childNodes</span>; <span class="code-comment">// NodeList (includes text nodes)</span>
+<span class="code-keyword">let</span> firstChild = container.<span class="code-keyword">firstElementChild</span>;
+<span class="code-keyword">let</span> lastChild = container.<span class="code-keyword">lastElementChild</span>;
+
+<span class="code-comment">// Sibling navigation</span>
+<span class="code-keyword">let</span> nextSibling = element.<span class="code-keyword">nextElementSibling</span>;
+<span class="code-keyword">let</span> previousSibling = element.<span class="code-keyword">previousElementSibling</span>;
+
+<span class="code-comment">// Find specific elements</span>
+<span class="code-keyword">let</span> closestSection = element.<span class="code-keyword">closest</span>(<span class="code-string">"section"</span>); <span class="code-comment">// Find nearest ancestor</span>
+<span class="code-keyword">let</span> matchingChildren = container.<span class="code-keyword">querySelectorAll</span>(<span class="code-string">":scope > .direct-child"</span>);</code></pre>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS06-arrays-objects.html" class="nav-btn prev">← JS06: Arrays & Objects</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS08-event-handling.html" class="nav-btn next">JS08: Event Handling →</a>
+        </div>
+    </div>
+
+    <script>
+        // Element selection demo
+        function selectElements(type) {
+            const selector = document.getElementById('selectorInput').value;
+            const output = document.getElementById('selectorOutput');
+            
+            try {
+                let result = '';
+                
+                switch (type) {
+                    case 'single':
+                        const singleElement = document.querySelector(selector);
+                        if (singleElement) {
+                            result = `querySelector("${selector}"):\n`;
+                            result += `Found: ${singleElement.tagName} element\n`;
+                            result += `Text: "${singleElement.textContent}"\n`;
+                            result += `Classes: ${singleElement.className || 'none'}\n`;
+                            result += `ID: ${singleElement.id || 'none'}`;
+                        } else {
+                            result = `querySelector("${selector}"):\nNo element found!`;
+                        }
+                        break;
+                        
+                    case 'multiple':
+                        const multipleElements = document.querySelectorAll(selector);
+                        result = `querySelectorAll("${selector}"):\n`;
+                        result += `Found: ${multipleElements.length} elements\n\n`;
+                        
+                        multipleElements.forEach((el, index) => {
+                            result += `Element ${index + 1}:\n`;
+                            result += `- Tag: ${el.tagName}\n`;
+                            result += `- Text: "${el.textContent}"\n`;
+                            result += `- Classes: ${el.className || 'none'}\n\n`;
+                        });
+                        break;
+                        
+                    case 'highlight':
+                        const elements = document.querySelectorAll(selector);
+                        if (elements.length > 0) {
+                            elements.forEach(el => {
+                                el.classList.add('highlight');
+                                setTimeout(() => {
+                                    el.classList.remove('highlight');
+                                }, 2000);
+                            });
+                            result = `Highlighted ${elements.length} elements matching "${selector}"`;
+                        } else {
+                            result = `No elements found to highlight with selector "${selector}"`;
+                        }
+                        break;
+                }
+                
+                output.textContent = result;
+                
+            } catch (error) {
+                output.textContent = `Error: ${error.message}\nPlease check your selector syntax.`;
+            }
+        }
+
+        // Content modification demo
+        function modifyContent(type) {
+            const textInput = document.getElementById('contentText').value;
+            const attrKey = document.getElementById('attributeKey').value;
+            const attrValue = document.getElementById('attributeValue').value;
+            const output = document.getElementById('modifierOutput');
+            
+            const target = document.querySelector('.sample-element');
+            
+            if (!target) {
+                output.textContent = 'No sample element found to modify!';
+                return;
+            }
+            
+            let result = '';
+            
+            switch (type) {
+                case 'text':
+                    const oldText = target.textContent;
+                    target.textContent = textInput;
+                    result = `Text Content Modified:\n`;
+                    result += `Old: "${oldText}"\n`;
+                    result += `New: "${textInput}"\n\n`;
+                    result += `Method used: element.textContent = "${textInput}"`;
+                    break;
+                    
+                case 'attribute':
+                    target.setAttribute(attrKey, attrValue);
+                    result = `Attribute Set:\n`;
+                    result += `Key: "${attrKey}"\n`;
+                    result += `Value: "${attrValue}"\n\n`;
+                    result += `Method used: element.setAttribute("${attrKey}", "${attrValue}")`;
+                    break;
+                    
+                case 'style':
+                    const colors = ['red', 'blue', 'green', 'purple', 'orange'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    target.style.backgroundColor = randomColor;
+                    target.style.color = 'white';
+                    
+                    result = `Style Modified:\n`;
+                    result += `Background: ${randomColor}\n`;
+                    result += `Text Color: white\n\n`;
+                    result += `Method used: element.style.backgroundColor = "${randomColor}"`;
+                    break;
+            }
+            
+            output.textContent = result;
+        }
+
+        // DOM operations demo
+        let elementCounter = 3;
+
+        function domOperations(operation) {
+            const playground = document.getElementById('livePlayground');
+            const output = document.getElementById('playgroundOutput');
+            
+            let result = '';
+            
+            switch (operation) {
+                case 'create':
+                    elementCounter++;
+                    const newElement = document.createElement('div');
+                    newElement.className = 'sample-element';
+                    newElement.id = `element${elementCounter}`;
+                    newElement.textContent = `Sample Element ${elementCounter}`;
+                    
+                    playground.appendChild(newElement);
+                    
+                    result = `Created New Element:\n`;
+                    result += `Tag: div\n`;
+                    result += `Class: sample-element\n`;
+                    result += `ID: element${elementCounter}\n`;
+                    result += `Text: "Sample Element ${elementCounter}"\n\n`;
+                    result += `Code: document.createElement('div')`;
+                    break;
+                    
+                case 'remove':
+                    const lastElement = playground.lastElementChild;
+                    if (lastElement && lastElement.classList.contains('sample-element')) {
+                        const removedText = lastElement.textContent;
+                        lastElement.remove();
+                        
+                        result = `Removed Element:\n`;
+                        result += `Text: "${removedText}"\n`;
+                        result += `Method: element.remove()\n\n`;
+                        result += `Remaining elements: ${playground.querySelectorAll('.sample-element').length}`;
+                    } else {
+                        result = 'No elements to remove!';
+                    }
+                    break;
+                    
+                case 'toggle':
+                    const elements = playground.querySelectorAll('.sample-element');
+                    elements.forEach(el => {
+                        el.classList.toggle('highlight');
+                    });
+                    
+                    result = `Toggled Classes:\n`;
+                    result += `Elements affected: ${elements.length}\n`;
+                    result += `Method: element.classList.toggle('highlight')\n\n`;
+                    result += `Highlight class ${elements[0]?.classList.contains('highlight') ? 'added to' : 'removed from'} elements`;
+                    break;
+                    
+                case 'reset':
+                    playground.innerHTML = `
+                        <div class="sample-element" id="element1">Sample Element 1</div>
+                        <div class="sample-element" id="element2">Sample Element 2</div>
+                        <div class="sample-element" id="element3">Sample Element 3</div>
+                    `;
+                    elementCounter = 3;
+                    
+                    result = `Playground Reset:\n`;
+                    result += `Restored 3 original elements\n`;
+                    result += `Method: element.innerHTML = "..."\n\n`;
+                    result += `Note: innerHTML replaces all child content`;
+                    break;
+            }
+            
+            output.textContent = result;
+        }
+
+        // Welcome message
+        console.log('🌳 Welcome to JS07: DOM Basics!');
+        console.log('🎯 Learn to manipulate web page elements!');
+
+        // Demonstrate DOM concepts
+        console.log('📋 DOM Methods Demo:');
+        
+        // Show current page structure
+        console.log('Document title:', document.title);
+        console.log('Number of paragraphs:', document.querySelectorAll('p').length);
+        console.log('Elements with demo-button class:', document.querySelectorAll('.demo-button').length);
+
+        // Create example element in console
+        const consoleExample = document.createElement('div');
+        consoleExample.textContent = 'Created in console!';
+        consoleExample.style.color = 'blue';
+        console.log('Example element created:', consoleExample);
+
+        // Mark lesson as started
+        localStorage.setItem('js07_started', Date.now());
+        localStorage.setItem('js_progress_js07', 'true');
+    </script>
+</body>
+</html>
