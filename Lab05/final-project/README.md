@@ -7,7 +7,7 @@
 ## 🎯 Quick Start
 
 1. **View Project Requirements**: [index.html](index.html)
-2. **Read Complete Guide**: [PROJECT_GUIDE.md](PROJECT_GUIDE.md)
+2. **Read Complete Guide**: [guide.html](guide.html)
 3. **Start Development**: Tạo thư mục `app/` với responsive implementation
 
 ## 📋 Project Requirements
@@ -68,7 +68,7 @@ app/
 ## 🔗 Resources
 
 - **Lab05 Home**: [../index.html](../index.html)
-- **Complete Guide**: [PROJECT_GUIDE.md](PROJECT_GUIDE.md)
+- **Complete Guide**: [guide.html](guide.html)
 - **Example Demo**: [index.html](index.html)
 
 ## 🎓 Learning Goals
