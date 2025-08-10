@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS01: Giới thiệu JavaScript - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .lesson-objectives {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .lesson-objectives h2 {
+            color: var(--info);
+            margin-bottom: 15px;
+        }
+
+        .objectives-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .objective-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .try-it {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .try-it h4 {
+            color: var(--success);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fff3e0, #fff8e1);
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            border: 2px solid #e91e63;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quiz-section h2 {
+            color: #c2185b;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .quiz-options {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .quiz-options li {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: var(--bg-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-options li:hover {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .quiz-options li.correct {
+            background: var(--success);
+            color: white;
+        }
+
+        .quiz-options li.incorrect {
+            background: var(--danger);
+            color: white;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .objectives-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS01</div>
+            <h1>🚀 Giới thiệu JavaScript</h1>
+            <p>Discover the language that powers the modern web</p>
+        </div>
+
+        <div class="lesson-objectives">
+            <h2>🎯 Lesson Objectives</h2>
+            <div class="objectives-list">
+                <div class="objective-item">
+                    <span>✅</span>
+                    <span>Hiểu JavaScript là gì và tại sao nó quan trọng</span>
+                </div>
+                <div class="objective-item">
+                    <span>✅</span>
+                    <span>Biết cách JavaScript hoạt động trong web browser</span>
+                </div>
+                <div class="objective-item">
+                    <span>✅</span>
+                    <span>Setup development environment cho JavaScript</span>
+                </div>
+                <div class="objective-item">
+                    <span>✅</span>
+                    <span>Viết và chạy JavaScript code đầu tiên</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- What is JavaScript -->
+        <section class="section">
+            <h2>📖 JavaScript là gì?</h2>
+            
+            <p><strong>JavaScript</strong> là ngôn ngữ lập trình phổ biến nhất thế giới, được sử dụng để tạo ra những trang web tương tác và dynamic. Nó là ngôn ngữ duy nhất chạy native trong web browsers.</p>
+
+            <h3>🌟 Tại sao JavaScript quan trọng?</h3>
+            <ul>
+                <li><strong>Universal Language:</strong> Chạy ở mọi nơi - browser, server, mobile, desktop</li>
+                <li><strong>Easy to Learn:</strong> Syntax đơn giản, perfect cho beginners</li>
+                <li><strong>Powerful:</strong> Từ simple animations đến complex web applications</li>
+                <li><strong>In-Demand:</strong> Most popular programming language worldwide</li>
+                <li><strong>Active Community:</strong> Huge ecosystem với libraries và frameworks</li>
+            </ul>
+
+            <div class="info-box">
+                <h4>💡 Fun Facts về JavaScript</h4>
+                <ul>
+                    <li>Được tạo ra chỉ trong <strong>10 ngày</strong> năm 1995 bởi Brendan Eich</li>
+                    <li>Ban đầu tên là <strong>LiveScript</strong>, sau đó đổi thành JavaScript</li>
+                    <li>Không liên quan gì đến Java programming language</li>
+                    <li>Được sử dụng bởi <strong>97.8%</strong> tất cả websites</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- JavaScript vs Other Languages -->
+        <section class="section">
+            <h2>⚖️ JavaScript vs Other Languages</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>JavaScript</th>
+                        <th>Python</th>
+                        <th>Java</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Learning Curve</strong></td>
+                        <td>Easy</td>
+                        <td>Easy</td>
+                        <td>Moderate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Runs In Browser</strong></td>
+                        <td>✅ Native</td>
+                        <td>❌ No</td>
+                        <td>❌ No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speed</strong></td>
+                        <td>Fast</td>
+                        <td>Moderate</td>
+                        <td>Fast</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Job Market</strong></td>
+                        <td>🔥 High Demand</td>
+                        <td>🔥 High Demand</td>
+                        <td>📊 Stable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Cases</strong></td>
+                        <td>Web, Mobile, Server</td>
+                        <td>AI, Data Science</td>
+                        <td>Enterprise Apps</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Where JavaScript Runs -->
+        <section class="section">
+            <h2>🌐 JavaScript chạy ở đâu?</h2>
+            
+            <h3>1. 🌍 Client-Side (Browser)</h3>
+            <ul>
+                <li><strong>DOM Manipulation:</strong> Thay đổi nội dung và style của webpage</li>
+                <li><strong>Event Handling:</strong> Respond to user clicks, hovers, form submissions</li>
+                <li><strong>AJAX Requests:</strong> Fetch data from servers without page reload</li>
+                <li><strong>Animations:</strong> Create smooth transitions và interactive effects</li>
+            </ul>
+
+            <h3>2. ⚙️ Server-Side (Node.js)</h3>
+            <ul>
+                <li><strong>Web Servers:</strong> Build APIs và backend services</li>
+                <li><strong>Database Operations:</strong> Connect và manipulate databases</li>
+                <li><strong>File System:</strong> Read/write files, process data</li>
+                <li><strong>Real-time Apps:</strong> Chat applications, gaming servers</li>
+            </ul>
+
+            <h3>3. 📱 Mobile Development</h3>
+            <ul>
+                <li><strong>React Native:</strong> Cross-platform mobile apps</li>
+                <li><strong>Cordova/PhoneGap:</strong> Hybrid mobile applications</li>
+                <li><strong>Progressive Web Apps:</strong> App-like web experiences</li>
+            </ul>
+
+            <h3>4. 🖥️ Desktop Applications</h3>
+            <ul>
+                <li><strong>Electron:</strong> VS Code, Discord, Slack</li>
+                <li><strong>Tauri:</strong> Lightweight desktop apps</li>
+                <li><strong>NW.js:</strong> Cross-platform desktop applications</li>
+            </ul>
+        </section>
+
+        <!-- First JavaScript Code -->
+        <section class="section">
+            <h2>💻 Your First JavaScript Code</h2>
+            
+            <p>Hãy bắt đầu với "Hello World" - tradition của mọi programmer!</p>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Your first JavaScript code</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Hello, World!"</span>);
+
+<span class="code-comment">// Display an alert</span>
+<span class="code-keyword">alert</span>(<span class="code-string">"Welcome to JavaScript!"</span>);
+
+<span class="code-comment">// Show a message on the webpage</span>
+<span class="code-keyword">document</span>.<span class="code-keyword">write</span>(<span class="code-string">"JavaScript is awesome!"</span>);</code></pre>
+            </div>
+
+            <div class="try-it">
+                <h4>🧪 Try It Yourself</h4>
+                <p>Open your browser's Console (F12 → Console tab) và type:</p>
+                <div class="code-demo">
+                    <pre><code><span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"I'm learning JavaScript!"</span>);</code></pre>
+                </div>
+                <p>Press Enter và see your first JavaScript output! 🎉</p>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="section">
+            <h2>🎮 Interactive Demo</h2>
+            <p>Let's create your first interactive JavaScript program!</p>
+
+            <div class="interactive-demo">
+                <h4>💬 JavaScript Greeting App</h4>
+                <p>Enter your name và click the button:</p>
+                
+                <input type="text" id="nameInput" class="demo-input" placeholder="Enter your name here...">
+                <button class="demo-button" onclick="greetUser()">Say Hello! 👋</button>
+                
+                <div id="output" class="demo-output">
+                    Your greeting will appear here...
+                </div>
+            </div>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// The JavaScript code behind the demo</span>
+<span class="code-keyword">function</span> <span class="code-keyword">greetUser</span>() {
+    <span class="code-comment">// Get the user's name from input</span>
+    <span class="code-keyword">const</span> name = <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">'nameInput'</span>).<span class="code-keyword">value</span>;
+    
+    <span class="code-comment">// Create a personalized greeting</span>
+    <span class="code-keyword">const</span> greeting = <span class="code-string">`Hello, ${name}! Welcome to JavaScript! 🚀`</span>;
+    
+    <span class="code-comment">// Display the greeting</span>
+    <span class="code-keyword">document</span>.<span class="code-keyword">getElementById</span>(<span class="code-string">'output'</span>).<span class="code-keyword">textContent</span> = greeting;
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Development Tools -->
+        <section class="section">
+            <h2>🛠️ Development Tools</h2>
+            
+            <h3>1. 🌐 Browser Developer Tools</h3>
+            <ul>
+                <li><strong>Console:</strong> Test JavaScript code instantly</li>
+                <li><strong>Elements:</strong> Inspect và modify HTML/CSS</li>
+                <li><strong>Sources:</strong> Debug JavaScript với breakpoints</li>
+                <li><strong>Network:</strong> Monitor HTTP requests</li>
+            </ul>
+
+            <div class="try-it">
+                <h4>🔧 Quick Setup Guide</h4>
+                <ol>
+                    <li><strong>Open Developer Tools:</strong> Press F12 (or Ctrl+Shift+I)</li>
+                    <li><strong>Go to Console tab:</strong> This is where you'll test JavaScript</li>
+                    <li><strong>Try typing:</strong> 2 + 3 và press Enter</li>
+                    <li><strong>See the result:</strong> JavaScript calculated 5! ✨</li>
+                </ol>
+            </div>
+
+            <h3>2. 💻 Code Editors</h3>
+            <ul>
+                <li><strong>VS Code:</strong> Most popular, free, với great JavaScript support</li>
+                <li><strong>WebStorm:</strong> Powerful IDE from JetBrains</li>
+                <li><strong>Sublime Text:</strong> Lightweight và fast</li>
+                <li><strong>Atom:</strong> Hackable text editor by GitHub</li>
+            </ul>
+
+            <h3>3. 🌍 Online Code Editors</h3>
+            <ul>
+                <li><strong>CodePen:</strong> Great for quick experiments</li>
+                <li><strong>JSFiddle:</strong> Test HTML, CSS, JS together</li>
+                <li><strong>Repl.it:</strong> Full development environment</li>
+                <li><strong>CodeSandbox:</strong> Perfect for modern JavaScript apps</li>
+            </ul>
+        </section>
+
+        <!-- JavaScript Ecosystem -->
+        <section class="section">
+            <h2>🌍 JavaScript Ecosystem</h2>
+            
+            <h3>📚 Popular Libraries & Frameworks</h3>
+            <ul>
+                <li><strong>React:</strong> Build user interfaces (by Facebook)</li>
+                <li><strong>Vue.js:</strong> Progressive framework for UIs</li>
+                <li><strong>Angular:</strong> Full-featured framework (by Google)</li>
+                <li><strong>jQuery:</strong> Simplify DOM manipulation</li>
+                <li><strong>Lodash:</strong> Utility functions for common tasks</li>
+            </ul>
+
+            <h3>🚀 Runtime Environments</h3>
+            <ul>
+                <li><strong>Node.js:</strong> JavaScript on the server</li>
+                <li><strong>Deno:</strong> Modern secure runtime</li>
+                <li><strong>Bun:</strong> Fast all-in-one JavaScript runtime</li>
+            </ul>
+
+            <h3>📦 Package Managers</h3>
+            <ul>
+                <li><strong>npm:</strong> Default Node.js package manager</li>
+                <li><strong>Yarn:</strong> Fast, reliable package manager</li>
+                <li><strong>pnpm:</strong> Efficient disk space usage</li>
+            </ul>
+        </section>
+
+        <!-- Quick Quiz -->
+        <div class="quiz-section">
+            <h2>🧠 Quick Knowledge Check</h2>
+            
+            <div class="quiz-question">
+                <h4>Question 1: JavaScript được tạo ra năm nào?</h4>
+                <ul class="quiz-options" data-correct="1">
+                    <li data-option="0">1990</li>
+                    <li data-option="1">1995</li>
+                    <li data-option="2">2000</li>
+                    <li data-option="3">2005</li>
+                </ul>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Question 2: JavaScript có thể chạy ở đâu?</h4>
+                <ul class="quiz-options" data-correct="3">
+                    <li data-option="0">Chỉ trong browser</li>
+                    <li data-option="1">Chỉ trên server</li>
+                    <li data-option="2">Chỉ trên mobile</li>
+                    <li data-option="3">Browser, server, mobile, desktop</li>
+                </ul>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Question 3: Cách nào để mở Developer Tools?</h4>
+                <ul class="quiz-options" data-correct="1">
+                    <li data-option="0">Ctrl + Alt + D</li>
+                    <li data-option="1">F12 hoặc Ctrl + Shift + I</li>
+                    <li data-option="2">Alt + Tab</li>
+                    <li data-option="3">Ctrl + S</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="index.html" class="nav-btn prev">← Course Home</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS02-variables-datatypes.html" class="nav-btn next">JS02: Variables & Data Types →</a>
+        </div>
+    </div>
+
+    <script>
+        // Interactive greeting function
+        function greetUser() {
+            const name = document.getElementById('nameInput').value;
+            const output = document.getElementById('output');
+            
+            if (name.trim() === '') {
+                output.textContent = 'Please enter your name first! 😊';
+                output.style.color = '#ff9800';
+            } else {
+                const greeting = `Hello, ${name}! Welcome to JavaScript! 🚀`;
+                output.textContent = greeting;
+                output.style.color = '#f7df1e';
+                
+                // Add some celebration
+                setTimeout(() => {
+                    output.textContent += '\n\nYou just ran your first interactive JavaScript code! 🎉';
+                }, 1000);
+            }
+        }
+
+        // Quiz functionality
+        document.querySelectorAll('.quiz-options').forEach(optionsList => {
+            const correctAnswer = optionsList.dataset.correct;
+            
+            optionsList.addEventListener('click', (e) => {
+                if (e.target.tagName === 'LI') {
+                    const selectedOption = e.target.dataset.option;
+                    const allOptions = optionsList.querySelectorAll('li');
+                    
+                    // Reset all options
+                    allOptions.forEach(option => {
+                        option.classList.remove('correct', 'incorrect');
+                    });
+                    
+                    // Mark correct and incorrect answers
+                    if (selectedOption === correctAnswer) {
+                        e.target.classList.add('correct');
+                    } else {
+                        e.target.classList.add('incorrect');
+                        allOptions[correctAnswer].classList.add('correct');
+                    }
+                }
+            });
+        });
+
+        // Welcome message
+        console.log('🚀 Welcome to JS01: Introduction to JavaScript!');
+        console.log('💡 Try typing JavaScript commands here in the console!');
+        console.log('📝 Example: console.log("Hello from JavaScript!");');
+
+        // Mark lesson as started
+        localStorage.setItem('js01_started', Date.now());
+        localStorage.setItem('js_progress_js01', 'true');
+
+        // Show current time in JavaScript
+        console.log('🕐 Current time:', new Date().toLocaleString());
+
+        // Fun JavaScript demo in console
+        setTimeout(() => {
+            console.log('🎉 Fun fact: This message was delayed by 3 seconds using JavaScript setTimeout!');
+        }, 3000);
+    </script>
+</body>
+</html>

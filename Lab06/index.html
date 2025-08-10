@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lab06: JavaScript Fundamentals - Interactive Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #323330 0%, #f7df1e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .course-path {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .course-path h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+        }
+
+        .learning-path {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .path-step {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            border: 2px solid var(--primary);
+            font-weight: 600;
+            color: var(--secondary);
+            position: relative;
+        }
+
+        .path-arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .lesson-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+        }
+
+        .lesson-section h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .lesson-list {
+            list-style: none;
+        }
+
+        .lesson-item {
+            margin: 12px 0;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-item:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .lesson-link:hover {
+            background: var(--bg-light);
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .lesson-number {
+            background: var(--primary);
+            color: var(--secondary);
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-right: 12px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .objectives {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .objectives h2 {
+            color: var(--info);
+            margin-bottom: 20px;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .objective-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .objective-icon {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .prerequisites {
+            background: linear-gradient(135deg, #fff3e0, #fff8e1);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .prerequisites h2 {
+            color: var(--warning);
+            margin-bottom: 20px;
+        }
+
+        .prereq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .prereq-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .prereq-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .prereq-list {
+            list-style: none;
+        }
+
+        .prereq-list li {
+            padding: 5px 0;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .prereq-list li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .getting-started {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .getting-started h2 {
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .start-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .start-step {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 4px solid var(--success);
+        }
+
+        .step-number {
+            background: var(--success);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .progress-tracker {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .progress-tracker h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .progress-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .progress-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .progress-section h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .progress-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .progress-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-light);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-checkbox:hover {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .progress-checkbox input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 50px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            color: var(--secondary);
+        }
+
+        .cta-section h2 {
+            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .cta-btn.primary {
+            background: var(--secondary);
+            color: var(--primary);
+            border: 2px solid var(--secondary);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .footer-nav {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .footer-nav a {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-nav .nav-home {
+            background: var(--info);
+            color: white;
+        }
+
+        .footer-nav .nav-support {
+            background: var(--success);
+            color: white;
+        }
+
+        .footer-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .learning-path {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .path-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🚀 JavaScript Cơ bản</h1>
+            <p class="subtitle">Master the language that powers the modern web</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Interactive Lessons</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Hands-on Exercises</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Real Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Possibilities</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-path">
+            <h2>🎯 Learning Path</h2>
+            <div class="learning-path">
+                <div class="path-step">Foundation</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Syntax</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">DOM</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Interactions</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Projects</div>
+            </div>
+        </div>
+
+        <div class="lessons-grid">
+            <div class="lesson-section">
+                <h3>📚 Phần 1: JavaScript Foundation</h3>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <a href="./JS01-introduction.html" class="lesson-link">
+                            <span class="lesson-number">JS01</span>
+                            <span>Giới thiệu JavaScript</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS02-variables-datatypes.html" class="lesson-link">
+                            <span class="lesson-number">JS02</span>
+                            <span>Variables & Data Types</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS03-operators-expressions.html" class="lesson-link">
+                            <span class="lesson-number">JS03</span>
+                            <span>Operators & Expressions</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>🔄 Phần 2: Control Flow & Functions</h3>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <a href="./JS04-conditionals-loops.html" class="lesson-link">
+                            <span class="lesson-number">JS04</span>
+                            <span>Conditionals & Loops</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS05-functions-scope.html" class="lesson-link">
+                            <span class="lesson-number">JS05</span>
+                            <span>Functions & Scope</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS06-arrays-objects.html" class="lesson-link">
+                            <span class="lesson-number">JS06</span>
+                            <span>Arrays & Objects</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>🌐 Phần 3: DOM Manipulation</h3>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <a href="./JS07-dom-basics.html" class="lesson-link">
+                            <span class="lesson-number">JS07</span>
+                            <span>DOM Basics</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS08-event-handling.html" class="lesson-link">
+                            <span class="lesson-number">JS08</span>
+                            <span>Event Handling</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS09-dom-projects.html" class="lesson-link">
+                            <span class="lesson-number">JS09</span>
+                            <span>DOM Projects</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h3>⚡ Phần 4: Modern JavaScript</h3>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <a href="./JS10-es6-features.html" class="lesson-link">
+                            <span class="lesson-number">JS10</span>
+                            <span>ES6+ Features</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS11-async-javascript.html" class="lesson-link">
+                            <span class="lesson-number">JS11</span>
+                            <span>Async JavaScript</span>
+                        </a>
+                    </li>
+                    <li class="lesson-item">
+                        <a href="./JS12-final-project.html" class="lesson-link">
+                            <span class="lesson-number">JS12</span>
+                            <span>Final Project</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="objectives">
+            <h2>🎯 Learning Objectives</h2>
+            <div class="objectives-grid">
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>Master Lab06 JavaScript Fundamentals</strong><br>
+                        Variables, functions, loops, objects và language features
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>DOM Manipulation Skills</strong><br>
+                        Create interactive web pages with dynamic content
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>Event Handling</strong><br>
+                        Handle user interactions professionally và effectively
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>Modern JavaScript</strong><br>
+                        ES6+, async/await, modules, and modern patterns
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>Real Projects</strong><br>
+                        Build functional web applications from scratch
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-icon">✅</span>
+                    <div>
+                        <strong>Problem Solving</strong><br>
+                        Debug và optimize JavaScript code effectively
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prerequisites">
+            <h2>🛠️ Prerequisites</h2>
+            <div class="prereq-grid">
+                <div class="prereq-card">
+                    <h4>✅ Required Knowledge</h4>
+                    <ul class="prereq-list">
+                        <li>HTML fundamentals (completed HTML course)</li>
+                        <li>CSS basics (completed CSS course)</li>
+                        <li>Text editor (VS Code recommended)</li>
+                        <li>Web browser (Chrome DevTools)</li>
+                    </ul>
+                </div>
+                <div class="prereq-card">
+                    <h4>💡 Recommended Setup</h4>
+                    <ul class="prereq-list">
+                        <li>Node.js (for advanced topics)</li>
+                        <li>Git (version control)</li>
+                        <li>Browser extensions (React DevTools, etc.)</li>
+                        <li>JavaScript console familiarity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="getting-started">
+            <h2>🚀 Getting Started</h2>
+            <div class="start-steps">
+                <div class="start-step">
+                    <div class="step-number">1</div>
+                    <h4>Check Your Setup</h4>
+                    <p>Verify you have a modern browser, open Chrome DevTools (F12), và check Console tab is working</p>
+                </div>
+                <div class="start-step">
+                    <div class="step-number">2</div>
+                    <h4>Course Navigation</h4>
+                    <p>Start với JS01 để làm quen với JavaScript. Follow theo thứ tự để build kiến thức systematically</p>
+                </div>
+                <div class="start-step">
+                    <div class="step-number">3</div>
+                    <h4>Learning Tips</h4>
+                    <p>Code along, experiment with examples, use console.log() extensively, và practice every exercise</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-tracker">
+            <h2>📊 Course Progress Tracker</h2>
+            <div class="progress-sections">
+                <div class="progress-section">
+                    <h4>Foundation</h4>
+                    <div class="progress-items">
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js01">
+                            <label for="js01">JS01</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js02">
+                            <label for="js02">JS02</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js03">
+                            <label for="js03">JS03</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <h4>Control Flow</h4>
+                    <div class="progress-items">
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js04">
+                            <label for="js04">JS04</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js05">
+                            <label for="js05">JS05</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js06">
+                            <label for="js06">JS06</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <h4>DOM</h4>
+                    <div class="progress-items">
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js07">
+                            <label for="js07">JS07</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js08">
+                            <label for="js08">JS08</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js09">
+                            <label for="js09">JS09</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <h4>Modern JS</h4>
+                    <div class="progress-items">
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js10">
+                            <label for="js10">JS10</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js11">
+                            <label for="js11">JS11</label>
+                        </div>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="js12">
+                            <label for="js12">JS12</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Master JavaScript?</h2>
+            <p>Join thousands of developers who've mastered JavaScript fundamentals với our comprehensive course!</p>
+            <div class="cta-buttons">
+                <a href="./JS01-introduction.html" class="cta-btn primary">🚀 Start Learning Now</a>
+                <a href="../index.html" class="cta-btn secondary">📚 View All Courses</a>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="../index.html" class="nav-home">🏠 Main Course</a>
+            <a href="../support.html" class="nav-support">💬 Get Support</a>
+        </div>
+    </div>
+
+    <script>
+        // Course progress tracking
+        const checkboxes = document.querySelectorAll('.progress-checkbox input[type="checkbox"]');
+        
+        // Load saved progress
+        checkboxes.forEach(checkbox => {
+            const saved = localStorage.getItem(`js_progress_${checkbox.id}`);
+            if (saved === 'true') {
+                checkbox.checked = true;
+            }
+        });
+        
+        // Save progress on change
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(`js_progress_${this.id}`, this.checked);
+                updateProgress();
+            });
+        });
+        
+        function updateProgress() {
+            const totalLessons = checkboxes.length;
+            const completedLessons = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const progress = Math.round((completedLessons / totalLessons) * 100);
+            
+            console.log(`📊 JavaScript Course Progress: ${completedLessons}/${totalLessons} lessons (${progress}%)`);
+            
+            // Update visual progress
+            document.title = `JavaScript Cơ bản (${progress}% complete)`;
+        }
+        
+        // Initial progress check
+        updateProgress();
+        
+        // Welcome message
+        console.log('🚀 Welcome to Lab06: JavaScript Fundamentals!');
+        console.log('💡 Tip: Open DevTools (F12) để practice JavaScript code directly');
+        console.log('📚 Start with JS01 để begin your JavaScript journey');
+        
+        // Mark course as accessed
+        localStorage.setItem('js_fundamentals_accessed', Date.now());
+    </script>
+</body>
+</html>
