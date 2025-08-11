@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS09: DOM Projects - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+            --indigo: #3f51b5;
+            --orange: #ff5722;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .project-container {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .project-header {
+            background: var(--info);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-content {
+            background: var(--bg-light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-button.purple { background: var(--purple); color: white; }
+        .demo-button.teal { background: var(--teal); color: white; }
+        .demo-button.pink { background: var(--pink); color: white; }
+        .demo-button.success { background: var(--success); color: white; }
+        .demo-button.danger { background: var(--danger); color: white; }
+        .demo-button.indigo { background: var(--indigo); color: white; }
+        .demo-button.orange { background: var(--orange); color: white; }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-input:focus {
+            border-color: var(--info);
+            outline: none;
+        }
+
+        /* Todo List Styles */
+        .todo-container {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+            background: var(--bg-light);
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .todo-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .complete-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .edit-btn {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Calculator Styles */
+        .calculator-container {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .calculator {
+            max-width: 300px;
+            margin: 0 auto;
+            background: var(--secondary);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .calculator-display {
+            background: black;
+            color: var(--primary);
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+            text-align: right;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calc-btn:hover {
+            background: #888;
+            transform: scale(1.05);
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+        }
+
+        .calc-btn.operator {
+            background: var(--warning);
+            color: white;
+        }
+
+        .calc-btn.operator:hover {
+            background: #ff6f00;
+        }
+
+        .calc-btn.equals {
+            background: var(--success);
+            color: white;
+        }
+
+        .calc-btn.equals:hover {
+            background: #388e3c;
+        }
+
+        .calc-btn.clear {
+            background: var(--danger);
+            color: white;
+        }
+
+        .calc-btn.clear:hover {
+            background: #d32f2f;
+        }
+
+        /* Color Game Styles */
+        .color-game-container {
+            background: linear-gradient(135deg, #f3e5f5, #fce4ec);
+            border: 2px solid var(--purple);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .color-display {
+            background: white;
+            border: 3px solid var(--purple);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-option {
+            aspect-ratio: 1;
+            border: 3px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: var(--purple);
+        }
+
+        .color-option.correct {
+            border-color: var(--success);
+            animation: correctAnswer 0.5s ease;
+        }
+
+        .color-option.wrong {
+            border-color: var(--danger);
+            animation: wrongAnswer 0.3s ease;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--purple);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Memory Game Styles */
+        .memory-game-container {
+            background: linear-gradient(135deg, #fff3e0, #fce4ec);
+            border: 2px solid var(--orange);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: var(--secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: transparent;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+
+        .memory-card.flipped {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: var(--success);
+            color: white;
+            cursor: default;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes wrongAnswer {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .todo-input-group {
+                flex-direction: column;
+            }
+
+            .color-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS09</div>
+            <h1>🎯 DOM Projects</h1>
+            <p>Build practical applications using DOM manipulation and event handling</p>
+        </div>
+
+        <!-- Project 1: Todo List -->
+        <section class="section">
+            <div class="project-container">
+                <div class="project-header">
+                    <h2>📝 Project 1: Interactive Todo List</h2>
+                    <span>✨ Full CRUD Operations</span>
+                </div>
+                
+                <div class="todo-container">
+                    <div class="todo-input-group">
+                        <input type="text" id="todoInput" class="demo-input" placeholder="Enter a new task..." maxlength="100">
+                        <button class="demo-button success" onclick="addTodo()">Add Task</button>
+                        <button class="demo-button purple" onclick="clearCompleted()">Clear Completed</button>
+                    </div>
+                    
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="totalTasks">0</div>
+                            <div class="stat-label">Total Tasks</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="completedTasks">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="pendingTasks">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                    
+                    <ul id="todoList" class="todo-list">
+                        <!-- Todo items will be dynamically added here -->
+                    </ul>
+                    
+                    <div style="margin-top: 20px;">
+                        <button class="demo-button teal" onclick="showAll()">Show All</button>
+                        <button class="demo-button indigo" onclick="showActive()">Show Active</button>
+                        <button class="demo-button orange" onclick="showCompleted()">Show Completed</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 2: Calculator -->
+        <section class="section">
+            <div class="project-container">
+                <div class="project-header">
+                    <h2>🧮 Project 2: Scientific Calculator</h2>
+                    <span>🔢 Advanced Math Operations</span>
+                </div>
+                
+                <div class="calculator-container">
+                    <div class="calculator">
+                        <div class="calculator-display" id="calcDisplay">0</div>
+                        
+                        <div class="calculator-buttons">
+                            <button class="calc-btn clear" onclick="clearCalculator()">C</button>
+                            <button class="calc-btn clear" onclick="clearEntry()">CE</button>
+                            <button class="calc-btn operator" onclick="appendToDisplay('/')">/</button>
+                            <button class="calc-btn operator" onclick="appendToDisplay('*')">×</button>
+                            
+                            <button class="calc-btn" onclick="appendToDisplay('7')">7</button>
+                            <button class="calc-btn" onclick="appendToDisplay('8')">8</button>
+                            <button class="calc-btn" onclick="appendToDisplay('9')">9</button>
+                            <button class="calc-btn operator" onclick="appendToDisplay('-')">-</button>
+                            
+                            <button class="calc-btn" onclick="appendToDisplay('4')">4</button>
+                            <button class="calc-btn" onclick="appendToDisplay('5')">5</button>
+                            <button class="calc-btn" onclick="appendToDisplay('6')">6</button>
+                            <button class="calc-btn operator" onclick="appendToDisplay('+')">+</button>
+                            
+                            <button class="calc-btn" onclick="appendToDisplay('1')">1</button>
+                            <button class="calc-btn" onclick="appendToDisplay('2')">2</button>
+                            <button class="calc-btn" onclick="appendToDisplay('3')">3</button>
+                            <button class="calc-btn equals" onclick="calculateResult()" rowspan="2">=</button>
+                            
+                            <button class="calc-btn" onclick="appendToDisplay('0')" style="grid-column: span 2;">0</button>
+                            <button class="calc-btn" onclick="appendToDisplay('.')">.</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="demo-button purple" onclick="addAdvancedFunctions()">Add Advanced Functions</button>
+                        <button class="demo-button teal" onclick="toggleHistory()">Toggle History</button>
+                    </div>
+                    
+                    <div id="calcHistory" style="display: none; margin-top: 20px; background: white; padding: 15px; border-radius: 10px; max-height: 200px; overflow-y: auto;">
+                        <h4>Calculation History</h4>
+                        <ul id="historyList" style="list-style: none; padding: 0;"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 3: Color Guessing Game -->
+        <section class="section">
+            <div class="project-container">
+                <div class="project-header">
+                    <h2>🎨 Project 3: RGB Color Guessing Game</h2>
+                    <span>🎯 Test Your Color Knowledge</span>
+                </div>
+                
+                <div class="color-game-container">
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="colorScore">0</div>
+                            <div class="stat-label">Score</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="colorStreak">0</div>
+                            <div class="stat-label">Streak</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="colorLevel">1</div>
+                            <div class="stat-label">Level</div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-display" id="colorDisplay">
+                        Click "New Game" to start!
+                    </div>
+                    
+                    <div class="color-options" id="colorOptions">
+                        <!-- Color options will be generated here -->
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="demo-button success" onclick="startColorGame()">New Game</button>
+                        <button class="demo-button purple" onclick="changeColorDifficulty()">Change Difficulty</button>
+                        <button class="demo-button orange" onclick="showColorHint()">Hint</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 4: Memory Card Game -->
+        <section class="section">
+            <div class="project-container">
+                <div class="project-header">
+                    <h2>🧠 Project 4: Memory Card Game</h2>
+                    <span>🎯 Match All Pairs</span>
+                </div>
+                
+                <div class="memory-game-container">
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="memoryMoves">0</div>
+                            <div class="stat-label">Moves</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="memoryTime">00:00</div>
+                            <div class="stat-label">Time</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="memoryMatches">0</div>
+                            <div class="stat-label">Matches</div>
+                        </div>
+                    </div>
+                    
+                    <div class="memory-grid" id="memoryGrid">
+                        <!-- Memory cards will be generated here -->
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="demo-button success" onclick="startMemoryGame()">New Game</button>
+                        <button class="demo-button purple" onclick="changeMemoryDifficulty()">Change Difficulty</button>
+                        <button class="demo-button teal" onclick="showMemoryStats()">Show Stats</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS08-event-handling.html" class="nav-btn prev">← JS08: Event Handling</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS10-es6-features.html" class="nav-btn next">JS10: ES6+ Features →</a>
+        </div>
+    </div>
+
+    <script>
+        // Todo List Application
+        let todos = [];
+        let todoIdCounter = 1;
+        let currentFilter = 'all';
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+            
+            if (text === '') {
+                alert('Please enter a task!');
+                return;
+            }
+            
+            const todo = {
+                id: todoIdCounter++,
+                text: text,
+                completed: false,
+                createdAt: new Date()
+            };
+            
+            todos.push(todo);
+            input.value = '';
+            renderTodos();
+            updateTodoStats();
+        }
+
+        function toggleTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                todo.completed = !todo.completed;
+                renderTodos();
+                updateTodoStats();
+            }
+        }
+
+        function deleteTodo(id) {
+            todos = todos.filter(t => t.id !== id);
+            renderTodos();
+            updateTodoStats();
+        }
+
+        function editTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                const newText = prompt('Edit task:', todo.text);
+                if (newText !== null && newText.trim() !== '') {
+                    todo.text = newText.trim();
+                    renderTodos();
+                }
+            }
+        }
+
+        function renderTodos() {
+            const todoList = document.getElementById('todoList');
+            const filteredTodos = filterTodos();
+            
+            todoList.innerHTML = '';
+            
+            filteredTodos.forEach(todo => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <span class="todo-text">${todo.text}</span>
+                    <div class="todo-actions">
+                        <button class="todo-btn complete-btn" onclick="toggleTodo(${todo.id})">
+                            ${todo.completed ? '↶' : '✓'}
+                        </button>
+                        <button class="todo-btn edit-btn" onclick="editTodo(${todo.id})">✎</button>
+                        <button class="todo-btn delete-btn" onclick="deleteTodo(${todo.id})">✕</button>
+                    </div>
+                `;
+                todoList.appendChild(li);
+            });
+        }
+
+        function filterTodos() {
+            switch (currentFilter) {
+                case 'active':
+                    return todos.filter(t => !t.completed);
+                case 'completed':
+                    return todos.filter(t => t.completed);
+                default:
+                    return todos;
+            }
+        }
+
+        function showAll() { currentFilter = 'all'; renderTodos(); }
+        function showActive() { currentFilter = 'active'; renderTodos(); }
+        function showCompleted() { currentFilter = 'completed'; renderTodos(); }
+
+        function clearCompleted() {
+            todos = todos.filter(t => !t.completed);
+            renderTodos();
+            updateTodoStats();
+        }
+
+        function updateTodoStats() {
+            const total = todos.length;
+            const completed = todos.filter(t => t.completed).length;
+            const pending = total - completed;
+            
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('pendingTasks').textContent = pending;
+        }
+
+        // Calculator Application
+        let calcDisplay = '';
+        let calcHistory = [];
+        let waitingForNewOperand = false;
+
+        function appendToDisplay(value) {
+            const display = document.getElementById('calcDisplay');
+            
+            if (waitingForNewOperand) {
+                calcDisplay = '';
+                waitingForNewOperand = false;
+            }
+            
+            if (calcDisplay === '0' && value !== '.') {
+                calcDisplay = value;
+            } else {
+                calcDisplay += value;
+            }
+            
+            display.textContent = calcDisplay;
+        }
+
+        function clearCalculator() {
+            calcDisplay = '0';
+            document.getElementById('calcDisplay').textContent = calcDisplay;
+            waitingForNewOperand = false;
+        }
+
+        function clearEntry() {
+            calcDisplay = calcDisplay.slice(0, -1) || '0';
+            document.getElementById('calcDisplay').textContent = calcDisplay;
+        }
+
+        function calculateResult() {
+            try {
+                const expression = calcDisplay.replace(/×/g, '*');
+                const result = eval(expression);
+                
+                if (!isFinite(result)) {
+                    throw new Error('Invalid calculation');
+                }
+                
+                addToHistory(`${calcDisplay} = ${result}`);
+                calcDisplay = result.toString();
+                document.getElementById('calcDisplay').textContent = calcDisplay;
+                waitingForNewOperand = true;
+                
+            } catch (error) {
+                document.getElementById('calcDisplay').textContent = 'Error';
+                calcDisplay = '';
+                waitingForNewOperand = true;
+            }
+        }
+
+        function addToHistory(calculation) {
+            calcHistory.unshift(calculation);
+            if (calcHistory.length > 10) {
+                calcHistory.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        function toggleHistory() {
+            const historyDiv = document.getElementById('calcHistory');
+            historyDiv.style.display = historyDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            calcHistory.forEach(calc => {
+                const li = document.createElement('li');
+                li.textContent = calc;
+                li.style.padding = '5px';
+                li.style.borderBottom = '1px solid #eee';
+                historyList.appendChild(li);
+            });
+        }
+
+        // Color Guessing Game
+        let colorGame = {
+            colors: [],
+            correctColor: '',
+            score: 0,
+            streak: 0,
+            level: 1,
+            difficulty: 6
+        };
+
+        function startColorGame() {
+            generateColors();
+            displayColorChallenge();
+        }
+
+        function generateColors() {
+            colorGame.colors = [];
+            for (let i = 0; i < colorGame.difficulty; i++) {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                colorGame.colors.push(`rgb(${r}, ${g}, ${b})`);
+            }
+            colorGame.correctColor = colorGame.colors[Math.floor(Math.random() * colorGame.colors.length)];
+        }
+
+        function displayColorChallenge() {
+            const display = document.getElementById('colorDisplay');
+            const options = document.getElementById('colorOptions');
+            
+            display.style.backgroundColor = colorGame.correctColor;
+            display.textContent = colorGame.correctColor.toUpperCase();
+            
+            options.innerHTML = '';
+            colorGame.colors.forEach((color, index) => {
+                const option = document.createElement('div');
+                option.className = 'color-option';
+                option.style.backgroundColor = color;
+                option.onclick = () => selectColor(color, option);
+                options.appendChild(option);
+            });
+        }
+
+        function selectColor(selectedColor, element) {
+            if (selectedColor === colorGame.correctColor) {
+                element.classList.add('correct');
+                colorGame.score += 10 * colorGame.level;
+                colorGame.streak++;
+                
+                if (colorGame.streak > 0 && colorGame.streak % 5 === 0) {
+                    colorGame.level++;
+                    colorGame.difficulty = Math.min(colorGame.difficulty + 1, 9);
+                }
+                
+                setTimeout(() => {
+                    startColorGame();
+                }, 1000);
+            } else {
+                element.classList.add('wrong');
+                colorGame.streak = 0;
+                setTimeout(() => {
+                    element.classList.remove('wrong');
+                }, 500);
+            }
+            
+            updateColorStats();
+        }
+
+        function updateColorStats() {
+            document.getElementById('colorScore').textContent = colorGame.score;
+            document.getElementById('colorStreak').textContent = colorGame.streak;
+            document.getElementById('colorLevel').textContent = colorGame.level;
+        }
+
+        // Memory Card Game
+        let memoryGame = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            moves: 0,
+            startTime: null,
+            timer: null,
+            gameSize: 16
+        };
+
+        const emojis = ['🎯', '🎨', '🎪', '🎭', '🎵', '🎸', '🎹', '🎺', '🎻', '🎬', '🎮', '🎲', '🎳', '🎾', '⚽', '🏀'];
+
+        function startMemoryGame() {
+            resetMemoryGame();
+            generateMemoryCards();
+            renderMemoryCards();
+            startMemoryTimer();
+        }
+
+        function resetMemoryGame() {
+            memoryGame.flippedCards = [];
+            memoryGame.matchedPairs = 0;
+            memoryGame.moves = 0;
+            memoryGame.startTime = Date.now();
+            clearInterval(memoryGame.timer);
+            updateMemoryStats();
+        }
+
+        function generateMemoryCards() {
+            const pairs = memoryGame.gameSize / 2;
+            const selectedEmojis = emojis.slice(0, pairs);
+            memoryGame.cards = [...selectedEmojis, ...selectedEmojis]
+                .sort(() => Math.random() - 0.5)
+                .map((emoji, index) => ({
+                    id: index,
+                    emoji: emoji,
+                    flipped: false,
+                    matched: false
+                }));
+        }
+
+        function renderMemoryCards() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            
+            memoryGame.cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.textContent = card.flipped || card.matched ? card.emoji : '';
+                cardElement.onclick = () => flipCard(card.id);
+                
+                if (card.flipped) cardElement.classList.add('flipped');
+                if (card.matched) cardElement.classList.add('matched');
+                
+                grid.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(cardId) {
+            const card = memoryGame.cards[cardId];
+            
+            if (card.flipped || card.matched || memoryGame.flippedCards.length === 2) {
+                return;
+            }
+            
+            card.flipped = true;
+            memoryGame.flippedCards.push(card);
+            renderMemoryCards();
+            
+            if (memoryGame.flippedCards.length === 2) {
+                memoryGame.moves++;
+                checkMemoryMatch();
+            }
+        }
+
+        function checkMemoryMatch() {
+            const [card1, card2] = memoryGame.flippedCards;
+            
+            if (card1.emoji === card2.emoji) {
+                card1.matched = true;
+                card2.matched = true;
+                memoryGame.matchedPairs++;
+                memoryGame.flippedCards = [];
+                
+                if (memoryGame.matchedPairs === memoryGame.gameSize / 2) {
+                    clearInterval(memoryGame.timer);
+                    setTimeout(() => {
+                        alert(`Congratulations! You won in ${memoryGame.moves} moves!`);
+                    }, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.flipped = false;
+                    card2.flipped = false;
+                    memoryGame.flippedCards = [];
+                    renderMemoryCards();
+                }, 1000);
+            }
+            
+            updateMemoryStats();
+        }
+
+        function startMemoryTimer() {
+            memoryGame.timer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - memoryGame.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('memoryTime').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function updateMemoryStats() {
+            document.getElementById('memoryMoves').textContent = memoryGame.moves;
+            document.getElementById('memoryMatches').textContent = memoryGame.matchedPairs;
+        }
+
+        // Additional functions
+        function addAdvancedFunctions() {
+            alert('Advanced functions like sin, cos, tan, log would be added in a full implementation!');
+        }
+
+        function changeColorDifficulty() {
+            const difficulties = [3, 6, 9];
+            const current = difficulties.indexOf(colorGame.difficulty);
+            colorGame.difficulty = difficulties[(current + 1) % difficulties.length];
+            alert(`Difficulty changed to ${colorGame.difficulty} colors!`);
+        }
+
+        function showColorHint() {
+            const rgb = colorGame.correctColor.match(/\d+/g);
+            alert(`Hint: This color has RGB values around R:${rgb[0]}, G:${rgb[1]}, B:${rgb[2]}`);
+        }
+
+        function changeMemoryDifficulty() {
+            const sizes = [12, 16, 20];
+            const current = sizes.indexOf(memoryGame.gameSize);
+            memoryGame.gameSize = sizes[(current + 1) % sizes.length];
+            alert(`Difficulty changed to ${memoryGame.gameSize} cards!`);
+        }
+
+        function showMemoryStats() {
+            alert(`Game Statistics:\nMoves: ${memoryGame.moves}\nMatches: ${memoryGame.matchedPairs}\nTime: ${document.getElementById('memoryTime').textContent}`);
+        }
+
+        // Keyboard support for todo list
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('todoInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTodo();
+                }
+            });
+            
+            // Calculator keyboard support
+            document.addEventListener('keydown', function(e) {
+                if (e.target.closest('.calculator')) {
+                    const key = e.key;
+                    if ('0123456789'.includes(key)) {
+                        appendToDisplay(key);
+                    } else if ('+-*/.'.includes(key)) {
+                        appendToDisplay(key === '*' ? '×' : key);
+                    } else if (key === 'Enter' || key === '=') {
+                        calculateResult();
+                    } else if (key === 'Escape') {
+                        clearCalculator();
+                    } else if (key === 'Backspace') {
+                        clearEntry();
+                    }
+                    e.preventDefault();
+                }
+            });
+            
+            console.log('🎯 Welcome to JS09: DOM Projects!');
+            console.log('🚀 Build practical applications with DOM manipulation!');
+            
+            // Initialize stats
+            updateTodoStats();
+            updateColorStats();
+            updateMemoryStats();
+            
+            // Mark lesson as started
+            localStorage.setItem('js09_started', Date.now());
+            localStorage.setItem('js_progress_js09', 'true');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS10_p2: ES6+ Features Part 2 - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+            --indigo: #3f51b5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "ES6+ JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-number {
+            color: #f6ad55;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-button.purple { background: var(--purple); color: white; }
+        .demo-button.teal { background: var(--teal); color: white; }
+        .demo-button.pink { background: var(--pink); color: white; }
+        .demo-button.success { background: var(--success); color: white; }
+        .demo-button.indigo { background: var(--indigo); color: white; }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .feature-showcase {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .resources-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe8cc);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .resource-link {
+            display: block;
+            background: white;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.2);
+            border-color: var(--success);
+        }
+
+        .resource-link h4 {
+            color: var(--warning);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .resource-link:hover h4 {
+            color: var(--success);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS10 - Part 2</div>
+            <h1>🚀 ES6+ Features Part 2</h1>
+            <p>Spread/Rest, Default Parameters, Classes, Modules</p>
+        </div>
+
+        <!-- Spread/Rest Operators -->
+        <section class="section">
+            <h2>📤 Spread & Rest Operators (...)</h2>
+            
+            <p>The <strong>spread operator (...)</strong> expands elements, while <strong>rest operator (...)</strong> collects elements.</p>
+
+            <h3>Spread Operator</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Array spreading</span>
+<span class="code-keyword">const</span> arr1 = [<span class="code-number">1, 2, 3</span>];
+<span class="code-keyword">const</span> arr2 = [<span class="code-number">4, 5, 6</span>];
+<span class="code-keyword">const</span> combined = [...arr1, ...arr2]; <span class="code-comment">// [1, 2, 3, 4, 5, 6]</span>
+
+<span class="code-comment">// Object spreading</span>
+<span class="code-keyword">const</span> person = {name: <span class="code-string">"Alice"</span>, age: <span class="code-number">25</span>};
+<span class="code-keyword">const</span> contact = {email: <span class="code-string">"alice@email.com"</span>, phone: <span class="code-string">"123-456"</span>};
+<span class="code-keyword">const</span> fullProfile = {...person, ...contact};
+
+<span class="code-comment">// Function arguments</span>
+<span class="code-keyword">const</span> numbers = [<span class="code-number">1, 2, 3, 4, 5</span>];
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">Math</span>.<span class="code-keyword">max</span>(...numbers)); <span class="code-comment">// 5</span>
+
+<span class="code-comment">// Copying arrays/objects</span>
+<span class="code-keyword">const</span> originalArray = [<span class="code-number">1, 2, 3</span>];
+<span class="code-keyword">const</span> copiedArray = [...originalArray];
+
+<span class="code-keyword">const</span> originalObj = {a: <span class="code-number">1</span>, b: <span class="code-number">2</span>};
+<span class="code-keyword">const</span> copiedObj = {...originalObj};</code></pre>
+            </div>
+
+            <h3>Rest Parameters</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Rest in function parameters</span>
+<span class="code-keyword">function</span> <span class="code-keyword">sum</span>(...numbers) {
+    <span class="code-keyword">return</span> numbers.<span class="code-keyword">reduce</span>((acc, num) => acc + num, <span class="code-number">0</span>);
+}
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">sum</span>(<span class="code-number">1, 2, 3, 4, 5</span>)); <span class="code-comment">// 15</span>
+
+<span class="code-comment">// Rest with destructuring</span>
+<span class="code-keyword">const</span> [first, second, ...rest] = [<span class="code-number">1, 2, 3, 4, 5</span>];
+<span class="code-comment">// first = 1, second = 2, rest = [3, 4, 5]</span>
+
+<span class="code-keyword">const</span> {name, age, ...otherProps} = {
+    name: <span class="code-string">"Bob"</span>,
+    age: <span class="code-number">30</span>,
+    city: <span class="code-string">"Hanoi"</span>,
+    country: <span class="code-string">"Vietnam"</span>
+};
+
+<span class="code-comment">// Mixed parameters</span>
+<span class="code-keyword">function</span> <span class="code-keyword">logMessage</span>(level, message, ...details) {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">`[${level}] ${message}`</span>);
+    <span class="code-keyword">if</span> (details.<span class="code-keyword">length</span> > <span class="code-number">0</span>) {
+        <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"Details:"</span>, details);
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Default Parameters -->
+        <section class="section">
+            <h2>⚙️ Default Parameters</h2>
+            
+            <p><strong>Default parameters</strong> allow function parameters to have default values when no argument is passed.</p>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Basic default parameters</span>
+<span class="code-keyword">function</span> <span class="code-keyword">greet</span>(name = <span class="code-string">"Guest"</span>, greeting = <span class="code-string">"Hello"</span>) {
+    <span class="code-keyword">return</span> <span class="code-string">`${greeting}, ${name}!`</span>;
+}
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">greet</span>()); <span class="code-comment">// "Hello, Guest!"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">greet</span>(<span class="code-string">"Alice"</span>)); <span class="code-comment">// "Hello, Alice!"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">greet</span>(<span class="code-string">"Bob"</span>, <span class="code-string">"Hi"</span>)); <span class="code-comment">// "Hi, Bob!"</span>
+
+<span class="code-comment">// Complex default values</span>
+<span class="code-keyword">function</span> <span class="code-keyword">createUser</span>(
+    name = <span class="code-string">"Anonymous"</span>,
+    id = <span class="code-keyword">Date</span>.<span class="code-keyword">now</span>(),
+    permissions = [<span class="code-string">"read"</span>],
+    settings = {theme: <span class="code-string">"light"</span>, lang: <span class="code-string">"en"</span>}
+) {
+    <span class="code-keyword">return</span> {name, id, permissions, settings};
+}
+
+<span class="code-comment">// Default parameters with destructuring</span>
+<span class="code-keyword">function</span> <span class="code-keyword">processOrder</span>({
+    items = [],
+    discount = <span class="code-number">0</span>,
+    shipping = <span class="code-number">10</span>,
+    currency = <span class="code-string">"USD"</span>
+} = {}) {
+    <span class="code-keyword">const</span> subtotal = items.<span class="code-keyword">reduce</span>((sum, item) => sum + item.<span class="code-keyword">price</span>, <span class="code-number">0</span>);
+    <span class="code-keyword">const</span> total = subtotal - discount + shipping;
+    <span class="code-keyword">return</span> <span class="code-string">`Total: ${total} ${currency}`</span>;
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Classes -->
+        <section class="section">
+            <h2>🏗️ ES6 Classes</h2>
+            
+            <p><strong>ES6 Classes</strong> provide a cleaner syntax for creating objects and handling inheritance.</p>
+
+            <h3>Basic Class Syntax</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Class declaration</span>
+<span class="code-keyword">class</span> <span class="code-keyword">Person</span> {
+    <span class="code-keyword">constructor</span>(name, age) {
+        <span class="code-keyword">this</span>.name = name;
+        <span class="code-keyword">this</span>.age = age;
+    }
+    
+    <span class="code-comment">// Method</span>
+    greet() {
+        <span class="code-keyword">return</span> <span class="code-string">`Hi, I'm ${this.name} and I'm ${this.age} years old`</span>;
+    }
+    
+    <span class="code-comment">// Static method</span>
+    <span class="code-keyword">static</span> <span class="code-keyword">species</span>() {
+        <span class="code-keyword">return</span> <span class="code-string">"Homo sapiens"</span>;
+    }
+    
+    <span class="code-comment">// Getter</span>
+    <span class="code-keyword">get</span> <span class="code-keyword">info</span>() {
+        <span class="code-keyword">return</span> <span class="code-string">`${this.name} (${this.age})`</span>;
+    }
+    
+    <span class="code-comment">// Setter</span>
+    <span class="code-keyword">set</span> <span class="code-keyword">fullName</span>(value) {
+        [<span class="code-keyword">this</span>.firstName, <span class="code-keyword">this</span>.lastName] = value.<span class="code-keyword">split</span>(<span class="code-string">" "</span>);
+    }
+}
+
+<span class="code-comment">// Usage</span>
+<span class="code-keyword">const</span> person = <span class="code-keyword">new Person</span>(<span class="code-string">"Alice"</span>, <span class="code-number">25</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(person.<span class="code-keyword">greet</span>());
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">Person</span>.<span class="code-keyword">species</span>());</code></pre>
+            </div>
+
+            <h3>Class Inheritance</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Inheritance with extends</span>
+<span class="code-keyword">class</span> <span class="code-keyword">Student</span> <span class="code-keyword">extends</span> <span class="code-keyword">Person</span> {
+    <span class="code-keyword">constructor</span>(name, age, studentId, major) {
+        <span class="code-keyword">super</span>(name, age); <span class="code-comment">// Call parent constructor</span>
+        <span class="code-keyword">this</span>.studentId = studentId;
+        <span class="code-keyword">this</span>.major = major;
+    }
+    
+    <span class="code-comment">// Override parent method</span>
+    greet() {
+        <span class="code-keyword">return</span> <span class="code-string">`${super.greet()}. I study ${this.major}`</span>;
+    }
+    
+    <span class="code-comment">// New method</span>
+    study() {
+        <span class="code-keyword">return</span> <span class="code-string">`${this.name} is studying ${this.major}`</span>;
+    }
+}
+
+<span class="code-keyword">const</span> student = <span class="code-keyword">new Student</span>(<span class="code-string">"Bob"</span>, <span class="code-number">20</span>, <span class="code-string">"S123"</span>, <span class="code-string">"Computer Science"</span>);
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(student.<span class="code-keyword">greet</span>());
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(student.<span class="code-keyword">study</span>());</code></pre>
+            </div>
+        </section>
+
+        <!-- Modules -->
+        <section class="section">
+            <h2>📦 ES6 Modules</h2>
+            
+            <p><strong>ES6 Modules</strong> provide a way to organize and share code between files using import và export.</p>
+
+            <h3>Export Syntax</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// math.js - Named exports</span>
+<span class="code-keyword">export</span> <span class="code-keyword">const</span> PI = <span class="code-number">3.14159</span>;
+
+<span class="code-keyword">export</span> <span class="code-keyword">function</span> <span class="code-keyword">add</span>(a, b) {
+    <span class="code-keyword">return</span> a + b;
+}
+
+<span class="code-keyword">export</span> <span class="code-keyword">function</span> <span class="code-keyword">multiply</span>(a, b) {
+    <span class="code-keyword">return</span> a * b;
+}
+
+<span class="code-comment">// Alternative export syntax</span>
+<span class="code-keyword">const</span> subtract = (a, b) => a - b;
+<span class="code-keyword">const</span> divide = (a, b) => a / b;
+
+<span class="code-keyword">export</span> {subtract, divide};
+
+<span class="code-comment">// Default export</span>
+<span class="code-keyword">export default</span> <span class="code-keyword">class</span> <span class="code-keyword">Calculator</span> {
+    <span class="code-keyword">constructor</span>() {
+        <span class="code-keyword">this</span>.result = <span class="code-number">0</span>;
+    }
+    
+    add(n) {
+        <span class="code-keyword">this</span>.result += n;
+        <span class="code-keyword">return</span> <span class="code-keyword">this</span>;
+    }
+    
+    getResult() {
+        <span class="code-keyword">return</span> <span class="code-keyword">this</span>.result;
+    }
+}</code></pre>
+            </div>
+
+            <h3>Import Syntax</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// app.js - Import examples</span>
+
+<span class="code-comment">// Named imports</span>
+<span class="code-keyword">import</span> {add, multiply, PI} <span class="code-keyword">from</span> <span class="code-string">'./math.js'</span>;
+
+<span class="code-comment">// Import all as namespace</span>
+<span class="code-keyword">import</span> * <span class="code-keyword">as</span> MathUtils <span class="code-keyword">from</span> <span class="code-string">'./math.js'</span>;
+
+<span class="code-comment">// Default import</span>
+<span class="code-keyword">import</span> Calculator <span class="code-keyword">from</span> <span class="code-string">'./math.js'</span>;
+
+<span class="code-comment">// Mixed imports</span>
+<span class="code-keyword">import</span> Calculator, {add, PI} <span class="code-keyword">from</span> <span class="code-string">'./math.js'</span>;
+
+<span class="code-comment">// Import with alias</span>
+<span class="code-keyword">import</span> {add <span class="code-keyword">as</span> sum, multiply <span class="code-keyword">as</span> mult} <span class="code-keyword">from</span> <span class="code-string">'./math.js'</span>;
+
+<span class="code-comment">// Dynamic imports</span>
+<span class="code-keyword">async</span> <span class="code-keyword">function</span> <span class="code-keyword">loadMath</span>() {
+    <span class="code-keyword">const</span> mathModule = <span class="code-keyword">await</span> <span class="code-keyword">import</span>(<span class="code-string">'./math.js'</span>);
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(mathModule.<span class="code-keyword">add</span>(<span class="code-number">2, 3</span>));
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="section">
+            <h2>🎮 Interactive ES6+ Lab Part 2</h2>
+            
+            <div class="demo-grid">
+                <div class="interactive-demo">
+                    <h4>📤 Spread/Rest Demo</h4>
+                    <p>Test spread and rest operators:</p>
+                    
+                    <div>
+                        <button class="demo-button" onclick="demonstrateSpread()">Spread Arrays</button>
+                        <button class="demo-button purple" onclick="demonstrateRest()">Rest Parameters</button>
+                        <button class="demo-button teal" onclick="demonstrateCloning()">Clone Objects</button>
+                    </div>
+                    
+                    <div id="spreadOutput" class="demo-output">
+                        Click buttons to see spread/rest examples...
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>🏗️ Class Builder</h4>
+                    <p>Create and test ES6 classes:</p>
+                    
+                    <div>
+                        <button class="demo-button success" onclick="createBasicClass()">Basic Class</button>
+                        <button class="demo-button indigo" onclick="createInheritance()">Inheritance</button>
+                        <button class="demo-button pink" onclick="createAdvanced()">Advanced Features</button>
+                    </div>
+                    
+                    <div id="classOutput" class="demo-output">
+                        Class examples will appear here...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <div class="resources-section">
+            <h2>📚 Tài nguyên tham khảo ES6+</h2>
+            <p>Các tài nguyên hữu ích để học sâu hơn về ES6+ Features:</p>
+            
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference" target="_blank" class="resource-link">
+                <h4>🌐 MDN JavaScript Reference</h4>
+                <p>Tài liệu chính thức và đầy đủ nhất về JavaScript ES6+</p>
+            </a>
+            
+            <a href="https://es6.io/" target="_blank" class="resource-link">
+                <h4>🎯 ES6.io Course</h4>
+                <p>Khóa học chuyên sâu về ES6 từ Wes Bos</p>
+            </a>
+            
+            <a href="https://javascript.info/" target="_blank" class="resource-link">
+                <h4>📖 The Modern JavaScript Tutorial</h4>
+                <p>Hướng dẫn JavaScript hiện đại từ cơ bản đến nâng cao</p>
+            </a>
+            
+            <a href="https://github.com/getify/You-Dont-Know-JS" target="_blank" class="resource-link">
+                <h4>📚 You Don't Know JS</h4>
+                <p>Series sách miễn phí về JavaScript chuyên sâu</p>
+            </a>
+            
+            <a href="https://babeljs.io/learn-es2015/" target="_blank" class="resource-link">
+                <h4>🔧 Babel Learn ES2015</h4>
+                <p>Hướng dẫn ES6 với examples và transformations</p>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS10_p1.html" class="nav-btn prev">← JS10 Part 1</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS11-async-javascript.html" class="nav-btn next">JS11: Async JavaScript →</a>
+        </div>
+    </div>
+
+    <script>
+        // Spread/Rest demonstrations
+        function demonstrateSpread() {
+            const output = document.getElementById('spreadOutput');
+            
+            // Example arrays and objects
+            const arr1 = [1, 2, 3];
+            const arr2 = [4, 5, 6];
+            const person = {name: "Alice", age: 25};
+            const contact = {email: "alice@example.com", phone: "123-456"};
+            
+            const result = `Spread Operator Examples:
+
+// Array spreading
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+const combined = [...arr1, ...arr2];
+Result: ${JSON.stringify([...arr1, ...arr2])}
+
+// Object spreading
+const person = {name: "Alice", age: 25};
+const contact = {email: "alice@example.com", phone: "123-456"};
+const fullProfile = {...person, ...contact};
+Result: ${JSON.stringify({...person, ...contact})}
+
+// Function arguments
+const numbers = [1, 5, 3, 9, 2];
+Math.max(...numbers) = ${Math.max(...arr1, ...arr2)}
+
+// Array cloning
+const original = [1, 2, 3];
+const copy = [...original];
+Copy: ${JSON.stringify([...arr1])}`;
+            
+            output.textContent = result;
+        }
+
+        function demonstrateRest() {
+            const output = document.getElementById('spreadOutput');
+            
+            // Create examples
+            function sum(...numbers) {
+                return numbers.reduce((acc, num) => acc + num, 0);
+            }
+            
+            const [first, ...rest] = [1, 2, 3, 4, 5];
+            const {name, ...otherProps} = {name: "Bob", age: 30, city: "Hanoi"};
+            
+            const result = `Rest Parameters Examples:
+
+// Rest in function parameters
+function sum(...numbers) {
+    return numbers.reduce((acc, num) => acc + num, 0);
+}
+sum(1, 2, 3, 4, 5) = ${sum(1, 2, 3, 4, 5)}
+
+// Rest with array destructuring
+const [first, ...rest] = [1, 2, 3, 4, 5];
+first = ${first}
+rest = ${JSON.stringify(rest)}
+
+// Rest with object destructuring
+const {name, ...otherProps} = {name: "Bob", age: 30, city: "Hanoi"};
+name = "${name}"
+otherProps = ${JSON.stringify(otherProps)}
+
+// Mixed parameters
+function logMessage(level, message, ...details) {
+    return \`[\${level}] \${message} - Details: \${details.join(', ')}\`;
+}
+Result: ${function(level, message, ...details) {
+    return `[${level}] ${message} - Details: ${details.join(', ')}`;
+}("INFO", "User login", "IP: 192.168.1.1", "Browser: Chrome")}`;
+            
+            output.textContent = result;
+        }
+
+        function demonstrateCloning() {
+            const output = document.getElementById('spreadOutput');
+            
+            const original = {
+                name: "Alice",
+                hobbies: ["reading", "coding"],
+                address: {city: "Hanoi", country: "Vietnam"}
+            };
+            
+            const shallowCopy = {...original};
+            const deepCopyExample = JSON.parse(JSON.stringify(original));
+            
+            const result = `Object Cloning Examples:
+
+// Original object
+const original = {
+    name: "Alice",
+    hobbies: ["reading", "coding"],
+    address: {city: "Hanoi", country: "Vietnam"}
+};
+
+// Shallow copy with spread
+const shallowCopy = {...original};
+Result: ${JSON.stringify(shallowCopy, null, 2)}
+
+// Note: Nested objects are still referenced!
+// For deep copy, use JSON methods or libraries like Lodash
+
+// Merging with override
+const updates = {age: 26, address: {city: "Ho Chi Minh"}};
+const updated = {...original, ...updates};
+Merged: ${JSON.stringify({...original, age: 26, address: {city: "Ho Chi Minh"}}, null, 2)}
+
+// Adding new properties
+const withNewProps = {...original, id: 123, isActive: true};
+With new props: ${JSON.stringify({...original, id: 123, isActive: true}, null, 2)}`;
+            
+            output.textContent = result;
+        }
+
+        // Class demonstrations
+        function createBasicClass() {
+            const output = document.getElementById('classOutput');
+            
+            // Create a basic class example
+            class Person {
+                constructor(name, age) {
+                    this.name = name;
+                    this.age = age;
+                }
+                
+                greet() {
+                    return `Hi, I'm ${this.name} and I'm ${this.age} years old`;
+                }
+                
+                static species() {
+                    return "Homo sapiens";
+                }
+                
+                get info() {
+                    return `${this.name} (${this.age})`;
+                }
+            }
+            
+            const person = new Person("Alice", 25);
+            
+            const result = `Basic Class Example:
+
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return \`Hi, I'm \${this.name} and I'm \${this.age} years old\`;
+    }
+    
+    static species() {
+        return "Homo sapiens";
+    }
+    
+    get info() {
+        return \`\${this.name} (\${this.age})\`;
+    }
+}
+
+// Usage:
+const person = new Person("Alice", 25);
+
+person.greet() = "${person.greet()}"
+person.info = "${person.info}"
+Person.species() = "${Person.species()}"
+
+Instance: ${JSON.stringify({name: person.name, age: person.age})}`;
+            
+            output.textContent = result;
+        }
+
+        function createInheritance() {
+            const output = document.getElementById('classOutput');
+            
+            // Create inheritance example
+            class Person {
+                constructor(name, age) {
+                    this.name = name;
+                    this.age = age;
+                }
+                
+                greet() {
+                    return `Hi, I'm ${this.name}`;
+                }
+            }
+            
+            class Student extends Person {
+                constructor(name, age, studentId, major) {
+                    super(name, age);
+                    this.studentId = studentId;
+                    this.major = major;
+                }
+                
+                greet() {
+                    return `${super.greet()}. I study ${this.major}`;
+                }
+                
+                study() {
+                    return `${this.name} is studying ${this.major}`;
+                }
+            }
+            
+            const student = new Student("Bob", 20, "S123", "Computer Science");
+            
+            const result = `Class Inheritance Example:
+
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return \`Hi, I'm \${this.name}\`;
+    }
+}
+
+class Student extends Person {
+    constructor(name, age, studentId, major) {
+        super(name, age);  // Call parent constructor
+        this.studentId = studentId;
+        this.major = major;
+    }
+    
+    greet() {
+        return \`\${super.greet()}. I study \${this.major}\`;
+    }
+    
+    study() {
+        return \`\${this.name} is studying \${this.major}\`;
+    }
+}
+
+// Usage:
+const student = new Student("Bob", 20, "S123", "Computer Science");
+
+student.greet() = "${student.greet()}"
+student.study() = "${student.study()}"
+student instanceof Person = ${student instanceof Person}
+student instanceof Student = ${student instanceof Student}`;
+            
+            output.textContent = result;
+        }
+
+        function createAdvanced() {
+            const output = document.getElementById('classOutput');
+            
+            const result = `Advanced Class Features:
+
+class BankAccount {
+    #balance = 0;  // Private field (ES2022)
+    
+    constructor(owner, initialBalance = 0) {
+        this.owner = owner;
+        this.#balance = initialBalance;
+        this.transactions = [];
+    }
+    
+    // Getter
+    get balance() {
+        return this.#balance;
+    }
+    
+    // Setter
+    set balance(amount) {
+        if (amount < 0) {
+            throw new Error("Balance cannot be negative");
+        }
+        this.#balance = amount;
+    }
+    
+    // Private method
+    #logTransaction(type, amount) {
+        this.transactions.push({
+            type,
+            amount,
+            timestamp: new Date(),
+            balance: this.#balance
+        });
+    }
+    
+    deposit(amount) {
+        this.#balance += amount;
+        this.#logTransaction('deposit', amount);
+        return this;
+    }
+    
+    withdraw(amount) {
+        if (amount > this.#balance) {
+            throw new Error("Insufficient funds");
+        }
+        this.#balance -= amount;
+        this.#logTransaction('withdraw', amount);
+        return this;
+    }
+    
+    // Static method
+    static compareAccounts(acc1, acc2) {
+        return acc1.balance - acc2.balance;
+    }
+}
+
+Features demonstrated:
+✅ Private fields (#balance)
+✅ Private methods (#logTransaction)
+✅ Getters and setters
+✅ Method chaining
+✅ Static methods
+✅ Error handling
+
+Example usage:
+const account = new BankAccount("Alice", 1000);
+account.deposit(500).withdraw(200);
+console.log(account.balance); // 1300`;
+            
+            output.textContent = result;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Welcome to JS10 Part 2: ES6+ Features!');
+            console.log('📦 Spread/Rest, Classes, Modules and more!');
+            
+            // Demonstrate features in console
+            console.log('🎯 Advanced ES6+ Examples:');
+            
+            // Spread/Rest
+            const arr1 = [1, 2, 3];
+            const arr2 = [4, 5, 6];
+            console.log('Spread:', [...arr1, ...arr2]);
+            
+            // Default parameters
+            const greet = (name = "Guest") => `Hello, ${name}!`;
+            console.log('Default param:', greet());
+            
+            // Class example
+            class SimpleClass {
+                constructor(value) {
+                    this.value = value;
+                }
+                getValue() {
+                    return this.value;
+                }
+            }
+            
+            const instance = new SimpleClass("ES6 Classes!");
+            console.log('Class instance:', instance.getValue());
+            
+            // Mark lesson as completed
+            localStorage.setItem('js10_p2_started', Date.now());
+            localStorage.setItem('js_progress_js10_p2', 'true');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS12: Final Project Ideas - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+            --indigo: #3f51b5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .project-card {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(45deg, var(--info), var(--success));
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.2);
+            border-color: var(--success);
+        }
+
+        .project-card h3 {
+            color: var(--info);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-card:hover h3 {
+            color: var(--success);
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .difficulty.beginner { background: var(--success); color: white; }
+        .difficulty.intermediate { background: var(--warning); color: white; }
+        .difficulty.advanced { background: var(--danger); color: white; }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .features-list {
+            margin: 15px 0;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 5px 0;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .features-list li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+        }
+
+        .learning-outcomes {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .learning-outcomes h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .challenge-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe8cc);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .bonus-features {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border: 2px solid var(--purple);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .bonus-features h4 {
+            color: var(--purple);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .completion-card {
+            background: linear-gradient(135deg, var(--success), #45a049);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .completion-card h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS12</div>
+            <h1>🚀 Final Project Ideas</h1>
+            <p>Capstone Projects để thực hành tất cả kiến thức đã học</p>
+        </div>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2>🎯 Giới thiệu Final Projects</h2>
+            
+            <p>Sau khi học xong 11 lessons của <strong>JavaScript Fundamentals</strong>, đây là lúc để bạn áp dụng tất cả kiến thức vào các projects thực tế. Dưới đây là những ý tưởng projects được phân chia theo mức độ khó và skills cần thiết.</p>
+
+            <div class="tips-section">
+                <h3>💡 Tips để thành công với Final Project</h3>
+                <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                    <li><strong>🎯 Chọn project phù hợp:</strong> Bắt đầu với mức độ phù hợp với skill hiện tại</li>
+                    <li><strong>📋 Plan trước khi code:</strong> Sketch UI, list features, break down tasks</li>
+                    <li><strong>🔧 Build incrementally:</strong> Implement core features trước, sau đó add enhancements</li>
+                    <li><strong>💾 Version control:</strong> Sử dụng Git từ đầu, commit thường xuyên</li>
+                    <li><strong>📱 Mobile-first:</strong> Design responsive từ đầu</li>
+                    <li><strong>🧪 Test thoroughly:</strong> Test trên nhiều browsers và devices</li>
+                    <li><strong>🎨 Polish UI/UX:</strong> Good design làm project impressive hơn</li>
+                    <li><strong>📖 Document code:</strong> Write clear comments và README</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Beginner Projects -->
+        <section class="section">
+            <h2>🌱 Beginner Projects</h2>
+            <p>Perfect cho những bạn mới học xong fundamentals</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🧮 Personal Finance Tracker</h3>
+                    <div class="difficulty beginner">Beginner</div>
+                    
+                    <p>Ứng dụng quản lý chi tiêu cá nhân với khả năng thêm, sửa, xóa transactions và xem báo cáo.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">LocalStorage</span>
+                        <span class="tech-tag">Chart.js</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Add/Edit/Delete income và expenses</li>
+                            <li>Categorize transactions (Food, Transport, Entertainment...)</li>
+                            <li>View balance và monthly summaries</li>
+                            <li>Simple charts cho spending patterns</li>
+                            <li>Data persistence với LocalStorage</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>DOM manipulation, form handling, data validation, LocalStorage, basic data visualization</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Export to CSV, budget goals, recurring transactions, expense photos</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>📚 Personal Library Manager</h3>
+                    <div class="difficulty beginner">Beginner</div>
+                    
+                    <p>Quản lý thư viện sách cá nhân với search, filter, và reading progress tracking.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">LocalStorage</span>
+                        <span class="tech-tag">CSS Grid</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Add books với title, author, genre, pages</li>
+                            <li>Mark books as read/unread/reading</li>
+                            <li>Search và filter by genre/status</li>
+                            <li>Reading progress tracker</li>
+                            <li>Book cover upload hoặc URL</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Array methods, search algorithms, file handling, CSS Grid layouts</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Reading stats, book recommendations, export/import data, reviews system</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>🌤️ Weather Dashboard</h3>
+                    <div class="difficulty beginner">Beginner</div>
+                    
+                    <p>Weather app với current conditions, forecast, và multiple cities support.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Fetch API</span>
+                        <span class="tech-tag">OpenWeather API</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Current weather for user location</li>
+                            <li>5-day weather forecast</li>
+                            <li>Search weather by city name</li>
+                            <li>Save favorite cities</li>
+                            <li>Weather icons và animations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>API integration, async/await, geolocation, error handling, responsive design</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Weather maps, severe weather alerts, historical data, unit conversion</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intermediate Projects -->
+        <section class="section">
+            <h2>🚀 Intermediate Projects</h2>
+            <p>Cho những bạn đã comfortable với JavaScript basics</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🎵 Music Player App</h3>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    
+                    <p>Full-featured music player với playlists, search, và audio visualization.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5 Audio</span>
+                        <span class="tech-tag">Web Audio API</span>
+                        <span class="tech-tag">Canvas</span>
+                        <span class="tech-tag">File API</span>
+                        <span class="tech-tag">CSS Animations</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Upload và play local music files</li>
+                            <li>Create và manage playlists</li>
+                            <li>Audio controls (play, pause, skip, volume)</li>
+                            <li>Search songs by title/artist</li>
+                            <li>Visual audio spectrum analyzer</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Web Audio API, Canvas drawing, File handling, complex state management</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Equalizer, lyrics display, shuffle/repeat modes, keyboard shortcuts</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>📝 Collaborative Notes App</h3>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    
+                    <p>Note-taking app với rich text editing, folders, tags, và sharing capabilities.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">Rich Text Editor</span>
+                        <span class="tech-tag">Drag & Drop API</span>
+                        <span class="tech-tag">IndexedDB</span>
+                        <span class="tech-tag">Web Workers</span>
+                        <span class="tech-tag">PWA</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Rich text editing với formatting</li>
+                            <li>Organize notes in folders</li>
+                            <li>Tag system cho easy searching</li>
+                            <li>Export notes to PDF/Markdown</li>
+                            <li>Offline functionality với PWA</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Rich text editing, IndexedDB, Service Workers, PWA development</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Real-time collaboration, version history, image embedding, encryption</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>🛒 E-commerce Product Catalog</h3>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    
+                    <p>Product showcase với shopping cart, filtering, sorting, và checkout flow.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">Fake Store API</span>
+                        <span class="tech-tag">Payment Integration</span>
+                        <span class="tech-tag">Shopping Cart</span>
+                        <span class="tech-tag">Image Lazy Loading</span>
+                        <span class="tech-tag">Form Validation</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Product grid với pagination</li>
+                            <li>Advanced filtering và sorting</li>
+                            <li>Shopping cart với quantity management</li>
+                            <li>Product detail pages</li>
+                            <li>Checkout process với form validation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Complex state management, API pagination, form validation, UI/UX patterns</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>User accounts, wishlist, product reviews, recommendation engine</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Projects -->
+        <section class="section">
+            <h2>🔥 Advanced Projects</h2>
+            <p>Challenging projects cho experienced developers</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🎮 2D Game Engine</h3>
+                    <div class="difficulty advanced">Advanced</div>
+                    
+                    <p>Build a simple 2D game engine với physics, collision detection, và game loop.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">Canvas</span>
+                        <span class="tech-tag">Game Loop</span>
+                        <span class="tech-tag">Physics Engine</span>
+                        <span class="tech-tag">Sprite Animation</span>
+                        <span class="tech-tag">Audio API</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Game loop với requestAnimationFrame</li>
+                            <li>Sprite rendering và animation system</li>
+                            <li>Basic physics (gravity, collision)</li>
+                            <li>Input handling (keyboard, mouse)</li>
+                            <li>Scene management system</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Canvas advanced techniques, animation loops, physics programming, game architecture</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Particle systems, level editor, sound effects, mobile controls</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>📊 Data Visualization Dashboard</h3>
+                    <div class="difficulty advanced">Advanced</div>
+                    
+                    <p>Interactive dashboard với real-time data, multiple chart types, và filtering.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">WebSocket</span>
+                        <span class="tech-tag">CSV/JSON Parser</span>
+                        <span class="tech-tag">Data Processing</span>
+                        <span class="tech-tag">SVG</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Multiple chart types (bar, line, pie, scatter)</li>
+                            <li>Interactive filtering và drilling down</li>
+                            <li>Real-time data updates</li>
+                            <li>Data import from CSV/JSON</li>
+                            <li>Export charts as images/PDF</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>Data visualization libraries, SVG manipulation, complex data processing, real-time updates</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Machine learning insights, predictive analytics, custom chart types</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>💬 Real-time Chat Application</h3>
+                    <div class="difficulty advanced">Advanced</div>
+                    
+                    <p>Full-featured chat app với rooms, file sharing, và video calls.</p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">WebSocket</span>
+                        <span class="tech-tag">WebRTC</span>
+                        <span class="tech-tag">File Upload</span>
+                        <span class="tech-tag">Emoji Picker</span>
+                        <span class="tech-tag">Push Notifications</span>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h4>Core Features:</h4>
+                        <ul>
+                            <li>Real-time messaging với WebSocket</li>
+                            <li>Multiple chat rooms/channels</li>
+                            <li>File và image sharing</li>
+                            <li>User authentication và profiles</li>
+                            <li>Video/audio calling với WebRTC</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-outcomes">
+                        <h4>🎓 Học được gì:</h4>
+                        <p>WebSocket programming, WebRTC, real-time data sync, complex UI state</p>
+                    </div>
+                    
+                    <div class="bonus-features">
+                        <h4>🌟 Bonus Features:</h4>
+                        <p>Message encryption, screen sharing, chat bots, message translation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Tips -->
+        <div class="challenge-section">
+            <h2>💡 Tips để hoàn thành Projects thành công</h2>
+            
+            <div class="projects-grid">
+                <div style="grid-column: 1/-1;">
+                    <h3>🎯 Planning Phase</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>📝 Write requirements:</strong> List tất cả features cần thiết</li>
+                        <li><strong>🎨 Design mockups:</strong> Sketch UI trước khi code</li>
+                        <li><strong>📋 Break down tasks:</strong> Chia project thành small, manageable tasks</li>
+                        <li><strong>⏱️ Set timeline:</strong> Estimate time cho mỗi feature</li>
+                    </ul>
+
+                    <h3>🔧 Development Phase</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>🏗️ Build MVP first:</strong> Core functionality trước, polish sau</li>
+                        <li><strong>💾 Commit often:</strong> Save progress với meaningful commit messages</li>
+                        <li><strong>🧪 Test early:</strong> Test features as you build them</li>
+                        <li><strong>📖 Document code:</strong> Write comments cho complex logic</li>
+                    </ul>
+
+                    <h3>🎨 Polish Phase</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>📱 Responsive design:</strong> Test trên different screen sizes</li>
+                        <li><strong>🎭 User experience:</strong> Add loading states, error handling</li>
+                        <li><strong>⚡ Performance:</strong> Optimize images, minimize HTTP requests</li>
+                        <li><strong>📄 Documentation:</strong> Write clear README với screenshots</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion -->
+        <div class="completion-card">
+            <h2>🎉 Congratulations!</h2>
+            <p>Bạn đã hoàn thành <strong>Lab06: JavaScript Fundamentals</strong>!</p>
+            <p style="margin-top: 15px; font-size: 1.1rem;">
+                Từ variables và functions đến DOM manipulation và async programming,<br>
+                bạn đã master được foundation skills để build amazing web applications!
+            </p>
+            <p style="margin-top: 20px; font-style: italic;">
+                "The best way to learn programming is by building projects. Happy coding! 🚀"
+            </p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS11-async-javascript.html" class="nav-btn prev">← JS11: Async JavaScript</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <div style="width: 140px;"></div> <!-- Spacer for alignment -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Welcome to JS12: Final Project Ideas!');
+            console.log('🎯 Time to build something amazing!');
+            
+            // Animate project cards on scroll
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            projectCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+            
+            // Add click tracking for project cards
+            projectCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const projectName = this.querySelector('h3').textContent;
+                    console.log(`🎯 Project selected: ${projectName}`);
+                    
+                    // Add selected effect
+                    this.style.borderColor = '#4caf50';
+                    this.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.3)';
+                    
+                    setTimeout(() => {
+                        this.style.borderColor = '#2196f3';
+                        this.style.boxShadow = '';
+                    }, 2000);
+                });
+            });
+            
+            // Course completion celebration
+            const completionCard = document.querySelector('.completion-card');
+            if (completionCard) {
+                completionCard.addEventListener('click', function() {
+                    // Confetti effect (simple version)
+                    for (let i = 0; i < 50; i++) {
+                        setTimeout(() => {
+                            createConfetti();
+                        }, i * 50);
+                    }
+                });
+            }
+            
+            function createConfetti() {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: 10px;
+                    height: 10px;
+                    background: ${['#f7df1e', '#4caf50', '#2196f3', '#ff9800', '#9c27b0'][Math.floor(Math.random() * 5)]};
+                    top: -10px;
+                    left: ${Math.random() * 100}vw;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                `;
+                
+                document.body.appendChild(confetti);
+                
+                let fall = 0;
+                const fallAnimation = setInterval(() => {
+                    fall += 2;
+                    confetti.style.top = fall + 'px';
+                    confetti.style.transform = `rotate(${fall * 2}deg)`;
+                    
+                    if (fall > window.innerHeight) {
+                        clearInterval(fallAnimation);
+                        confetti.remove();
+                    }
+                }, 10);
+            }
+            
+            // Mark course as completed
+            localStorage.setItem('js12_completed', Date.now());
+            localStorage.setItem('js_progress_js12', 'true');
+            localStorage.setItem('lab06_course_completed', 'true');
+            
+            // Course completion stats
+            const completedLessons = Object.keys(localStorage)
+                .filter(key => key.startsWith('js_progress_'))
+                .length;
+                
+            console.log(`🎓 Course Progress: ${completedLessons}/12 lessons completed`);
+            console.log('🏆 Ready to build your final project!');
+            
+            // Celebration message
+            if (completedLessons >= 12) {
+                setTimeout(() => {
+                    console.log('🎉 CONGRATULATIONS! You\'ve completed the entire JavaScript Fundamentals course!');
+                    console.log('🚀 Time to build something amazing with your new skills!');
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

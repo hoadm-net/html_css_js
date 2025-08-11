@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS03: Operators & Expressions - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-number {
+            color: #f6ad55;
+        }
+
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .operator-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .operator-card h4 {
+            color: var(--primary);
+            background: var(--secondary);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .operator-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .operator-list li {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: var(--bg-light);
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+            white-space: pre-wrap;
+        }
+
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .truth-table th {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .truth-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .truth-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .expression-builder {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .expression-builder h4 {
+            color: var(--info);
+            margin-bottom: 15px;
+        }
+
+        .expression-display {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 15px 0;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .expression-btn {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .expression-btn:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            border-color: var(--primary);
+        }
+
+        .precedence-diagram {
+            background: white;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .precedence-level {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: var(--bg-light);
+            border-radius: 5px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .precedence-number {
+            background: var(--warning);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .operator-grid,
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS03</div>
+            <h1>⚡ Operators & Expressions</h1>
+            <p>Master JavaScript operators to perform calculations and logic operations</p>
+        </div>
+
+        <!-- Arithmetic Operators -->
+        <section class="section">
+            <h2>🧮 Arithmetic Operators</h2>
+            
+            <p>Arithmetic operators perform mathematical calculations on numbers:</p>
+
+            <div class="operator-grid">
+                <div class="operator-card">
+                    <h4>Basic Math Operators</h4>
+                    <ul class="operator-list">
+                        <li><span>+</span> <span>Addition</span></li>
+                        <li><span>-</span> <span>Subtraction</span></li>
+                        <li><span>*</span> <span>Multiplication</span></li>
+                        <li><span>/</span> <span>Division</span></li>
+                        <li><span>%</span> <span>Modulus (Remainder)</span></li>
+                        <li><span>**</span> <span>Exponentiation</span></li>
+                    </ul>
+                </div>
+                
+                <div class="operator-card">
+                    <h4>Assignment Operators</h4>
+                    <ul class="operator-list">
+                        <li><span>=</span> <span>Assignment</span></li>
+                        <li><span>+=</span> <span>Add and assign</span></li>
+                        <li><span>-=</span> <span>Subtract and assign</span></li>
+                        <li><span>*=</span> <span>Multiply and assign</span></li>
+                        <li><span>/=</span> <span>Divide and assign</span></li>
+                        <li><span>%=</span> <span>Modulus and assign</span></li>
+                    </ul>
+                </div>
+                
+                <div class="operator-card">
+                    <h4>Increment/Decrement</h4>
+                    <ul class="operator-list">
+                        <li><span>++</span> <span>Increment by 1</span></li>
+                        <li><span>--</span> <span>Decrement by 1</span></li>
+                        <li><span>x++</span> <span>Post-increment</span></li>
+                        <li><span>++x</span> <span>Pre-increment</span></li>
+                        <li><span>x--</span> <span>Post-decrement</span></li>
+                        <li><span>--x</span> <span>Pre-decrement</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Arithmetic operators examples</span>
+<span class="code-keyword">let</span> a = <span class="code-number">10</span>;
+<span class="code-keyword">let</span> b = <span class="code-number">3</span>;
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a + b);    <span class="code-comment">// 13 - Addition</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a - b);    <span class="code-comment">// 7 - Subtraction</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a * b);    <span class="code-comment">// 30 - Multiplication</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a / b);    <span class="code-comment">// 3.333... - Division</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a % b);    <span class="code-comment">// 1 - Modulus (remainder)</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a ** b);   <span class="code-comment">// 1000 - Exponentiation</span>
+
+<span class="code-comment">// Assignment operators</span>
+<span class="code-keyword">let</span> x = <span class="code-number">5</span>;
+x += <span class="code-number">3</span>;               <span class="code-comment">// x = x + 3 = 8</span>
+x *= <span class="code-number">2</span>;               <span class="code-comment">// x = x * 2 = 16</span>
+
+<span class="code-comment">// Increment/Decrement</span>
+<span class="code-keyword">let</span> count = <span class="code-number">0</span>;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(count++);   <span class="code-comment">// 0 (post-increment: use then increment)</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(++count);   <span class="code-comment">// 2 (pre-increment: increment then use)</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Comparison Operators -->
+        <section class="section">
+            <h2>⚖️ Comparison Operators</h2>
+            
+            <p>Comparison operators compare values và return boolean results (true or false):</p>
+
+            <div class="operator-grid">
+                <div class="operator-card">
+                    <h4>Equality Operators</h4>
+                    <ul class="operator-list">
+                        <li><span>==</span> <span>Equal (loose)</span></li>
+                        <li><span>===</span> <span>Equal (strict)</span></li>
+                        <li><span>!=</span> <span>Not equal (loose)</span></li>
+                        <li><span>!==</span> <span>Not equal (strict)</span></li>
+                    </ul>
+                </div>
+                
+                <div class="operator-card">
+                    <h4>Relational Operators</h4>
+                    <ul class="operator-list">
+                        <li><span>&lt;</span> <span>Less than</span></li>
+                        <li><span>&gt;</span> <span>Greater than</span></li>
+                        <li><span>&lt;=</span> <span>Less than or equal</span></li>
+                        <li><span>&gt;=</span> <span>Greater than or equal</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Equality comparisons</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">5</span> == <span class="code-string">"5"</span>);     <span class="code-comment">// true (loose equality - type coercion)</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">5</span> === <span class="code-string">"5"</span>);    <span class="code-comment">// false (strict equality - no type coercion)</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">5</span> != <span class="code-string">"5"</span>);     <span class="code-comment">// false</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">5</span> !== <span class="code-string">"5"</span>);    <span class="code-comment">// true</span>
+
+<span class="code-comment">// Relational comparisons</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">10</span> > <span class="code-number">5</span>);      <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">10</span> < <span class="code-number">5</span>);      <span class="code-comment">// false</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">10</span> >= <span class="code-number">10</span>);    <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">10</span> <= <span class="code-number">5</span>);     <span class="code-comment">// false</span>
+
+<span class="code-comment">// String comparison (alphabetical)</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"apple"</span> < <span class="code-string">"banana"</span>);  <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">"A"</span> < <span class="code-string">"a"</span>);            <span class="code-comment">// true (ASCII comparison)</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Logical Operators -->
+        <section class="section">
+            <h2>🧠 Logical Operators</h2>
+            
+            <p>Logical operators perform logical operations và are commonly used with boolean values:</p>
+
+            <div class="operator-grid">
+                <div class="operator-card">
+                    <h4>Logical Operators</h4>
+                    <ul class="operator-list">
+                        <li><span>&&</span> <span>AND (both true)</span></li>
+                        <li><span>||</span> <span>OR (at least one true)</span></li>
+                        <li><span>!</span> <span>NOT (opposite)</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Truth Tables</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h4 style="text-align: center; margin-bottom: 10px;">AND (&&) Operator</h4>
+                    <table class="truth-table">
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>A && B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>true</td>
+                                <td>true</td>
+                                <td style="background: var(--success); color: white;">true</td>
+                            </tr>
+                            <tr>
+                                <td>true</td>
+                                <td>false</td>
+                                <td style="background: var(--danger); color: white;">false</td>
+                            </tr>
+                            <tr>
+                                <td>false</td>
+                                <td>true</td>
+                                <td style="background: var(--danger); color: white;">false</td>
+                            </tr>
+                            <tr>
+                                <td>false</td>
+                                <td>false</td>
+                                <td style="background: var(--danger); color: white;">false</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div>
+                    <h4 style="text-align: center; margin-bottom: 10px;">OR (||) Operator</h4>
+                    <table class="truth-table">
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>A || B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>true</td>
+                                <td>true</td>
+                                <td style="background: var(--success); color: white;">true</td>
+                            </tr>
+                            <tr>
+                                <td>true</td>
+                                <td>false</td>
+                                <td style="background: var(--success); color: white;">true</td>
+                            </tr>
+                            <tr>
+                                <td>false</td>
+                                <td>true</td>
+                                <td style="background: var(--success); color: white;">true</td>
+                            </tr>
+                            <tr>
+                                <td>false</td>
+                                <td>false</td>
+                                <td style="background: var(--danger); color: white;">false</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Logical operators examples</span>
+<span class="code-keyword">let</span> age = <span class="code-number">25</span>;
+<span class="code-keyword">let</span> hasLicense = <span class="code-keyword">true</span>;
+<span class="code-keyword">let</span> hasInsurance = <span class="code-keyword">false</span>;
+
+<span class="code-comment">// AND operator (&&) - all conditions must be true</span>
+<span class="code-keyword">let</span> canDrive = age >= <span class="code-number">18</span> && hasLicense;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(canDrive);          <span class="code-comment">// true</span>
+
+<span class="code-comment">// OR operator (||) - at least one condition must be true</span>
+<span class="code-keyword">let</span> needsDocuments = !hasLicense || !hasInsurance;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(needsDocuments);   <span class="code-comment">// true</span>
+
+<span class="code-comment">// NOT operator (!) - reverses boolean value</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(!<span class="code-keyword">true</span>);          <span class="code-comment">// false</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(!<span class="code-keyword">false</span>);         <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(!hasInsurance);   <span class="code-comment">// true</span>
+
+<span class="code-comment">// Short-circuit evaluation</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">true</span> || <span class="code-string">"This won't be evaluated"</span>);  <span class="code-comment">// true</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">false</span> && <span class="code-string">"This won't be evaluated"</span>); <span class="code-comment">// false</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demos -->
+        <section class="section">
+            <h2>🎮 Interactive Operator Playground</h2>
+            
+            <div class="demo-grid">
+                <div class="interactive-demo">
+                    <h4>🧮 Arithmetic Calculator</h4>
+                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
+                        <input type="number" id="num1" class="demo-input" placeholder="First number" value="10">
+                        <select id="operator" class="demo-input">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                            <option value="*">×</option>
+                            <option value="/">>÷</option>
+                            <option value="%">%</option>
+                            <option value="**">**</option>
+                        </select>
+                        <input type="number" id="num2" class="demo-input" placeholder="Second number" value="3">
+                    </div>
+                    
+                    <button class="demo-button" onclick="calculateArithmetic()">Calculate 🧮</button>
+                    
+                    <div id="arithmeticOutput" class="demo-output">
+                        Results will appear here...
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>⚖️ Comparison Tester</h4>
+                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
+                        <input type="text" id="val1" class="demo-input" placeholder="Value 1" value="5">
+                        <select id="comparison" class="demo-input">
+                            <option value="==">==</option>
+                            <option value="===">===</option>
+                            <option value="!=">!=</option>
+                            <option value="!==">!==</option>
+                            <option value="<"><</option>
+                            <option value=">">></option>
+                            <option value="<="><=</option>
+                            <option value=">=">>=</option>
+                        </select>
+                        <input type="text" id="val2" class="demo-input" placeholder="Value 2" value="'5'">
+                    </div>
+                    
+                    <button class="demo-button" onclick="testComparison()">Compare ⚖️</button>
+                    
+                    <div id="comparisonOutput" class="demo-output">
+                        Comparison results will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h4>🧠 Logical Expression Builder</h4>
+                <p>Click buttons để build logical expressions:</p>
+                
+                <div class="expression-display" id="expressionDisplay">
+                    Build your expression here...
+                </div>
+                
+                <div class="button-group">
+                    <button class="expression-btn" onclick="addToExpression('true')">true</button>
+                    <button class="expression-btn" onclick="addToExpression('false')">false</button>
+                    <button class="expression-btn" onclick="addToExpression('&&')">&&</button>
+                    <button class="expression-btn" onclick="addToExpression('||')">||</button>
+                    <button class="expression-btn" onclick="addToExpression('!')">!</button>
+                    <button class="expression-btn" onclick="addToExpression('(')">(</button>
+                    <button class="expression-btn" onclick="addToExpression(')')">)</button>
+                    <button class="expression-btn" onclick="clearExpression()">Clear</button>
+                </div>
+                
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="demo-button" onclick="evaluateExpression()">Evaluate Expression 🧠</button>
+                </div>
+                
+                <div id="logicalOutput" class="demo-output">
+                    Expression result will appear here...
+                </div>
+            </div>
+        </section>
+
+        <!-- Operator Precedence -->
+        <section class="section">
+            <h2>📊 Operator Precedence</h2>
+            
+            <p>JavaScript follows specific rules về thứ tự operators are evaluated. Higher precedence operators are evaluated first:</p>
+
+            <div class="precedence-diagram">
+                <h3 style="color: var(--warning); margin-bottom: 20px;">Precedence Levels (Highest to Lowest)</h3>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">1</div>
+                    <div>
+                        <strong>Parentheses:</strong> <code>( )</code><br>
+                        <small>Grouping và function calls</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">2</div>
+                    <div>
+                        <strong>Member Access:</strong> <code>. []</code><br>
+                        <small>Object property access</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">3</div>
+                    <div>
+                        <strong>Unary:</strong> <code>! - + ++ --</code><br>
+                        <small>Logical NOT, unary minus/plus, increment/decrement</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">4</div>
+                    <div>
+                        <strong>Exponentiation:</strong> <code>**</code><br>
+                        <small>Power operation (right-to-left)</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">5</div>
+                    <div>
+                        <strong>Multiplication/Division:</strong> <code>* / %</code><br>
+                        <small>Arithmetic operations</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">6</div>
+                    <div>
+                        <strong>Addition/Subtraction:</strong> <code>+ -</code><br>
+                        <small>Arithmetic operations</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">7</div>
+                    <div>
+                        <strong>Relational:</strong> <code>< <= > >=</code><br>
+                        <small>Comparison operations</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">8</div>
+                    <div>
+                        <strong>Equality:</strong> <code>== != === !==</code><br>
+                        <small>Equality comparisons</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">9</div>
+                    <div>
+                        <strong>Logical AND:</strong> <code>&&</code><br>
+                        <small>Logical conjunction</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">10</div>
+                    <div>
+                        <strong>Logical OR:</strong> <code>||</code><br>
+                        <small>Logical disjunction</small>
+                    </div>
+                </div>
+                
+                <div class="precedence-level">
+                    <div class="precedence-number">11</div>
+                    <div>
+                        <strong>Assignment:</strong> <code>= += -= *= /= %=</code><br>
+                        <small>Variable assignments (right-to-left)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Operator precedence examples</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">2</span> + <span class="code-number">3</span> * <span class="code-number">4</span>);        <span class="code-comment">// 14 (not 20) - multiplication first</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>((<span class="code-number">2</span> + <span class="code-number">3</span>) * <span class="code-number">4</span>);      <span class="code-comment">// 20 - parentheses override precedence</span>
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-number">5</span> > <span class="code-number">3</span> && <span class="code-number">2</span> < <span class="code-number">4</span>);   <span class="code-comment">// true - comparison before logical AND</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">true</span> || <span class="code-keyword">false</span> && <span class="code-keyword">false</span>); <span class="code-comment">// true - AND before OR</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>((<span class="code-keyword">true</span> || <span class="code-keyword">false</span>) && <span class="code-keyword">false</span>); <span class="code-comment">// false - parentheses change order</span>
+
+<span class="code-comment">// Assignment is right-to-left</span>
+<span class="code-keyword">let</span> a, b, c;
+a = b = c = <span class="code-number">5</span>;           <span class="code-comment">// All variables get value 5</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(a, b, c);     <span class="code-comment">// 5 5 5</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS02-variables-datatypes.html" class="nav-btn prev">← JS02: Variables & Data Types</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS04-conditionals-loops.html" class="nav-btn next">JS04: Conditionals & Loops →</a>
+        </div>
+    </div>
+
+    <script>
+        let currentExpression = "";
+
+        // Arithmetic calculator
+        function calculateArithmetic() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const operator = document.getElementById('operator').value;
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const output = document.getElementById('arithmeticOutput');
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                output.textContent = 'Please enter valid numbers!';
+                return;
+            }
+            
+            let result;
+            let operation;
+            
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    operation = 'Addition';
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    operation = 'Subtraction';
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    operation = 'Multiplication';
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        output.textContent = 'Error: Division by zero!';
+                        return;
+                    }
+                    result = num1 / num2;
+                    operation = 'Division';
+                    break;
+                case '%':
+                    result = num1 % num2;
+                    operation = 'Modulus';
+                    break;
+                case '**':
+                    result = num1 ** num2;
+                    operation = 'Exponentiation';
+                    break;
+            }
+            
+            output.textContent = `${operation}: ${num1} ${operator} ${num2} = ${result}\n\nStep by step:\n1. Operation: ${operation}\n2. Left operand: ${num1}\n3. Right operand: ${num2}\n4. Result: ${result}\n5. Result type: ${typeof result}`;
+        }
+
+        // Comparison tester
+        function testComparison() {
+            const val1 = document.getElementById('val1').value;
+            const comparison = document.getElementById('comparison').value;
+            const val2 = document.getElementById('val2').value;
+            const output = document.getElementById('comparisonOutput');
+            
+            try {
+                const evaluatedVal1 = eval(val1);
+                const evaluatedVal2 = eval(val2);
+                const expression = `${val1} ${comparison} ${val2}`;
+                const result = eval(expression);
+                
+                let details = `Expression: ${expression}\n`;
+                details += `Left value: ${evaluatedVal1} (${typeof evaluatedVal1})\n`;
+                details += `Operator: ${comparison}\n`;
+                details += `Right value: ${evaluatedVal2} (${typeof evaluatedVal2})\n`;
+                details += `Result: ${result}\n\n`;
+                
+                if (comparison === '==' || comparison === '!=') {
+                    details += `Note: Loose equality (==) performs type coercion.\n`;
+                    details += `Strict comparison (===): ${evaluatedVal1} === ${evaluatedVal2} = ${evaluatedVal1 === evaluatedVal2}`;
+                } else if (comparison === '===' || comparison === '!==') {
+                    details += `Note: Strict equality (===) checks both value and type.\n`;
+                    details += `Loose comparison (==): ${evaluatedVal1} == ${evaluatedVal2} = ${evaluatedVal1 == evaluatedVal2}`;
+                }
+                
+                output.textContent = details;
+            } catch (e) {
+                output.textContent = `Error: ${e.message}`;
+            }
+        }
+
+        // Expression builder
+        function addToExpression(value) {
+            currentExpression += value + " ";
+            document.getElementById('expressionDisplay').textContent = currentExpression || "Build your expression here...";
+        }
+
+        function clearExpression() {
+            currentExpression = "";
+            document.getElementById('expressionDisplay').textContent = "Build your expression here...";
+            document.getElementById('logicalOutput').textContent = "Expression result will appear here...";
+        }
+
+        function evaluateExpression() {
+            const output = document.getElementById('logicalOutput');
+            
+            if (!currentExpression.trim()) {
+                output.textContent = 'Please build an expression first!';
+                return;
+            }
+            
+            try {
+                const result = eval(currentExpression);
+                let details = `Expression: ${currentExpression}\n`;
+                details += `Result: ${result}\n`;
+                details += `Result type: ${typeof result}\n\n`;
+                
+                if (typeof result === 'boolean') {
+                    details += `This expression evaluates to ${result ? 'TRUE' : 'FALSE'}.\n`;
+                    details += `In JavaScript, this is a ${result ? 'truthy' : 'falsy'} value.`;
+                }
+                
+                output.textContent = details;
+            } catch (e) {
+                output.textContent = `Error evaluating expression: ${e.message}\n\nMake sure your expression is valid JavaScript!`;
+            }
+        }
+
+        // Welcome message
+        console.log('⚡ Welcome to JS03: Operators & Expressions!');
+        console.log('🧮 Try the interactive calculators to practice!');
+
+        // Demonstrate operator precedence
+        console.log('📊 Operator Precedence Examples:');
+        console.log('2 + 3 * 4 =', 2 + 3 * 4);
+        console.log('(2 + 3) * 4 =', (2 + 3) * 4);
+        console.log('true || false && false =', true || false && false);
+        console.log('(true || false) && false =', (true || false) && false);
+
+        // Mark lesson as started
+        localStorage.setItem('js03_started', Date.now());
+        localStorage.setItem('js_progress_js03', 'true');
+    </script>
+</body>
+</html>

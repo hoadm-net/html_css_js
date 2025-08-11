@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS10_p1: ES6+ Features Part 1 - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+            --indigo: #3f51b5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .code-demo {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-demo::before {
+            content: "ES6+ JavaScript";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .code-demo pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-number {
+            color: #f6ad55;
+        }
+
+        .interactive-demo {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .demo-button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .demo-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .demo-button.purple { background: var(--purple); color: white; }
+        .demo-button.teal { background: var(--teal); color: white; }
+        .demo-button.pink { background: var(--pink); color: white; }
+        .demo-button.success { background: var(--success); color: white; }
+        .demo-button.indigo { background: var(--indigo); color: white; }
+
+        .demo-output {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            border: 2px solid var(--primary);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .feature-showcase {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 2px solid var(--info);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: var(--info);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .demo-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS10 - Part 1</div>
+            <h1>🚀 ES6+ Features Part 1</h1>
+            <p>Let & Const, Arrow Functions, Template Literals, Destructuring</p>
+        </div>
+
+        <!-- Let & Const -->
+        <section class="section">
+            <h2>🔐 Let & Const vs Var</h2>
+            
+            <p>ES6 introduced <strong>let</strong> và <strong>const</strong> as better alternatives to <strong>var</strong> with block scope và other improvements.</p>
+
+            <div class="feature-showcase">
+                <h3>📊 Variable Declaration Comparison</h3>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>var</th>
+                                <th>let</th>
+                                <th>const</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Scope</strong></td>
+                                <td>Function or Global</td>
+                                <td>Block</td>
+                                <td>Block</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hoisting</strong></td>
+                                <td>Yes (undefined)</td>
+                                <td>Yes (TDZ)</td>
+                                <td>Yes (TDZ)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reassignment</strong></td>
+                                <td>✅ Allowed</td>
+                                <td>✅ Allowed</td>
+                                <td>❌ Not allowed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Redeclaration</strong></td>
+                                <td>✅ Allowed</td>
+                                <td>❌ Not allowed</td>
+                                <td>❌ Not allowed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Block Scope Examples</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// var - Function scoped</span>
+<span class="code-keyword">function</span> <span class="code-keyword">varExample</span>() {
+    <span class="code-keyword">if</span> (<span class="code-keyword">true</span>) {
+        <span class="code-keyword">var</span> x = <span class="code-number">1</span>;
+    }
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(x); <span class="code-comment">// 1 - accessible outside block</span>
+}
+
+<span class="code-comment">// let - Block scoped</span>
+<span class="code-keyword">function</span> <span class="code-keyword">letExample</span>() {
+    <span class="code-keyword">if</span> (<span class="code-keyword">true</span>) {
+        <span class="code-keyword">let</span> y = <span class="code-number">1</span>;
+    }
+    <span class="code-comment">// console.log(y); // Error: y is not defined</span>
+}
+
+<span class="code-comment">// const - Block scoped, cannot reassign</span>
+<span class="code-keyword">const</span> PI = <span class="code-number">3.14159</span>;
+<span class="code-comment">// PI = 3.14; // Error: Assignment to constant variable</span>
+
+<span class="code-comment">// const with objects (content can change)</span>
+<span class="code-keyword">const</span> person = {name: <span class="code-string">"Alice"</span>};
+person.name = <span class="code-string">"Bob"</span>; <span class="code-comment">// This is allowed</span>
+person.age = <span class="code-number">25</span>; <span class="code-comment">// This is allowed</span>
+<span class="code-comment">// person = {}; // Error: Assignment to constant variable</span></code></pre>
+            </div>
+
+            <h3>Temporal Dead Zone (TDZ)</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Temporal Dead Zone with let/const</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(varVariable); <span class="code-comment">// undefined (hoisted)</span>
+<span class="code-comment">// console.log(letVariable); // ReferenceError: Cannot access before initialization</span>
+<span class="code-comment">// console.log(constVariable); // ReferenceError: Cannot access before initialization</span>
+
+<span class="code-keyword">var</span> varVariable = <span class="code-string">"I'm var"</span>;
+<span class="code-keyword">let</span> letVariable = <span class="code-string">"I'm let"</span>;
+<span class="code-keyword">const</span> constVariable = <span class="code-string">"I'm const"</span>;
+
+<span class="code-comment">// Best practices</span>
+<span class="code-keyword">const</span> CONFIG = {
+    API_URL: <span class="code-string">"https://api.example.com"</span>,
+    MAX_RETRIES: <span class="code-number">3</span>
+}; <span class="code-comment">// Use const for constants</span>
+
+<span class="code-keyword">let</span> counter = <span class="code-number">0</span>; <span class="code-comment">// Use let for variables that will change</span>
+
+<span class="code-comment">// Avoid var in modern JavaScript</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Arrow Functions -->
+        <section class="section">
+            <h2>🏹 Arrow Functions</h2>
+            
+            <p><strong>Arrow functions</strong> provide a shorter syntax for writing functions và have different <code>this</code> binding behavior.</p>
+
+            <h3>Basic Syntax</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Traditional function</span>
+<span class="code-keyword">function</span> <span class="code-keyword">add</span>(a, b) {
+    <span class="code-keyword">return</span> a + b;
+}
+
+<span class="code-comment">// Arrow function - full syntax</span>
+<span class="code-keyword">const</span> add = (a, b) => {
+    <span class="code-keyword">return</span> a + b;
+};
+
+<span class="code-comment">// Arrow function - short syntax (implicit return)</span>
+<span class="code-keyword">const</span> add = (a, b) => a + b;
+
+<span class="code-comment">// Single parameter (parentheses optional)</span>
+<span class="code-keyword">const</span> square = x => x * x;
+<span class="code-keyword">const</span> square = (x) => x * x; <span class="code-comment">// Same as above</span>
+
+<span class="code-comment">// No parameters</span>
+<span class="code-keyword">const</span> greet = () => <span class="code-string">"Hello World!"</span>;
+
+<span class="code-comment">// Multiple statements</span>
+<span class="code-keyword">const</span> processData = (data) => {
+    <span class="code-keyword">const</span> cleaned = data.<span class="code-keyword">trim</span>();
+    <span class="code-keyword">const</span> upper = cleaned.<span class="code-keyword">toUpperCase</span>();
+    <span class="code-keyword">return</span> upper;
+};
+
+<span class="code-comment">// Returning objects (wrap in parentheses)</span>
+<span class="code-keyword">const</span> createPerson = (name, age) => ({
+    name: name,
+    age: age,
+    greet: () => <span class="code-string">`Hello, I'm ${name}`</span>
+});</code></pre>
+            </div>
+
+            <h3>This Binding Differences</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Traditional function - has its own 'this'</span>
+<span class="code-keyword">const</span> obj1 = {
+    name: <span class="code-string">"Alice"</span>,
+    greet: <span class="code-keyword">function</span>() {
+        <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">`Hello, I'm ${this.name}`</span>); <span class="code-comment">// 'this' refers to obj1</span>
+    }
+};
+
+<span class="code-comment">// Arrow function - inherits 'this' from enclosing scope</span>
+<span class="code-keyword">const</span> obj2 = {
+    name: <span class="code-string">"Bob"</span>,
+    greet: () => {
+        <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">`Hello, I'm ${this.name}`</span>); <span class="code-comment">// 'this' refers to global object</span>
+    }
+};
+
+<span class="code-comment">// Practical example - event handlers</span>
+<span class="code-keyword">class</span> <span class="code-keyword">Counter</span> {
+    <span class="code-keyword">constructor</span>() {
+        <span class="code-keyword">this</span>.count = <span class="code-number">0</span>;
+    }
+    
+    <span class="code-comment">// Arrow function preserves 'this'</span>
+    increment = () => {
+        <span class="code-keyword">this</span>.count++;
+        <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">this</span>.count);
+    }
+    
+    <span class="code-comment">// Traditional function would need .bind(this)</span>
+    traditionalIncrement() {
+        <span class="code-keyword">this</span>.count++;
+    }
+}</code></pre>
+            </div>
+
+            <h3>Arrow Functions with Array Methods</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-keyword">const</span> numbers = [<span class="code-number">1, 2, 3, 4, 5</span>];
+
+<span class="code-comment">// Traditional functions</span>
+<span class="code-keyword">const</span> doubled = numbers.<span class="code-keyword">map</span>(<span class="code-keyword">function</span>(n) {
+    <span class="code-keyword">return</span> n * <span class="code-number">2</span>;
+});
+
+<span class="code-comment">// Arrow functions (much cleaner)</span>
+<span class="code-keyword">const</span> doubled = numbers.<span class="code-keyword">map</span>(n => n * <span class="code-number">2</span>);
+<span class="code-keyword">const</span> evens = numbers.<span class="code-keyword">filter</span>(n => n % <span class="code-number">2</span> === <span class="code-number">0</span>);
+<span class="code-keyword">const</span> sum = numbers.<span class="code-keyword">reduce</span>((acc, n) => acc + n, <span class="code-number">0</span>);
+
+<span class="code-comment">// Chaining with arrow functions</span>
+<span class="code-keyword">const</span> result = numbers
+    .<span class="code-keyword">filter</span>(n => n > <span class="code-number">2</span>)
+    .<span class="code-keyword">map</span>(n => n * <span class="code-number">2</span>)
+    .<span class="code-keyword">reduce</span>((acc, n) => acc + n, <span class="code-number">0</span>);
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(result); <span class="code-comment">// 18 (3*2 + 4*2 + 5*2)</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Template Literals -->
+        <section class="section">
+            <h2>📝 Template Literals</h2>
+            
+            <p><strong>Template literals</strong> use backticks (`) và provide string interpolation, multiline strings, và embedded expressions.</p>
+
+            <h3>Basic String Interpolation</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Old way with concatenation</span>
+<span class="code-keyword">const</span> name = <span class="code-string">"Alice"</span>;
+<span class="code-keyword">const</span> age = <span class="code-number">25</span>;
+<span class="code-keyword">const</span> oldWay = <span class="code-string">"Hello, my name is "</span> + name + <span class="code-string">" and I'm "</span> + age + <span class="code-string">" years old."</span>;
+
+<span class="code-comment">// New way with template literals</span>
+<span class="code-keyword">const</span> newWay = <span class="code-string">`Hello, my name is ${name} and I'm ${age} years old.`</span>;
+
+<span class="code-comment">// Expressions inside ${}</span>
+<span class="code-keyword">const</span> x = <span class="code-number">10</span>;
+<span class="code-keyword">const</span> y = <span class="code-number">20</span>;
+<span class="code-keyword">const</span> calculation = <span class="code-string">`The sum of ${x} and ${y} is ${x + y}`</span>;
+
+<span class="code-comment">// Function calls</span>
+<span class="code-keyword">const</span> getCurrentTime = () => <span class="code-keyword">new Date</span>().<span class="code-keyword">toLocaleTimeString</span>();
+<span class="code-keyword">const</span> message = <span class="code-string">`Current time is: ${getCurrentTime()}`</span>;
+
+<span class="code-comment">// Conditional expressions</span>
+<span class="code-keyword">const</span> user = {name: <span class="code-string">"Bob"</span>, isAdmin: <span class="code-keyword">true</span>};
+<span class="code-keyword">const</span> greeting = <span class="code-string">`Welcome ${user.name}${user.isAdmin ? ' (Admin)' : ''}`</span>;</code></pre>
+            </div>
+
+            <h3>Multiline Strings</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Old way with concatenation and \n</span>
+<span class="code-keyword">const</span> oldMultiline = <span class="code-string">"Line 1\n"</span> +
+                    <span class="code-string">"Line 2\n"</span> +
+                    <span class="code-string">"Line 3"</span>;
+
+<span class="code-comment">// New way with template literals</span>
+<span class="code-keyword">const</span> newMultiline = <span class="code-string">`Line 1
+Line 2
+Line 3`</span>;
+
+<span class="code-comment">// HTML templates</span>
+<span class="code-keyword">const</span> htmlTemplate = <span class="code-string">`
+&lt;div class="card"&gt;
+    &lt;h2&gt;${user.name}&lt;/h2&gt;
+    &lt;p&gt;Age: ${user.age}&lt;/p&gt;
+    &lt;p&gt;Email: ${user.email}&lt;/p&gt;
+&lt;/div&gt;
+`</span>;
+
+<span class="code-comment">// SQL queries</span>
+<span class="code-keyword">const</span> query = <span class="code-string">`
+SELECT name, email, age
+FROM users
+WHERE age &gt; ${minAge}
+ORDER BY name ASC
+`</span>;
+
+<span class="code-comment">// JSON-like structures</span>
+<span class="code-keyword">const</span> config = <span class="code-string">`{
+    "apiUrl": "${API_BASE_URL}",
+    "timeout": ${TIMEOUT_MS},
+    "retries": ${MAX_RETRIES}
+}`</span>;</code></pre>
+            </div>
+
+            <h3>Tagged Template Literals</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Tagged template function</span>
+<span class="code-keyword">function</span> <span class="code-keyword">highlight</span>(strings, ...values) {
+    <span class="code-keyword">return</span> strings.<span class="code-keyword">reduce</span>((result, string, i) => {
+        <span class="code-keyword">const</span> value = values[i] ? <span class="code-string">`&lt;mark&gt;${values[i]}&lt;/mark&gt;`</span> : <span class="code-string">''</span>;
+        <span class="code-keyword">return</span> result + string + value;
+    }, <span class="code-string">''</span>);
+}
+
+<span class="code-keyword">const</span> name = <span class="code-string">"JavaScript"</span>;
+<span class="code-keyword">const</span> year = <span class="code-number">2024</span>;
+<span class="code-keyword">const</span> highlighted = highlight<span class="code-string">`Learning ${name} in ${year}!`</span>;
+<span class="code-comment">// Result: "Learning &lt;mark&gt;JavaScript&lt;/mark&gt; in &lt;mark&gt;2024&lt;/mark&gt;!"</span>
+
+<span class="code-comment">// Raw strings</span>
+<span class="code-keyword">function</span> <span class="code-keyword">raw</span>(strings, ...values) {
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">'Raw strings:'</span>, strings.<span class="code-keyword">raw</span>);
+    <span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-string">'Values:'</span>, values);
+}
+
+raw<span class="code-string">`Line 1\nLine 2\t${name}`</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- Destructuring -->
+        <section class="section">
+            <h2>📦 Destructuring Assignment</h2>
+            
+            <p><strong>Destructuring</strong> allows unpacking values from arrays or properties from objects into distinct variables.</p>
+
+            <h3>Array Destructuring</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Basic array destructuring</span>
+<span class="code-keyword">const</span> fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"orange"</span>];
+<span class="code-keyword">const</span> [first, second, third] = fruits;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(first);  <span class="code-comment">// "apple"</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(second); <span class="code-comment">// "banana"</span>
+
+<span class="code-comment">// Skipping elements</span>
+<span class="code-keyword">const</span> [firstFruit, , thirdFruit] = fruits;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(firstFruit, thirdFruit); <span class="code-comment">// "apple", "orange"</span>
+
+<span class="code-comment">// Default values</span>
+<span class="code-keyword">const</span> [a, b, c, d = <span class="code-string">"default"</span>] = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>];
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(d); <span class="code-comment">// "default"</span>
+
+<span class="code-comment">// Rest pattern</span>
+<span class="code-keyword">const</span> numbers = [<span class="code-number">1, 2, 3, 4, 5</span>];
+<span class="code-keyword">const</span> [head, ...tail] = numbers;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(head); <span class="code-comment">// 1</span>
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(tail); <span class="code-comment">// [2, 3, 4, 5]</span>
+
+<span class="code-comment">// Swapping variables</span>
+<span class="code-keyword">let</span> x = <span class="code-number">1</span>, y = <span class="code-number">2</span>;
+[x, y] = [y, x];
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(x, y); <span class="code-comment">// 2, 1</span></code></pre>
+            </div>
+
+            <h3>Object Destructuring</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Basic object destructuring</span>
+<span class="code-keyword">const</span> person = {
+    name: <span class="code-string">"Alice"</span>,
+    age: <span class="code-number">25</span>,
+    city: <span class="code-string">"Hanoi"</span>,
+    country: <span class="code-string">"Vietnam"</span>
+};
+
+<span class="code-keyword">const</span> {name, age} = person;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(name, age); <span class="code-comment">// "Alice", 25</span>
+
+<span class="code-comment">// Renaming variables</span>
+<span class="code-keyword">const</span> {name: personName, age: personAge} = person;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(personName, personAge); <span class="code-comment">// "Alice", 25</span>
+
+<span class="code-comment">// Default values</span>
+<span class="code-keyword">const</span> {name, email = <span class="code-string">"no-email"</span>} = person;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(email); <span class="code-comment">// "no-email"</span>
+
+<span class="code-comment">// Nested destructuring</span>
+<span class="code-keyword">const</span> user = {
+    id: <span class="code-number">1</span>,
+    profile: {
+        name: <span class="code-string">"Bob"</span>,
+        settings: {
+            theme: <span class="code-string">"dark"</span>,
+            notifications: <span class="code-keyword">true</span>
+        }
+    }
+};
+
+<span class="code-keyword">const</span> {
+    profile: {
+        name: userName,
+        settings: {theme}
+    }
+} = user;
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(userName, theme); <span class="code-comment">// "Bob", "dark"</span>
+
+<span class="code-comment">// Rest pattern with objects</span>
+<span class="code-keyword">const</span> {name, ...otherInfo} = person;
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(otherInfo); <span class="code-comment">// {age: 25, city: "Hanoi", country: "Vietnam"}</span></code></pre>
+            </div>
+
+            <h3>Destructuring in Function Parameters</h3>
+            <div class="code-demo">
+                <pre><code><span class="code-comment">// Array destructuring in parameters</span>
+<span class="code-keyword">function</span> <span class="code-keyword">getCoordinates</span>([x, y]) {
+    <span class="code-keyword">return</span> <span class="code-string">`X: ${x}, Y: ${y}`</span>;
+}
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">getCoordinates</span>([<span class="code-number">10</span>, <span class="code-number">20</span>])); <span class="code-comment">// "X: 10, Y: 20"</span>
+
+<span class="code-comment">// Object destructuring in parameters</span>
+<span class="code-keyword">function</span> <span class="code-keyword">createUser</span>({name, age, email = <span class="code-string">"no-email"</span>}) {
+    <span class="code-keyword">return</span> {
+        id: <span class="code-keyword">Date</span>.<span class="code-keyword">now</span>(),
+        name,
+        age,
+        email,
+        createdAt: <span class="code-keyword">new Date</span>()
+    };
+}
+
+<span class="code-keyword">const</span> newUser = <span class="code-keyword">createUser</span>({
+    name: <span class="code-string">"Charlie"</span>,
+    age: <span class="code-number">30</span>
+});
+
+<span class="code-comment">// Mixed destructuring</span>
+<span class="code-keyword">function</span> <span class="code-keyword">processApiResponse</span>({data: [firstItem], meta: {total}}) {
+    <span class="code-keyword">return</span> <span class="code-string">`First item: ${firstItem}, Total: ${total}`</span>;
+}
+
+<span class="code-keyword">const</span> apiResponse = {
+    data: [<span class="code-string">"item1"</span>, <span class="code-string">"item2"</span>, <span class="code-string">"item3"</span>],
+    meta: {total: <span class="code-number">3</span>, page: <span class="code-number">1</span>}
+};
+
+<span class="code-keyword">console</span>.<span class="code-keyword">log</span>(<span class="code-keyword">processApiResponse</span>(apiResponse));</code></pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demos -->
+        <section class="section">
+            <h2>🎮 Interactive ES6+ Lab</h2>
+            
+            <div class="demo-grid">
+                <div class="interactive-demo">
+                    <h4>🔐 Variable Scope Tester</h4>
+                    <p>Test let, const, and var behavior:</p>
+                    
+                    <div>
+                        <button class="demo-button" onclick="testVariableScope('var')">Test var</button>
+                        <button class="demo-button purple" onclick="testVariableScope('let')">Test let</button>
+                        <button class="demo-button teal" onclick="testVariableScope('const')">Test const</button>
+                    </div>
+                    
+                    <div id="scopeOutput" class="demo-output">
+                        Click buttons to test variable scoping...
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>🏹 Arrow Function Converter</h4>
+                    <p>Convert traditional functions to arrow functions:</p>
+                    
+                    <textarea class="demo-input" id="functionInput" rows="4" placeholder="Enter a traditional function...">function add(a, b) {
+    return a + b;
+}</textarea>
+                    
+                    <div>
+                        <button class="demo-button success" onclick="convertToArrow()">Convert to Arrow</button>
+                        <button class="demo-button indigo" onclick="showArrowExamples()">Show Examples</button>
+                    </div>
+                    
+                    <div id="arrowOutput" class="demo-output">
+                        Converted arrow function will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h4>📝 Template Literal Builder</h4>
+                <p>Create dynamic strings with template literals:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <input type="text" id="nameInput" class="demo-input" placeholder="Name" value="Alice">
+                    <input type="number" id="ageInput" class="demo-input" placeholder="Age" value="25">
+                    <input type="text" id="cityInput" class="demo-input" placeholder="City" value="Hanoi">
+                    <input type="text" id="hobbyInput" class="demo-input" placeholder="Hobby" value="coding">
+                </div>
+                
+                <div>
+                    <button class="demo-button" onclick="buildTemplate('simple')">Simple Template</button>
+                    <button class="demo-button purple" onclick="buildTemplate('complex')">Complex Template</button>
+                    <button class="demo-button teal" onclick="buildTemplate('html')">HTML Template</button>
+                </div>
+                
+                <div id="templateOutput" class="demo-output">
+                    Generated template will appear here...
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h4>📦 Destructuring Playground</h4>
+                <p>Practice array and object destructuring:</p>
+                
+                <div>
+                    <button class="demo-button" onclick="demonstrateDestructuring('array')">Array Destructuring</button>
+                    <button class="demo-button purple" onclick="demonstrateDestructuring('object')">Object Destructuring</button>
+                    <button class="demo-button teal" onclick="demonstrateDestructuring('nested')">Nested Destructuring</button>
+                    <button class="demo-button success" onclick="demonstrateDestructuring('function')">Function Parameters</button>
+                </div>
+                
+                <div id="destructuringOutput" class="demo-output">
+                    Destructuring examples will appear here...
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS09-dom-projects.html" class="nav-btn prev">← JS09: DOM Projects</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS10_p2.html" class="nav-btn next">JS10 Part 2 →</a>
+        </div>
+    </div>
+
+    <script>
+        // Variable scope testing
+        function testVariableScope(type) {
+            const output = document.getElementById('scopeOutput');
+            let result = `Testing ${type.toUpperCase()} behavior:\n\n`;
+            
+            try {
+                switch (type) {
+                    case 'var':
+                        result += `// var - Function scoped\n`;
+                        result += `function testVar() {\n`;
+                        result += `    if (true) {\n`;
+                        result += `        var x = "I'm var";\n`;
+                        result += `    }\n`;
+                        result += `    console.log(x); // Works! var is function-scoped\n`;
+                        result += `}\n\n`;
+                        result += `// Hoisting behavior\n`;
+                        result += `console.log(hoistedVar); // undefined (not error)\n`;
+                        result += `var hoistedVar = "I was hoisted";\n\n`;
+                        result += `Result: var is function-scoped and hoisted with undefined`;
+                        break;
+                        
+                    case 'let':
+                        result += `// let - Block scoped\n`;
+                        result += `function testLet() {\n`;
+                        result += `    if (true) {\n`;
+                        result += `        let y = "I'm let";\n`;
+                        result += `    }\n`;
+                        result += `    // console.log(y); // Error! let is block-scoped\n`;
+                        result += `}\n\n`;
+                        result += `// Temporal Dead Zone\n`;
+                        result += `// console.log(hoistedLet); // ReferenceError\n`;
+                        result += `let hoistedLet = "I have TDZ";\n\n`;
+                        result += `Result: let is block-scoped with Temporal Dead Zone`;
+                        break;
+                        
+                    case 'const':
+                        result += `// const - Block scoped, cannot reassign\n`;
+                        result += `const PI = 3.14159;\n`;
+                        result += `// PI = 3.14; // Error! Cannot reassign const\n\n`;
+                        result += `// But object contents can change\n`;
+                        result += `const obj = {name: "Alice"};\n`;
+                        result += `obj.name = "Bob"; // This works!\n`;
+                        result += `obj.age = 25; // This works too!\n`;
+                        result += `// obj = {}; // Error! Cannot reassign const\n\n`;
+                        result += `Result: const prevents reassignment but allows mutation`;
+                        break;
+                }
+                
+                output.textContent = result;
+                
+            } catch (error) {
+                output.textContent = `Error demonstrating ${type}: ${error.message}`;
+            }
+        }
+
+        // Arrow function converter
+        function convertToArrow() {
+            const input = document.getElementById('functionInput').value;
+            const output = document.getElementById('arrowOutput');
+            
+            try {
+                // Simple regex-based conversion for demonstration
+                let converted = input
+                    .replace(/function\s+(\w+)\s*\(/g, 'const $1 = (')
+                    .replace(/function\s*\(/g, '(')
+                    .replace(/\)\s*{/, ') => {');
+                
+                // Try to detect single-line return statements for shorter syntax
+                const singleReturnMatch = converted.match(/=> {\s*return ([^;]+);\s*}/);
+                if (singleReturnMatch) {
+                    converted = converted.replace(/=> {\s*return ([^;]+);\s*}/, '=> $1');
+                }
+                
+                output.textContent = `Original Function:\n${input}\n\nConverted Arrow Function:\n${converted}\n\nNote: This is a simplified conversion. Complex functions may need manual adjustment.`;
+                
+            } catch (error) {
+                output.textContent = `Conversion error: ${error.message}`;
+            }
+        }
+
+        function showArrowExamples() {
+            const output = document.getElementById('arrowOutput');
+            output.textContent = `Arrow Function Examples:
+
+// No parameters
+const greet = () => "Hello World!";
+
+// Single parameter (parentheses optional)
+const square = x => x * x;
+const square = (x) => x * x; // Same as above
+
+// Multiple parameters
+const add = (a, b) => a + b;
+
+// Multiple statements
+const processData = (data) => {
+    const cleaned = data.trim();
+    const upper = cleaned.toUpperCase();
+    return upper;
+};
+
+// Returning objects (wrap in parentheses)
+const createPerson = (name, age) => ({
+    name: name,
+    age: age
+});
+
+// Array methods with arrows
+[1, 2, 3].map(x => x * 2); // [2, 4, 6]
+[1, 2, 3, 4].filter(x => x % 2 === 0); // [2, 4]`;
+        }
+
+        // Template literal builder
+        function buildTemplate(type) {
+            const name = document.getElementById('nameInput').value;
+            const age = document.getElementById('ageInput').value;
+            const city = document.getElementById('cityInput').value;
+            const hobby = document.getElementById('hobbyInput').value;
+            const output = document.getElementById('templateOutput');
+            
+            let template = '';
+            let result = '';
+            
+            switch (type) {
+                case 'simple':
+                    template = '`Hello, my name is ${name} and I am ${age} years old.`';
+                    result = `Hello, my name is ${name} and I am ${age} years old.`;
+                    break;
+                    
+                case 'complex':
+                    template = '`${name} is ${age >= 18 ? "an adult" : "a minor"} from ${city} who loves ${hobby}.`';
+                    result = `${name} is ${age >= 18 ? "an adult" : "a minor"} from ${city} who loves ${hobby}.`;
+                    break;
+                    
+                case 'html':
+                    template = `\`<div class="user-card">
+    <h2>\${name}</h2>
+    <p>Age: \${age}</p>
+    <p>Location: \${city}</p>
+    <p>Hobby: \${hobby}</p>
+    <p>Status: \${age >= 18 ? "Adult" : "Minor"}</p>
+</div>\``;
+                    result = `<div class="user-card">
+    <h2>${name}</h2>
+    <p>Age: ${age}</p>
+    <p>Location: ${city}</p>
+    <p>Hobby: ${hobby}</p>
+    <p>Status: ${age >= 18 ? "Adult" : "Minor"}</p>
+</div>`;
+                    break;
+            }
+            
+            output.textContent = `Template Literal:\n${template}\n\nResult:\n${result}`;
+        }
+
+        // Destructuring demonstrations
+        function demonstrateDestructuring(type) {
+            const output = document.getElementById('destructuringOutput');
+            let result = '';
+            
+            switch (type) {
+                case 'array':
+                    result = `Array Destructuring Examples:
+
+// Basic destructuring
+const fruits = ["apple", "banana", "orange"];
+const [first, second, third] = fruits;
+// first = "apple", second = "banana", third = "orange"
+
+// Skipping elements
+const [firstFruit, , thirdFruit] = fruits;
+// firstFruit = "apple", thirdFruit = "orange"
+
+// Default values
+const [a, b, c, d = "default"] = [1, 2, 3];
+// a = 1, b = 2, c = 3, d = "default"
+
+// Rest pattern
+const numbers = [1, 2, 3, 4, 5];
+const [head, ...tail] = numbers;
+// head = 1, tail = [2, 3, 4, 5]
+
+// Swapping variables
+let x = 1, y = 2;
+[x, y] = [y, x];
+// x = 2, y = 1`;
+                    break;
+                    
+                case 'object':
+                    result = `Object Destructuring Examples:
+
+const person = {
+    name: "Alice",
+    age: 25,
+    city: "Hanoi",
+    country: "Vietnam"
+};
+
+// Basic destructuring
+const {name, age} = person;
+// name = "Alice", age = 25
+
+// Renaming variables
+const {name: personName, age: personAge} = person;
+// personName = "Alice", personAge = 25
+
+// Default values
+const {name, email = "no-email"} = person;
+// name = "Alice", email = "no-email"
+
+// Rest pattern
+const {name, ...otherInfo} = person;
+// name = "Alice", otherInfo = {age: 25, city: "Hanoi", country: "Vietnam"}`;
+                    break;
+                    
+                case 'nested':
+                    result = `Nested Destructuring Examples:
+
+const user = {
+    id: 1,
+    profile: {
+        name: "Bob",
+        settings: {
+            theme: "dark",
+            notifications: true
+        }
+    },
+    posts: ["post1", "post2", "post3"]
+};
+
+// Nested object destructuring
+const {
+    profile: {
+        name: userName,
+        settings: {theme}
+    }
+} = user;
+// userName = "Bob", theme = "dark"
+
+// Mixed array and object destructuring
+const {posts: [firstPost, ...otherPosts]} = user;
+// firstPost = "post1", otherPosts = ["post2", "post3"]
+
+// Complex nested structure
+const data = {
+    results: [
+        {id: 1, name: "Item 1"},
+        {id: 2, name: "Item 2"}
+    ]
+};
+
+const {results: [{name: firstItemName}]} = data;
+// firstItemName = "Item 1"`;
+                    break;
+                    
+                case 'function':
+                    result = `Function Parameter Destructuring:
+
+// Array destructuring in parameters
+function getCoordinates([x, y]) {
+    return \`X: \${x}, Y: \${y}\`;
+}
+getCoordinates([10, 20]); // "X: 10, Y: 20"
+
+// Object destructuring in parameters
+function createUser({name, age, email = "no-email"}) {
+    return {
+        id: Date.now(),
+        name,
+        age,
+        email
+    };
+}
+
+createUser({name: "Charlie", age: 30});
+
+// Complex parameter destructuring
+function processApiResponse({
+    data: [firstItem],
+    meta: {total, page = 1}
+}) {
+    return \`First: \${firstItem}, Total: \${total}, Page: \${page}\`;
+}
+
+const apiResponse = {
+    data: ["item1", "item2"],
+    meta: {total: 2}
+};
+
+processApiResponse(apiResponse);`;
+                    break;
+            }
+            
+            output.textContent = result;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Welcome to JS10 Part 1: ES6+ Features!');
+            console.log('💡 Learn modern JavaScript syntax and features!');
+            
+            // Demonstrate ES6 features in console
+            console.log('🎯 ES6+ Examples:');
+            
+            // Template literals
+            const name = "JavaScript";
+            const year = 2024;
+            console.log(`Learning ${name} in ${year}!`);
+            
+            // Arrow functions
+            const numbers = [1, 2, 3, 4, 5];
+            const doubled = numbers.map(n => n * 2);
+            console.log('Doubled:', doubled);
+            
+            // Destructuring
+            const person = {name: "Alice", age: 25, city: "Hanoi"};
+            const {name: personName, age} = person;
+            console.log(`${personName} is ${age} years old`);
+            
+            // Mark lesson as started
+            localStorage.setItem('js10_p1_started', Date.now());
+            localStorage.setItem('js_progress_js10_p1', 'true');
+        });
+    </script>
+</body>
+</html>

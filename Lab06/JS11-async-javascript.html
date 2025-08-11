@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS11: Asynchronous JavaScript - Lab06 JavaScript Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f7df1e;
+            --secondary: #323330;
+            --accent: #f0db4f;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --bg-light: #fafafa;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --purple: #9c27b0;
+            --teal: #009688;
+            --pink: #e91e63;
+            --indigo: #3f51b5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f7f9fc 0%, #f1f5f9 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            color: white;
+        }
+
+        .lesson-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .lesson-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .concept-card {
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .concept-card h3 {
+            color: var(--info);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .resources-section {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .resource-link {
+            display: block;
+            background: white;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .resource-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.2);
+            border-color: var(--success);
+        }
+
+        .resource-link h4 {
+            color: var(--info);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .resource-link:hover h4 {
+            color: var(--success);
+        }
+
+        .resource-type {
+            display: inline-block;
+            background: var(--info);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .difficulty.beginner { background: var(--success); color: white; }
+        .difficulty.intermediate { background: var(--warning); color: white; }
+        .difficulty.advanced { background: var(--danger); color: white; }
+
+        .key-concepts {
+            background: linear-gradient(135deg, #fff3e0, #ffe8cc);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .concept-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-item {
+            background: white;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .concept-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);
+        }
+
+        .concept-item h4 {
+            color: var(--warning);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .practical-section {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-center {
+            text-align: center;
+        }
+
+        .nav-center a {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .resources-grid,
+            .concept-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-number">Lesson JS11</div>
+            <h1>⚡ Asynchronous JavaScript</h1>
+            <p>Callbacks, Promises, Async/Await & Modern Async Patterns</p>
+        </div>
+
+        <!-- Overview -->
+        <section class="section">
+            <h2>🎯 Tổng quan Asynchronous JavaScript</h2>
+            
+            <p>JavaScript là ngôn ngữ <strong>single-threaded</strong> nhưng có thể xử lý các tác vụ bất đồng bộ thông qua <strong>Event Loop</strong>. Lesson này sẽ hướng dẫn bạn các pattern để làm việc với async code hiệu quả.</p>
+
+            <div class="key-concepts">
+                <h3>🔑 Key Concepts</h3>
+                <div class="concept-list">
+                    <div class="concept-item">
+                        <h4>⏰ Callbacks</h4>
+                        <p>Functions được truyền làm arguments và gọi sau khi task hoàn thành</p>
+                    </div>
+                    <div class="concept-item">
+                        <h4>🤝 Promises</h4>
+                        <p>Objects đại diện cho eventual completion của async operations</p>
+                    </div>
+                    <div class="concept-item">
+                        <h4>🎭 Async/Await</h4>
+                        <p>Syntax sugar làm async code trông giống synchronous code</p>
+                    </div>
+                    <div class="concept-item">
+                        <h4>🔄 Event Loop</h4>
+                        <p>Mechanism xử lý async operations trong JavaScript runtime</p>
+                    </div>
+                    <div class="concept-item">
+                        <h4>📡 Fetch API</h4>
+                        <p>Modern way để thực hiện HTTP requests</p>
+                    </div>
+                    <div class="concept-item">
+                        <h4>⚡ Concurrent Patterns</h4>
+                        <p>Promise.all(), Promise.race(), Promise.allSettled()</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Understanding Async -->
+        <div class="concept-card">
+            <h3>🧠 Hiểu về Asynchronous Programming</h3>
+            <p><strong>Synchronous code</strong> chạy tuần tự, blocking các operations khác. <strong>Asynchronous code</strong> cho phép program tiếp tục chạy trong khi chờ long-running operations hoàn thành.</p>
+            
+            <p><strong>Common async operations:</strong></p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>🌐 HTTP requests (API calls)</li>
+                <li>📁 File system operations</li>
+                <li>💾 Database queries</li>
+                <li>⏲️ Timers (setTimeout, setInterval)</li>
+                <li>👤 User interactions (events)</li>
+                <li>🎬 Media loading (images, videos)</li>
+            </ul>
+
+            <p><strong>Evolution of Async JavaScript:</strong></p>
+            <p>1️⃣ <strong>Callbacks</strong> (ES5) → 2️⃣ <strong>Promises</strong> (ES6) → 3️⃣ <strong>Async/Await</strong> (ES8)</p>
+        </div>
+
+        <!-- Practical Applications -->
+        <div class="practical-section">
+            <h3>🛠️ Practical Applications</h3>
+            <p>Async JavaScript được sử dụng trong:</p>
+            
+            <div class="concept-list">
+                <div class="concept-item">
+                    <h4>🌐 Web APIs</h4>
+                    <p>Fetching data từ REST APIs, GraphQL endpoints</p>
+                </div>
+                <div class="concept-item">
+                    <h4>📱 Single Page Apps</h4>
+                    <p>Loading content dynamically without page refresh</p>
+                </div>
+                <div class="concept-item">
+                    <h4>🎮 Real-time Apps</h4>
+                    <p>Chat apps, live updates, WebSocket connections</p>
+                </div>
+                <div class="concept-item">
+                    <h4>📊 Data Processing</h4>
+                    <p>Processing large datasets without blocking UI</p>
+                </div>
+                <div class="concept-item">
+                    <h4>🔄 Background Tasks</h4>
+                    <p>Periodic syncing, cache management</p>
+                </div>
+                <div class="concept-item">
+                    <h4>🎬 Media Handling</h4>
+                    <p>Loading images, videos, audio files</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Resources -->
+        <div class="resources-section">
+            <h2>📚 Tài nguyên học Asynchronous JavaScript</h2>
+            <p>Các tài nguyên chất lượng để master async programming:</p>
+            
+            <div class="resources-grid">
+                <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous" target="_blank" class="resource-link">
+                    <div class="resource-type">Official Docs</div>
+                    <div class="difficulty beginner">Beginner</div>
+                    <h4>🌐 MDN Asynchronous JavaScript</h4>
+                    <p>Complete guide về async programming từ Mozilla. Covers callbacks, promises, async/await với examples chi tiết.</p>
+                </a>
+
+                <a href="https://javascript.info/async" target="_blank" class="resource-link">
+                    <div class="resource-type">Tutorial</div>
+                    <div class="difficulty beginner">Beginner</div>
+                    <h4>📖 JavaScript.info - Promises, async/await</h4>
+                    <p>In-depth tutorial về modern async patterns. Rất dễ hiểu với interactive examples.</p>
+                </a>
+
+                <a href="https://eloquentjavascript.net/11_async.html" target="_blank" class="resource-link">
+                    <div class="resource-type">Book Chapter</div>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    <h4>📚 Eloquent JavaScript - Asynchronous Programming</h4>
+                    <p>Chapter chuyên sâu về async programming từ cuốn sách nổi tiếng Eloquent JavaScript.</p>
+                </a>
+
+                <a href="https://web.dev/promises/" target="_blank" class="resource-link">
+                    <div class="resource-type">Web.dev</div>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    <h4>🔧 JavaScript Promises: An introduction</h4>
+                    <p>Practical guide từ Google Developers về promises và modern async patterns.</p>
+                </a>
+
+                <a href="https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/async-performance" target="_blank" class="resource-link">
+                    <div class="resource-type">Book</div>
+                    <div class="difficulty advanced">Advanced</div>
+                    <h4>📚 You Don't Know JS: Async & Performance</h4>
+                    <p>Deep dive vào async mechanisms, event loop, và performance optimization.</p>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank" class="resource-link">
+                    <div class="resource-type">Video</div>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    <h4>🎥 What the heck is the event loop anyway?</h4>
+                    <p>Philip Roberts' famous talk về JavaScript event loop. Must-watch để hiểu async fundamentals.</p>
+                </a>
+
+                <a href="https://nodejs.dev/learn/understanding-javascript-promises" target="_blank" class="resource-link">
+                    <div class="resource-type">Tutorial</div>
+                    <div class="difficulty beginner">Beginner</div>
+                    <h4>⚡ Node.js Guide to Promises</h4>
+                    <p>Comprehensive guide về promises trong context của Node.js development.</p>
+                </a>
+
+                <a href="https://rxjs.dev/guide/overview" target="_blank" class="resource-link">
+                    <div class="resource-type">Library</div>
+                    <div class="difficulty advanced">Advanced</div>
+                    <h4>🌊 RxJS - Reactive Extensions</h4>
+                    <p>Library cho reactive programming với observables. Advanced async patterns.</p>
+                </a>
+
+                <a href="https://github.com/sindresorhus/awesome-promises" target="_blank" class="resource-link">
+                    <div class="resource-type">Awesome List</div>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    <h4>⭐ Awesome Promises</h4>
+                    <p>Curated list về promises resources, libraries, và tools.</p>
+                </a>
+
+                <a href="https://web.dev/fast/" target="_blank" class="resource-link">
+                    <div class="resource-type">Performance</div>
+                    <div class="difficulty advanced">Advanced</div>
+                    <h4>🚀 Web Performance với Async</h4>
+                    <p>Best practices cho performance optimization sử dụng async techniques.</p>
+                </a>
+
+                <a href="https://jestjs.io/docs/asynchronous" target="_blank" class="resource-link">
+                    <div class="resource-type">Testing</div>
+                    <div class="difficulty intermediate">Intermediate</div>
+                    <h4>🧪 Testing Async Code với Jest</h4>
+                    <p>Guide về testing async functions, promises, và async/await code.</p>
+                </a>
+
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" class="resource-link">
+                    <div class="resource-type">API Reference</div>
+                    <div class="difficulty beginner">Beginner</div>
+                    <h4>📡 Fetch API Documentation</h4>
+                    <p>Complete reference cho modern HTTP client API, thay thế XMLHttpRequest.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Practice Recommendations -->
+        <div class="practical-section">
+            <h2>💡 Gợi ý thực hành</h2>
+            
+            <div class="concept-list">
+                <div class="concept-item">
+                    <h4>🔥 Build a Weather App</h4>
+                    <p>Sử dụng Fetch API để call weather APIs, handle loading states và errors</p>
+                </div>
+                <div class="concept-item">
+                    <h4>📋 Todo App với API</h4>
+                    <p>CRUD operations với async/await, optimistic updates</p>
+                </div>
+                <div class="concept-item">
+                    <h4>🎬 Image Gallery</h4>
+                    <p>Lazy loading images, Promise.all() để load multiple images</p>
+                </div>
+                <div class="concept-item">
+                    <h4>💬 Chat Application</h4>
+                    <p>WebSocket connections, real-time messaging</p>
+                </div>
+                <div class="concept-item">
+                    <h4>📊 Data Dashboard</h4>
+                    <p>Multiple API calls, concurrent data fetching, error handling</p>
+                </div>
+                <div class="concept-item">
+                    <h4>🎵 Music Player</h4>
+                    <p>Audio file loading, playlist management, async operations</p>
+                </div>
+            </div>
+
+            <p style="margin-top: 20px; padding: 20px; background: rgba(33, 150, 243, 0.1); border-radius: 10px; border-left: 4px solid var(--info);">
+                <strong>💡 Pro Tip:</strong> Bắt đầu với simple promises, sau đó chuyển sang async/await. 
+                Practice error handling và loading states trong mọi async operation. 
+                Học cách debug async code với browser DevTools.
+            </p>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="concept-card">
+            <h3>🎯 Next Steps sau khi học Async JavaScript</h3>
+            <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                <li>🏗️ <strong>Build Real Projects:</strong> Apply async patterns trong practical applications</li>
+                <li>🧪 <strong>Learn Testing:</strong> Jest, async testing patterns, mocking APIs</li>
+                <li>⚡ <strong>Performance:</strong> Code splitting, lazy loading, optimization techniques</li>
+                <li>🌊 <strong>Advanced Patterns:</strong> RxJS, Observables, reactive programming</li>
+                <li>🔧 <strong>Tools & Libraries:</strong> Axios, SWR, React Query cho data fetching</li>
+                <li>🏗️ <strong>Backend Integration:</strong> GraphQL, WebSockets, Server-Sent Events</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="JS10_p2.html" class="nav-btn prev">← JS10 Part 2</a>
+            
+            <div class="nav-center">
+                <a href="index.html">📚 Course Overview</a>
+            </div>
+            
+            <a href="JS12-final-project.html" class="nav-btn next">JS12: Final Project →</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('⚡ Welcome to JS11: Asynchronous JavaScript!');
+            console.log('🎯 Master callbacks, promises, and async/await!');
+            
+            // Demonstrate async concepts in console
+            console.log('🔥 Async Examples:');
+            
+            // Promise example
+            const examplePromise = new Promise((resolve) => {
+                setTimeout(() => resolve('Promise resolved!'), 1000);
+            });
+            
+            examplePromise.then(console.log);
+            
+            // Async/await example
+            async function demoAsync() {
+                try {
+                    const result = await examplePromise;
+                    console.log('Async/await result:', result);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            demoAsync();
+            
+            // Fetch example (will fail but demonstrates syntax)
+            console.log('📡 Fetch API example:');
+            console.log(`
+fetch('https://api.example.com/data')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+            `);
+            
+            // Mark lesson as completed
+            localStorage.setItem('js11_started', Date.now());
+            localStorage.setItem('js_progress_js11', 'true');
+            
+            // Add interactive hover effects
+            const resourceLinks = document.querySelectorAll('.resource-link');
+            resourceLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.borderColor = '#4caf50';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.borderColor = '#2196f3';
+                });
+            });
+            
+            // Console tips
+            console.log('💡 Ready to dive deep into async JavaScript!');
+            console.log('📚 Check out the resource links for comprehensive learning');
+        });
+    </script>
+</body>
+</html>
